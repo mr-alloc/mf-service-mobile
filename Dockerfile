@@ -20,5 +20,5 @@ RUN vite --version
 RUN yarn install
 RUN yarn build-only
 
-EXPOSE 5173
+EXPOSE 8715
 CMD [ "http-server", "-p 8715", "dist" ]
