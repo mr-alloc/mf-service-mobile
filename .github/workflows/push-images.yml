@@ -1,0 +1,57 @@
+name: push-images
+run-name: Deploy to SSH
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  deploy-to-ssh:
+    runs-on: ubuntu-latest
+    #double quotes
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - uses: actions/checkout@v4
+
+      - name: Push image to GitHub Container Registry
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}, ghcr.io/${{ github.repository }}:latest
+
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          script: |
+            echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ghcr.io/${{ github.repository }}:latest
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-Github-Api-Version: 2022-11-28" \
+              /repos/${{ github.repository }}/contents/stack-deploy.yml?ref=master --jq '.content' \
+              | base64 --decode \
+              | docker stack deploy --with-registry-auth --detach=true --compose-file - mf-service-mobile

@@ -8,7 +8,7 @@
         <div class="day" v-for="day in DayOfWeek.values()" :key="day.value">{{ day.alias }}</div>
       </div>
       <Swiper :modules="swiperModules" class="calendar-swiper" @swiper="methods.getSwiperRef" @slideChange="methods.whenSlideChange">
-        <SwiperSlide class="calendar-swiper-slide" :key="month.unix()" v-for="(month) in state.months">
+        <SwiperSlide class="calendar-swiper-slide" :key="month.unix()" v-for="(month, index) in state.months" :virtual-index="index">
           <CalendarMonth :month="month"/>
         </SwiperSlide>
       </Swiper>
@@ -71,21 +71,17 @@ const methods = {
     const activeMonth = state.months[active];
     const lastIndex = state.months.length -1;
     state.monthTitle = activeMonth.format("YYYY년 MM월");
-    console.log('active', active);
-    console.log('before size', state.months.length);
 
     //맨앞에 한개 추가
     if (active === 0) {
       const firstMonth = state.months[0];
       const previousMonth = firstMonth.clone().add(-1, 'month')
-      console.log('first month', firstMonth.format(DateUtil.YYYYMM));
-      console.log('previous month', previousMonth.format(DateUtil.YYYYMM));
       state.months.unshift(previousMonth);
+      swiper.value?.slideTo(1, 0);
     } else if (active === lastIndex) {
       const lastMonth = state.months[lastIndex]
       state.months.push(lastMonth.clone().add(1, 'month'));
     }
-    console.log('after size', state.months.length);
   },
   resetComponent() {
     calendarStore.resetSelected();
@@ -99,8 +95,8 @@ onMounted(() => {
   });
   state.monthTitle = thisMonth.format("YYYY년 MM월");
   //이번달
-  swiper.value?.slideTo(1);
-})
+  swiper.value?.slideTo(1, 0);
+});
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

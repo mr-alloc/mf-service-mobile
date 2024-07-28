@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  web:
+    image: ghcr.io/devisitem/mf-service-mobile
+    ports:
+      - "8715:8715"
+    deploy:
+      update_config:
+        order: start-first
+    networks:
+      - mf_network
+
+networks:
+  mf_network:
+    external: true
