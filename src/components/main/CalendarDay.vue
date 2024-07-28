@@ -1,0 +1,103 @@
+<template>
+  <div class="each-day-item" :class="{
+    anniversary: calendarStore.anniversaryMap.has(day.timestamp),
+  }">
+    <div class="item-header">
+      <span class="date" :class="{ today: state.today.format('YYMMD') === state.now.format('YYMMD') }">
+        {{ methods.getCalendarDate() }}
+      </span>
+    </div>
+    <div class="item-body">
+    </div>
+  </div>
+</template>
+<script setup lang="ts">
+import TemporalUtil from "@/utils/TemporalUtil";
+import {onMounted, reactive} from "vue";
+import moment from "moment-timezone";
+import type CalendarDate from "@/classes/CalendarDate";
+import {useCalendarStore} from "@/stores/CalendarStore";
+import type CalendarAnniversary from "@/classes/CalendarAnniversary";
+
+const calendarStore = useCalendarStore();
+const props = defineProps<{
+  timestamp: number,
+  day: CalendarDate
+}>();
+
+const state = reactive({
+  today: TemporalUtil.toMoment(props.timestamp, true),
+  now: moment(),
+  anniversary: [] as CalendarAnniversary [],
+});
+
+const methods = {
+  getCalendarDate() {
+    return state.today.date() === 1
+        ? state.today.format('M/D')
+        : state.today.format('D');
+
+  }
+}
+onMounted(() => {
+})
+</script>
+<style scoped lang="scss">
+@import "@assets/main";
+
+.each-day-item {
+  user-select: none;
+  border: 0.5px solid $standard-light-gray-in-white;
+  transition: $duration, border 0s, transform .1s, position 0s;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1 1 0%;
+
+  &.selected {
+    background-color: $super-light-signature-purple;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.anniversary {
+    background-color: #D8F4D7;
+  }
+
+  .item-header {
+    font-weight: bold;
+    font-size: .72rem;
+    user-select: none;
+    height: 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 5px;
+    justify-content: center;
+
+    .date {
+      font-weight: bold;
+      padding: 0 5px;
+      line-height: 1;
+
+      &.today {
+        background-color: $signature-purple;
+        border-radius: 5px;
+        color: white;
+        padding: 2px 5px;
+      }
+    }
+  }
+
+
+  .item-body {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>
