@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import MainHeader from '@/views/global/MainHeader.vue'
-import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue'
+import { RouterView } from 'vue-router';
+import MainHeader from '@/views/global/MainHeader.vue';
+import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
 </script>
 
 <template>
