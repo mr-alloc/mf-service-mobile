@@ -5,7 +5,11 @@
         <span class="title-text">{{ state.monthTitle }}</span>
       </div>
       <div class="day-of-weeks">
-        <div class="day" v-for="day in DayOfWeek.values()" :key="day.value">{{ day.alias }}</div>
+        <div class="day" :class="{
+          sun: day.value === DayOfWeek.SUNDAY.value,
+          sat: day.value === DayOfWeek.SATURDAY.value
+        }"
+             v-for="day in DayOfWeek.values()" :key="day.value">{{ day.alias }}</div>
       </div>
       <Swiper :modules="swiperModules" class="calendar-swiper" @swiper="methods.getSwiperRef" @slideChange="methods.whenSlideChange">
         <SwiperSlide class="calendar-swiper-slide" :key="month.unix()" v-for="(month, index) in state.months" :virtual-index="index">
@@ -160,6 +164,14 @@ onMounted(() => {
         width: 100%;
         font-weight: bold;
         text-align: center;
+
+        &.sun {
+          color: $soft-red;
+        }
+
+        &.sat {
+          color: $soft-blue;
+        }
       }
     }
 

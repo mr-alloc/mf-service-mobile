@@ -17,5 +17,6 @@ import FamilySelector from '@/components/header/FamilySelector.vue'
   padding: 5px 8px;
   border-bottom: 1px solid $standard-light-gray-in-white;
   display: flex;
+  flex-shrink: 0;
 }
 </style>

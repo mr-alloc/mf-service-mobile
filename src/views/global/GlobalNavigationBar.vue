@@ -48,11 +48,13 @@ const methods = {
 @import "@assets/main";
 
 .global-navigation-bar-container {
-  height: 60px;
+  flex-shrink: 0;
+  height: $footer-height;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding: 5px 8px;
+  padding: 5px 8px 15px 8px;
+  background-color: white;
 
   .navigate-button-wrapper {
     border-radius: 5px;

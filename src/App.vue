@@ -31,15 +31,14 @@ import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
 .container-wrapper {
   background: white;
   width: 100%;
+  height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   max-width: 32rem;
-  border-left: 1px solid $standard-light-gray-in-white;
-  border-right: 1px solid $standard-light-gray-in-white;
 
   .container {
-    flex-grow: 1;
+    height: calc(100% - 120px);
   }
 
   .background {

@@ -3,7 +3,11 @@
     anniversary: calendarStore.anniversaryMap.has(day.timestamp),
   }">
     <div class="item-header">
-      <span class="date" :class="{ today: state.today.format('YYMMD') === state.now.format('YYMMD') }">
+      <span class="date" :class="{
+        today: state.today.format('YYMMD') === state.now.format('YYMMD'),
+        sun: props.day.dayOfWeek.value === DayOfWeek.SUNDAY.value,
+        sat: props.day.dayOfWeek.value === DayOfWeek.SATURDAY.value
+      }">
         {{ methods.getCalendarDate() }}
       </span>
     </div>
@@ -18,6 +22,7 @@ import moment from "moment-timezone";
 import type CalendarDate from "@/classes/CalendarDate";
 import {useCalendarStore} from "@/stores/CalendarStore";
 import type CalendarAnniversary from "@/classes/CalendarAnniversary";
+import DayOfWeek from '@/constant/DayOfWeek'
 
 const calendarStore = useCalendarStore();
 const props = defineProps<{
@@ -52,7 +57,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  flex: 1 1 0%;
+  flex: 1 1 0;
 
   &.selected {
     background-color: $super-light-signature-purple;
@@ -83,12 +88,21 @@ onMounted(() => {
       padding: 0 5px;
       line-height: 1;
 
+      &.sun {
+        color: $soft-red;
+      }
+
+      &.sat {
+        color: $soft-blue;
+      }
+
       &.today {
         background-color: $signature-purple;
         border-radius: 5px;
         color: white;
         padding: 2px 5px;
       }
+
     }
   }
 
