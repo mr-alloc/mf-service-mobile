@@ -45,6 +45,7 @@ const methods = {
     height: 50%;
 
     .title-text {
+      padding: 0 20px;
       font-size: 2rem;
       color: white;
       position: relative;

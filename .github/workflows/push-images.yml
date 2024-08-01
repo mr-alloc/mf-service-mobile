@@ -41,7 +41,7 @@ jobs:
       - name: Deploy to SSH
         uses: appleboy/ssh-action@v1.0.3
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
