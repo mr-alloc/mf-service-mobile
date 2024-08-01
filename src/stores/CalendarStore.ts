@@ -21,66 +21,10 @@ import Color from "@/constant/Color";
 export const useCalendarStore = defineStore('calendar', () => {
 
     const timestamp = ref(0);
-    const memberCalendarMap = ref<Map<string, Array<IMission>>>(new Map<string, Array<IMission>>());
-
-    //NOTICE: Map<yyyyMM, Map<week, Array<스케쥴 목록>>>
-    const calendarScheduleMap = ref<Map<string, Map<number, Array<WeekScheduleGeometry>>>>(new Map<string, Map<number, Array<WeekScheduleGeometry>>>())
-    const holidaysMap = ref<Map<string, CalendarHoliday>>(new Map<string, CalendarHoliday>());
-    const anniversaryMap = ref<Map<number, Array<CalendarAnniversary>>>(new Map<number, Array<CalendarAnniversary>>());
-
-    const calendar = ref<Array<CalendarDate>>([]);
-    const thisMonthKey = ref<string>('');
-    const startOfCalendar = ref<number>(0);
-    const startOfMonth = ref<number>(0);
-    const endOfMonth = ref<number>(0);
-    const endOfCalendar = ref<number>(0);
 
     function resetSelected() {
         timestamp.value = 0;
     }
-
-    function initCalendar(localMonth: Moment) {
-        thisMonthKey.value = DateUtil.to(localMonth, DateUtil.YYYYMM);
-        calendar.value = DateUtil.getCalendarDays(localMonth, (sc, sm, em, ec) => {
-            startOfCalendar.value = TemporalUtil.toUnix(sc.unix());
-            endOfCalendar.value = TemporalUtil.toUnix(ec.unix());
-        });
-    }
-
-    async function fetchOwnCalendar(soc?: number, som?: number, eom?: number, eoc?: number) {
-        startOfCalendar.value = soc ?? startOfCalendar.value;
-        startOfMonth.value = som ?? startOfMonth.value;
-        endOfMonth.value = eom ?? endOfMonth.value;
-        endOfCalendar.value = eoc ?? endOfCalendar.value;
-        thisMonthKey.value = DateUtil.to(TemporalUtil.toMoment(startOfMonth.value, true), DateUtil.YYYYMM);
-
-        await call<RequestBody, ResponseBody>(Mission.GetMemberCalendar, new RequestBody(soc ?? startOfCalendar.value, eoc ?? endOfCalendar.value),
-            (res) => {
-                const responseBody = ResponseBody.fromJson(res.data);
-                //일정
-                addMissions(responseBody.calendar);
-
-                //공휴일
-                holidaysMap.value = CollectionUtil.toMap<string, CalendarHoliday>(
-                    responseBody.holidays.filter(h => !h.isLunar),
-                    (holiday) => holiday.date,
-                );
-            });
-    }
-
-
-    async function fetchOwnAnniversaries() {
-        await call<RequestBody, GetAnniversaries.ResponseBody>(
-            Anniversary.GetAnniversaries, new RequestBody(startOfCalendar.value, endOfCalendar.value),
-            (response) => {
-                const responseBody = GetAnniversaries.ResponseBody.fromJson(response.data);
-
-                //기념일
-                anniversaryMap.value = new Map();
-                responseBody.anniversaries.forEach(addAnniversary);
-            });
-    }
-
 
     function selectDate(selectedDay: CalendarDate) {
         //재클릭시 초기화
@@ -91,9 +35,13 @@ export const useCalendarStore = defineStore('calendar', () => {
         timestamp.value = selectedDay.timestamp;
     }
 
-    function addAnniversary(value: AnniversaryValue) {
-        const anniversaries = CalendarAnniversary.of(value, startOfCalendar.value, endOfCalendar.value);
-        anniversaries.forEach((anniversary) => {
+    function calcAnniversaries(values: Array<AnniversaryValue>, startOfCalendar: number, endOfCalendar: number) {
+        const anniversaries = values.flatMap(value => CalendarAnniversary.of(
+          value,
+          startOfCalendar,
+          endOfCalendar
+        ));
+        return anniversaries.reduce((anniversaryMap, anniversary) => {
             const period = anniversary.period;
             const days = TemporalUtil.getDiffDays(period.startAt, period.endAt);
             const localDaysArray = TemporalUtil.getLocalDaysArray(period.startAt, days);
@@ -102,27 +50,28 @@ export const useCalendarStore = defineStore('calendar', () => {
                 if (localDaysArray.length > 1) {
                     anniversary.applyName(`${originName} ${index + 1}/${localDaysArray.length}`);
                 }
-                if (anniversaryMap.value.has(date.timestamp)) {
-                    const anniversaries = anniversaryMap.value.get(date.timestamp);
+                if (anniversaryMap.has(date.timestamp)) {
+                    const anniversaries = anniversaryMap.get(date.timestamp);
                     if (anniversaries) {
                         anniversaries.push(anniversary);
                     }
                 } else {
-                    anniversaryMap.value.set(date.timestamp, [anniversary]);
+                    anniversaryMap.set(date.timestamp, [anniversary]);
                 }
             });
-        });
+            return anniversaryMap;
+        }, new Map<number, Array<CalendarAnniversary>>());
     }
 
-    function addMissions(details: Array<MissionDetail>) {
+    function calcMissionCoordinates(details: Array<MissionDetail>, startOfCalendar: number, endOfCalendar: number) {
         const missions = details.flatMap((detail) => CalendarMission.of(
             detail,
-            startOfCalendar.value,
-            endOfCalendar.value
+            startOfCalendar,
+            endOfCalendar
         ));
 
         const weeksMap = new Map<number, Array<CalendarWeekMission>>();
-        const daysPerWeekMap = DateUtil.forEachWeek(startOfCalendar.value, endOfCalendar.value, (week, start, end) => {
+        const daysPerWeekMap = DateUtil.forEachWeek(startOfCalendar, endOfCalendar, (week, start, end) => {
             missions.forEach((mission) => {
                 const weekMission = CalendarWeekMission.of(start, end, mission);
                 if (mission.startAt <= end && mission.endAt >= start) {
@@ -190,23 +139,14 @@ export const useCalendarStore = defineStore('calendar', () => {
             scheduleMap.set(week, thisWeekSchedules);
         });
 
-        calendarScheduleMap.value.set(thisMonthKey.value, scheduleMap);
+        return scheduleMap;
     }
 
     return {
         timestamp,
         selectDate,
         resetSelected,
-        initCalendar,
-        fetchOwnCalendar,
-        addAnniversary,
-        thisMonthKey,
-        calendarScheduleMap,
-        memberCalendarMap,
-        holidaysMap,
-        anniversaryMap,
-        fetchOwnAnniversaries,
-        calendar,
-        addMissions
+        calcAnniversaries,
+        calcMissionCoordinates
     }
 })

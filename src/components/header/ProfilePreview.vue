@@ -17,23 +17,22 @@ import {useProfileMemberStore} from "@/stores/ProfileMemberStore";
 
 let router = useRouter();
 const memberInfoStore = useMemberInfoStore();
-const leftMenuStore = useNavigateMenuStore();
 const profileMemberStore = useProfileMemberStore();
 const methods = {
   moveToUserInfo() {
     //GUEST
-    // if (memberInfoStore.needMemberInfo()) {
-    //   router.push("/sign-in")
-    //   return;
-    // }
-    // switch (memberInfoStore.getCurrentAccountRole()) {
-    //   case AccountRole.MEMBER:
-    //     router.push("/profile");
-    //     break;
-    //   default:
-    //     router.push("/sign-in");
-    //     break;
-    // }
+    if (memberInfoStore.needMemberInfo()) {
+      router.push("/sign-in")
+      return;
+    }
+    switch (memberInfoStore.getCurrentAccountRole()) {
+      case AccountRole.MEMBER:
+        router.push("/profile");
+        break;
+      default:
+        router.push("/sign-in");
+        break;
+    }
   },
   getNickname() {
     return memberInfoStore.needMemberInfo()

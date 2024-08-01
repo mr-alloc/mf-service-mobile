@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router';
-import MainHeader from '@/views/global/MainHeader.vue';
-import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
-</script>
-
 <template>
   <div class="container-wrapper">
     <MainHeader/>
@@ -15,16 +9,24 @@ import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
       </RouterView>
     </div>
     <GlobalNavigationBar />
-<!--    <div class="background"-->
-<!--         :class="[{ curtain: backgroundStore.needCurtainManager }, { popup: backgroundStore.needBackground || backgroundStore.needPopup}]"-->
-<!--         v-show="backgroundStore.needBackground" v-on:click="methods.clickBackground">-->
-<!--      <InitNickname v-show="backgroundStore.needNicknameInitializer"/>-->
-<!--      <LoadingSpinner v-show="backgroundStore.needCurtainManager" :title="backgroundStore.loadingInfo.title"-->
-<!--                      :content="backgroundStore.loadingInfo.content"/>-->
-<!--      <GlobalPopup/>-->
-<!--    </div>-->
+    <div class="background"
+         :class="[{ curtain: backgroundStore.needCurtainManager }, { popup: backgroundStore.needBackground || backgroundStore.needPopup}]"
+         v-show="backgroundStore.needBackground">
+      <NicknameInitializer v-show="backgroundStore.needNicknameInitializer"/>
+      <GlobalPopup/>
+    </div>
   </div>
 </template>
+<script setup lang="ts">
+import { RouterView } from 'vue-router';
+import MainHeader from '@/views/global/MainHeader.vue';
+import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
+import { useBackgroundStore } from '@/stores/BackgroundStore'
+import NicknameInitializer from '@/components/global/NicknameInitializer.vue'
+import GlobalPopup from '@/components/global/GlobalPopup.vue'
+
+const backgroundStore = useBackgroundStore();
+</script>
 <style scoped lang="scss">
 @import '@assets/main';
 

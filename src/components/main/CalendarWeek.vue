@@ -1,7 +1,8 @@
 <template>
   <div class="calendar-week-container">
     <div class="background-area">
-      <CalendarDay v-for="day in props.days" :key="day.timestamp" :day="day" :timestamp="day.timestamp"/>
+      <CalendarDay v-for="day in props.days" :anniversaries="anniversaries"
+                   :key="day.timestamp" :day="day" :timestamp="day.timestamp"/>
     </div>
     <UseElementSize ref="scheduleArea" class="schedule-area" v-slot="{ width }">
       <div class="which-day-position">
@@ -10,20 +11,20 @@
              :class="{ selected: calendarStore.timestamp === day.timestamp }">
         </div>
       </div>
-<!--      <TransitionGroup name="fade">-->
-<!--        <div v-for="(geometry, index) in props.geometries" v-show="geometry"-->
-<!--             v-on:click="($event) => methods.clickSchedule(geometry, $event)"-->
-<!--             :key="index" class="schedule-item"-->
-<!--             :style="{-->
-<!--               left: geometry.x * (width / 7) +'px',-->
-<!--               top: ((geometry.y * 20) - 20) +'px',-->
-<!--               width: ((width / 7) * geometry.width)+'px'-->
-<!--             }">-->
-<!--          <div class="schedule-item-title">-->
-<!--            <span class="title-text">{{ geometry.mission.mission.name }}</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </TransitionGroup>-->
+      <TransitionGroup name="fade">
+        <div v-for="(geometry, index) in props.geometries" v-show="geometry"
+             v-on:click="($event) => methods.clickSchedule(geometry, $event)"
+             :key="index" class="schedule-item"
+             :style="{
+               left: geometry.x * (width / 7) +'px',
+               top: ((geometry.y * 20) - 20) +'px',
+               width: ((width / 7) * geometry.width)+'px'
+             }">
+          <div class="schedule-item-title">
+            <span class="title-text">{{ geometry.mission.mission.name }}</span>
+          </div>
+        </div>
+      </TransitionGroup>
     </UseElementSize>
   </div>
 </template>
@@ -42,7 +43,8 @@ const scheduleArea = ref<HTMLDivElement | null>(null);
 const props = defineProps<{
   days: Array<CalendarDate>,
   week: number,
-  // geometries: Array<WeekScheduleGeometry>
+  geometries: Array<WeekScheduleGeometry>,
+  anniversaries: Map<number, Array<CalendarAnniversary>>
 }>();
 const methods = {
   clickSchedule(geometry: WeekScheduleGeometry, event: MouseEvent) {
@@ -52,10 +54,6 @@ const methods = {
     emitter.emit('openMissionDetail', mission)
 
   },
-  getAnniversaryName(timestamp: number) {
-    const anniversaries = calendarStore.anniversaryMap.get(timestamp) as CalendarAnniversary [] ?? [];
-    return anniversaries.map(anniversary => anniversary.name).join(' · ');
-  }
 }
 
 </script>

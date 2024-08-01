@@ -1,6 +1,6 @@
 <template>
   <div class="each-day-item" :class="{
-    anniversary: calendarStore.anniversaryMap.has(day.timestamp),
+    anniversary: props.anniversaries.has(day.timestamp),
   }">
     <div class="item-header">
       <span class="date" :class="{
@@ -28,6 +28,7 @@ const calendarStore = useCalendarStore();
 const props = defineProps<{
   timestamp: number,
   day: CalendarDate
+  anniversaries: Map<number, Array<CalendarAnniversary>>
 }>();
 
 const state = reactive({
