@@ -11,11 +11,6 @@
             class="select-item-image"
             :src="ownFamiliesStore.selectorState.selectedOption.image" alt="선택 옵션의 이미지"/>
         </span>
-        <Transition name="fade">
-          <span class="toggle-icon" v-show="props.allowCollapse && leftMenuStore.state.isCollapsed">
-              <FontAwesomeIcon :icon="faCaretDown"/>
-          </span>
-        </Transition>
       </div>
       <div class="item-title-wrapper">
           <span class="item-title">{{
@@ -55,7 +50,6 @@ const props = defineProps({
 });
 const state = reactive({
   isSelectMode: false,
-  isCollapsed: leftMenuStore.state.isCollapsed
 });
 
 const methods = {
@@ -126,7 +120,8 @@ const methods = {
         flex-shrink: 0;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-end;
+        height: 100%;
       }
     }
 
