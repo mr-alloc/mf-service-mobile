@@ -21,6 +21,8 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@vueuse/components": "^10.11.0",
     "axios": "^1.7.2",
+    "lodash": "^4.17.21",
+    "markdown-it": "^14.1.0",
     "mitt": "^3.0.1",
     "moment-timezone": "^0.5.45",
     "pinia": "^2.1.7",

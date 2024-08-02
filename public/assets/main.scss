@@ -321,6 +321,26 @@ textarea.blink-input {
   }
 }
 
+.up-fade-enter-active {
+  animation: up-fade-in .2s;
+}
+
+.up-fade-leave-active {
+  animation: up-fade-in .2s reverse;
+}
+
+@keyframes up-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .down-fade-smooth-enter-active {
   animation: down-fade-smooth-in .2s;
 }

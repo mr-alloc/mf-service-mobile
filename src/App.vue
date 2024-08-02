@@ -9,6 +9,7 @@
       </RouterView>
     </div>
     <GlobalNavigationBar />
+    <NavigatorStack />
     <div class="background"
          :class="[{ curtain: backgroundStore.needCurtainManager }, { popup: backgroundStore.needBackground || backgroundStore.needPopup}]"
          v-show="backgroundStore.needBackground">
@@ -24,6 +25,7 @@ import GlobalNavigationBar from '@/views/global/GlobalNavigationBar.vue';
 import { useBackgroundStore } from '@/stores/BackgroundStore'
 import NicknameInitializer from '@/components/global/NicknameInitializer.vue'
 import GlobalPopup from '@/components/global/GlobalPopup.vue'
+import NavigatorStack from '@/views/global/NavigatorStack.vue'
 
 const backgroundStore = useBackgroundStore();
 </script>
@@ -31,6 +33,7 @@ const backgroundStore = useBackgroundStore();
 @import '@assets/main';
 
 .container-wrapper {
+  position: relative;
   background: white;
   width: 100%;
   height: 100vh;

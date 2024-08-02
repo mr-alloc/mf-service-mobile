@@ -61,6 +61,7 @@ const methods = {
     color: $standard-weight-gray-in-white;
     width: 100%;
     display: flex;
+    user-select: none;
     justify-content: center;
     align-items: center;
 

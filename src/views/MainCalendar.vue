@@ -20,7 +20,7 @@
     <Transition name="fade">
       <div class="calendar-controller" v-show="calendarStore.timestamp > 0">
         <ul class="calendar-feature-group">
-          <li class="feature-item">
+          <li class="feature-item" v-on:click="methods.createMission">
             <FontAwesomeIcon :icon="faPlus"/>
             <span class="description">미션추가</span>
           </li>
@@ -55,8 +55,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Pair from '@/classes/Pair'
 import type { Swiper as SwiperClass } from 'swiper/types'
+import NavigateComponent from '@/classes/NavigateComponent'
+import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 
-
+const navigateStackStore = useNavigateStackStore()
 const calendarStore = useCalendarStore();
 const swiper = ref<SwiperClass|null>(null);
 
@@ -89,6 +91,10 @@ const methods = {
   },
   resetComponent() {
     calendarStore.resetSelected();
+  },
+  createMission() {
+    const component = new NavigateComponent("미션 생성", "CreateMission", {timestamp: calendarStore.timestamp})
+    navigateStackStore.stackComponent(component);
   }
 }
 onMounted(() => {
@@ -264,15 +270,6 @@ onMounted(() => {
             top: 90%;
             left: 50%;
             transform: translateX(-50%);
-          }
-        }
-
-        &:hover {
-          background-color: rgb(0, 0, 0, .2);
-
-          .description {
-            z-index: 1;
-            opacity: 1;
           }
         }
       }

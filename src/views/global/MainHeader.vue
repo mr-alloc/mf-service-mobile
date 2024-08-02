@@ -1,13 +1,18 @@
 <template>
   <div class="main-header-container">
-<!--    <FamilySelector v-if="memberInfoStore.getCurrentAccountRole().isGrantedFrom(AccountRole.MEMBER)" allow-collapse/>-->
-    <FamilySelector />
+    <FamilySelector v-if="memberInfoStore.getCurrentAccountRole().isGrantedFrom(AccountRole.MEMBER)" />
     <ProfilePreview/>
+    <SimpleNotifier/>
   </div>
 </template>
 <script setup lang="ts">
 import ProfilePreview from '@/components/header/ProfilePreview.vue'
 import FamilySelector from '@/components/header/FamilySelector.vue'
+import { AccountRole } from '@/constant/AccountRole'
+import { useMemberInfoStore } from '@/stores/MemberInfoStore'
+import SimpleNotifier from '@/components/global/SimpleNotifier.vue'
+
+const memberInfoStore = useMemberInfoStore()
 </script>
 
 <style scoped lang="scss">
