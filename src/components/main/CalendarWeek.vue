@@ -17,7 +17,7 @@
              :key="index" class="schedule-item"
              :style="{
                left: geometry.x * (width / 7) +'px',
-               top: ((geometry.y * 20) - 20) +'px',
+               top: ((geometry.y * 17) - 17) +'px',
                width: ((width / 7) * geometry.width)+'px'
              }">
           <div class="schedule-item-title">
@@ -121,7 +121,7 @@ const methods = {
     .schedule-item {
       position: absolute;
       display: inline-block;
-      padding: 2px 5px;
+      padding: 0 2px;
       text-wrap: nowrap;
 
       &:hover {
@@ -137,8 +137,10 @@ const methods = {
         color: white;
         line-height: 1;
         border-radius: 3px;
-        padding: 2px 5px;
-        font-size: .84rem;
+        padding: 2px 3px;
+        font-size: .72rem;
+        font-weight: bold;
+        overflow: hidden;
 
         .title-text {
           user-select: none;

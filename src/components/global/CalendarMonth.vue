@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import CalendarWeek from '@/components/main/CalendarWeek.vue'
 import type { Moment } from 'moment-timezone'
-import { onMounted, reactive } from 'vue'
+import { inject, onMounted, reactive } from 'vue'
 import DateUtil from '@/utils/DateUtil'
 import CalendarDate from '@/classes/CalendarDate'
 import { call } from '@/utils/NetworkUtil'
@@ -24,6 +24,7 @@ import * as GetAnniversaries from '@/classes/api-spec/GetAnniversaries'
 import Anniversary from '@/constant/api-meta/Anniversary'
 import CalendarAnniversary from '@/classes/CalendarAnniversary'
 
+const emitter: any = inject('emitter');
 const calendarStore = useCalendarStore()
 const props = defineProps<{
   month: Moment
@@ -87,6 +88,9 @@ onMounted(() => {
   });
 
   methods.fetchMissionAndAnniversary();
+  emitter.on('familyChanged', () => {
+    methods.fetchOwnCalendar();
+  });
 })
 </script>
 

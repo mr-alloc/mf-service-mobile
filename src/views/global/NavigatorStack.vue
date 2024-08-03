@@ -28,14 +28,15 @@ const navigateStackStore = useNavigateStackStore()
 @import "@assets/main";
 
 .navigator-stack-container {
-  z-index: 2;
+  z-index: -1;
   background-color: rgb(0, 0, 0, .3);
+  position: absolute;
+  width: 100%;
+  height: 100%;;
 
   &.active {
     backdrop-filter: blur(2px);
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    z-index: 2;
   }
 
   .stack-element-group {

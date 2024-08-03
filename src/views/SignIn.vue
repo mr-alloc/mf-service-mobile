@@ -88,7 +88,7 @@ const methods = {
     //최초 로그인 전 패밀리 선택 초기화
     setSelectedFamilyId(0)
     const requestBody = {
-      deviceCode: 0,
+      deviceCode: 1,
       email: email,
       password: password
     };
