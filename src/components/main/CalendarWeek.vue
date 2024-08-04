@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-week-container">
     <div class="background-area">
-      <CalendarDay v-for="day in props.days" :anniversaries="anniversaries"
+      <CalendarDay v-for="day in props.days" :anniversaries="anniversaries" :holidays="holidays"
                    :key="day.timestamp" :day="day" :timestamp="day.timestamp"/>
     </div>
     <UseElementSize ref="scheduleArea" class="schedule-area" v-slot="{ width }">
@@ -38,6 +38,7 @@ import {useCalendarStore} from "@/stores/CalendarStore";
 import type CalendarAnniversary from "@/classes/CalendarAnniversary";
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import NavigateComponent from '@/classes/NavigateComponent'
+import { CalendarHoliday } from '@/classes/api-spec/mission/GetMemberCalendar'
 
 const emitter: any = inject('emitter');
 const calendarStore = useCalendarStore();
@@ -48,6 +49,7 @@ const props = defineProps<{
   week: number,
   geometries: Array<WeekScheduleGeometry>,
   anniversaries: Map<number, Array<CalendarAnniversary>>
+  holidays: Map<string, CalendarHoliday>
 }>();
 const methods = {
   clickSchedule(geometry: WeekScheduleGeometry, event: MouseEvent) {

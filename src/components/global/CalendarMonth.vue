@@ -5,6 +5,7 @@
                   :week="week"
                   :geometries="state.schedulesMap.get(week) ?? []"
                   :anniversaries="state.anniversariesMap"
+                  :holidays="state.holidaysMap"
     />
   </div>
 </template>

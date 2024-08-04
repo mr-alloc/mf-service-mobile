@@ -1,6 +1,7 @@
 <template>
   <div class="each-day-item" :class="{
     anniversary: props.anniversaries.has(day.timestamp),
+    holiday: props.holidays.has(state.today.format('MM-DD'))
   }">
     <div class="item-header">
       <span class="date" :class="{
@@ -23,12 +24,14 @@ import type CalendarDate from "@/classes/CalendarDate";
 import {useCalendarStore} from "@/stores/CalendarStore";
 import type CalendarAnniversary from "@/classes/CalendarAnniversary";
 import DayOfWeek from '@/constant/DayOfWeek'
+import { CalendarHoliday } from '@/classes/api-spec/mission/GetMemberCalendar'
 
 const calendarStore = useCalendarStore();
 const props = defineProps<{
   timestamp: number,
-  day: CalendarDate
-  anniversaries: Map<number, Array<CalendarAnniversary>>
+  day: CalendarDate,
+  anniversaries: Map<number, Array<CalendarAnniversary>>,
+  holidays: Map<string, CalendarHoliday>
 }>();
 
 const state = reactive({
@@ -70,6 +73,16 @@ onMounted(() => {
 
   &.anniversary {
     background-color: #D8F4D7;
+  }
+
+  &.holiday {
+    background-color: rgba(255, 0, 0, 0.11);
+
+    .item-header {
+      .date {
+        color: $soft-red;
+      }
+    }
   }
 
   .item-header {
