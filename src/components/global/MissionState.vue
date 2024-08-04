@@ -61,7 +61,6 @@ import MissionStatus from "@/constant/MissionStatus";
 import SelectImageOption from "@/classes/api-spec/SelectImageOption";
 import LocalAsset from "@/constant/LocalAsset";
 import ImageNicknamePair from "@/components/global/ImageNicknamePair.vue";
-import SimpleRadio from "@/components/global/SimpleRadio.vue";
 import SimpleSelector from "@/components/global/SimpleSelector.vue";
 import type MissionDetail from "@/classes/MissionDetail";
 import MissionType from "@/constant/MissionType";
@@ -78,6 +77,7 @@ import MissionStatusIndicator from "@/components/global/MissionStatusIndicator.v
 import {useOwnFamiliesStore} from "@/stores/OwnFamiliesStore";
 import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
 import MissionStatusTimeline from '@/components/MissionStatusTimeline.vue'
+import BlinkSelect from '@/components/global/BlinkSelect.vue'
 
 const emitter: any = inject("emitter");
 const ownFamiliesStore = useOwnFamiliesStore();

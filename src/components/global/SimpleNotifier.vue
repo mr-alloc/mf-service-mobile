@@ -59,7 +59,7 @@ const state = reactive({
 .notifications-wrapper {
   width: 250px;
   max-height: 300px;
-  z-index: 2;
+  z-index: 10;
   position: absolute;
   bottom: 0px;
 

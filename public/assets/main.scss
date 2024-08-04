@@ -33,6 +33,8 @@ $footer-height: 80px;
 body {
   //background-color: $standard-light-gray-in-white;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none !important;
 }
 
 a {

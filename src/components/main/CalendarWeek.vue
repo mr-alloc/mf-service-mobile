@@ -36,9 +36,12 @@ import {WeekScheduleGeometry} from "@/classes/WeekScheduleGeometry";
 import {UseElementSize} from "@vueuse/components";
 import {useCalendarStore} from "@/stores/CalendarStore";
 import type CalendarAnniversary from "@/classes/CalendarAnniversary";
+import { useNavigateStackStore } from '@/stores/NavigateStackStore'
+import NavigateComponent from '@/classes/NavigateComponent'
 
 const emitter: any = inject('emitter');
 const calendarStore = useCalendarStore();
+const navigateStackStore = useNavigateStackStore()
 const scheduleArea = ref<HTMLDivElement | null>(null);
 const props = defineProps<{
   days: Array<CalendarDate>,
@@ -50,9 +53,8 @@ const methods = {
   clickSchedule(geometry: WeekScheduleGeometry, event: MouseEvent) {
     event.stopPropagation();
     const mission = geometry.mission;
-
-    emitter.emit('openMissionDetail', mission)
-
+    const missionDetailComponent = new NavigateComponent("미션 상세", "MissionDetail", {mission})
+    navigateStackStore.stackComponent(missionDetailComponent);
   },
 }
 
@@ -124,21 +126,13 @@ const methods = {
       padding: 0 2px;
       text-wrap: nowrap;
 
-      &:hover {
-        cursor: pointer;
-
-        .schedule-item-title {
-          background-color: #4c4c4c;
-        }
-      }
-
       .schedule-item-title {
         background-color: $soft-dark;
         color: white;
         line-height: 1;
         border-radius: 3px;
         padding: 2px 3px;
-        font-size: .72rem;
+        font-size: .65rem;
         font-weight: bold;
         overflow: hidden;
 

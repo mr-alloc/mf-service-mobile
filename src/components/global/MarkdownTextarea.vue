@@ -1,14 +1,16 @@
 <template>
   <div class="markdown-textarea-container">
     <textarea v-if="state.isEditorMode" class="markdown-editor blink-input"
+              placeholder="내용을 입력해주세요."
               v-model="state.content" v-on:focusout="() => state.isEditorMode = false"></textarea>
-    <div v-else class="markup-content-wrapper" v-html="methods.toMarkUp(state.content)"
-         v-on:click="() => state.isEditorMode = true"></div>
+    <div v-else class="markup-content-wrapper" :class="{ 'no-content': state.content.length === 0 }" v-html="methods.toMarkUp(state.content)"
+         v-on:click="methods.clickViewer">
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import MarkdownIt from 'markdown-it';
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 const methods = {
   toMarkUp(markdown: string) {
@@ -19,6 +21,9 @@ const methods = {
       xhtmlOut: true,
     });
     return md.render(markdown);
+  },
+  clickViewer() {
+    state.isEditorMode = true;
   }
 }
 const props = defineProps<{
@@ -49,9 +54,8 @@ const state = reactive({
       }
     }
 
-    &:hover {
+    &.no-content {
       background-color: $standard-light-gray-in-white;
-      cursor: pointer;
     }
 
   }
