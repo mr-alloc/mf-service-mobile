@@ -91,6 +91,12 @@ onMounted(() => {
   emitter.on('familyChanged', () => {
     methods.fetchOwnCalendar();
   });
+  emitter.on('fetchCalendar', () => {
+    methods.fetchOwnCalendar()
+  })
+  emitter.on('fetchAnniversary', () => {
+    methods.fetchOwnAnniversary()
+  })
 })
 </script>
 

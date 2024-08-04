@@ -11,6 +11,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import mitt from 'mitt'
 import CreateMission from '@/views/CreateMission.vue'
 import MissionDetail from '@/views/global/MissionDetail.vue'
+import CreateAnniversary from '@/views/CreateAnniversary.vue'
 
 const emitter = mitt();
 const app = createApp(App)
@@ -21,6 +22,7 @@ library.add(far)
 library.add(fas)
 
 app.component("CreateMission", CreateMission);
+app.component('CreateAnniversary', CreateAnniversary)
 app.component("MissionDetail", MissionDetail);
 
 app.provide("emitter", emitter)

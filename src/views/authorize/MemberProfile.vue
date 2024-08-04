@@ -160,7 +160,7 @@ onMounted(async () => {
     .nickname-area {
       padding: 5px 15px;
       flex-shrink: 0;
-      width: 300px;
+      width: 200px;
       display: flex;
       align-items: center;
 

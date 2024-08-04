@@ -27,7 +27,7 @@
         <div class="control-button" v-on:click="methods.createMission">
           <span class="button-text">생성</span>
         </div>
-        <div class="control-button" v-on:click="() => emitter.emit('resetComponent')">
+        <div class="control-button" v-on:click="() => navigateStackStore.pullComponent()">
           <span class="button-text">취소</span>
         </div>
       </div>
@@ -213,7 +213,7 @@ const methods = {
     call<CreateMission.RequestBody, CreateMission.ResponseBody>(Mission.CreateMission, requestBody, (response) => {
       alertStore.success("미션 생성 완료!", `"${requestBody.name}" 미션을 생성하였습니다.`);
       calendarStore.resetSelected();
-      emitter.emit("drawCalendar");
+      emitter.emit('fetchCalendar')
       navigateStackStore.pullComponent();
       //이벤트 발행 취소
       emitter.off("validateCreateMissionForm")

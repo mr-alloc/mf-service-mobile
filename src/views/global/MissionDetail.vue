@@ -64,7 +64,7 @@ const methods = {
         if (changed.name === title) {
           alertStore.success("이름 변경", '미션명이 변경 되었어요.');
           state.detail = responseBody.changed;
-          emitter.emit("drawCalendar");
+          emitter.emit('fetchCalendar')
           afterChange(false);
         } else {
           alertStore.warning("이름 변경", `미션명 변경에 실패했어요.`);
@@ -80,7 +80,7 @@ const methods = {
             const responseBody = DeleteMission.ResponseBody.fromJson(response.data);
             if (props.mission.mission.id === responseBody.missionId) {
               alertStore.success("미션 삭제", "미션을 삭제하였습니다.");
-              emitter.emit("drawCalendar");
+              emitter.emit('fetchCalendar')
               emitter.emit("resetComponent");
             } else {
               alertStore.warning("미션 삭제", "미션을 삭제하지 못했습니다.");

@@ -8,7 +8,7 @@
       <div class="control-button" v-on:click="methods.createAnniversary">
         <span class="button-text">생성</span>
       </div>
-      <div class="control-button" v-on:click="() => emitter.emit('resetComponent')">
+      <div class="control-button" v-on:click="() => navigateStackStore.pullComponent()">
         <span class="button-text">취소</span>
       </div>
     </div>
@@ -31,7 +31,9 @@ import {call} from "@/utils/NetworkUtil";
 import Anniversary from "@/constant/api-meta/Anniversary";
 import MultipleModeOutput from "@/classes/component-protocol/MultipleModeOutput";
 import {useAlertStore} from "@/stores/AlertStore";
+import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 
+const navigateStackStore = useNavigateStackStore()
 const alertStore = useAlertStore();
 const calendarStore = useCalendarStore();
 const backgroundStore = useBackgroundStore();
@@ -74,7 +76,6 @@ const methods = {
   },
   handleChangeScheduleMode(mode: ScheduleMode) {
     state.scheduleMode = mode;
-    4
   },
   createAnniversary: useThrottleFn(() => {
     methods.checkAllInput();
@@ -91,11 +92,10 @@ const methods = {
     call<RequestBody, ResponseBody>(Anniversary.CreateAnniversary, requestBody, (response) => {
       const responseBody = ResponseBody.fromJson(response.data);
       const created = responseBody.created;
-      created.forEach(calendarStore.addAnniversary);
       alertStore.success("기념일 생성 완료!", `"${requestBody.name}"이 등록 되었어요!`);
       calendarStore.resetSelected();
 
-      emitter.emit("drawCalendar");
+      emitter.emit('fetchAnniversary')
       emitter.emit("resetComponent");
       backgroundStore.returnGlobalPopup();
     });

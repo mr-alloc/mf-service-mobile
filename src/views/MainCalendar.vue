@@ -25,7 +25,7 @@
             <span class="description">미션추가</span>
           </li>
           <li class="feature-item">
-            <FontAwesomeIcon :icon="faCalendarDay"/>
+            <FontAwesomeIcon :icon="faCalendarDay" v-on:click="methods.createAnniversary" />
             <span class="description">휴가/기념일 지정</span>
           </li>
           <li class="feature-item" v-on:click="methods.resetComponent">
@@ -95,6 +95,10 @@ const methods = {
   createMission() {
     const component = new NavigateComponent("미션 생성", "CreateMission", {timestamp: calendarStore.timestamp})
     navigateStackStore.stackComponent(component);
+  },
+  createAnniversary() {
+    const component = new NavigateComponent('기념일 생성', 'CreateAnniversary', { timestamp: calendarStore.timestamp })
+    navigateStackStore.stackComponent(component)
   }
 }
 onMounted(() => {

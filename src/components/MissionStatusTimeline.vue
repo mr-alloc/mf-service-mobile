@@ -50,11 +50,11 @@ const methods = {
             case MissionStatus.IN_PROGRESS:
               alertStore.guide("상태 변경", `미션이 시작되었습니다. 남은 시간 안에 완료할 수 있도록 노력하세요!`);
               emitter.emit("fetchMissionDetail");
-              emitter.emit("drawCalendar", true)
+              emitter.emit('fetchCalendar', true)
               break;
             case MissionStatus.COMPLETED:
               alertStore.success("미션 클리어!", `"${props.detail.name}" 미션을 완료하였습니다.`);
-              emitter.emit("drawCalendar")
+              emitter.emit('fetchCalendar')
               break;
             default:
               break;
