@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
+import TemporalUtil from '@/utils/TemporalUtil'
 
 export const useAlertStore = defineStore('alert', () => {
 
@@ -7,19 +8,19 @@ export const useAlertStore = defineStore('alert', () => {
 
     function alert(type: AlertType, title: string, message: string, timeoutSecond?: number) {
         const notification = new Notification(type, title, message);
-        notifications.value.push(notification);
+        // notifications.value.push(notification);
 
         setTimeout(() => {
             notifications.value
                 .forEach((alert, index) => {
                     if (alert.timestamp === notification.timestamp) {
-                        notifications.value.splice(index, 1)
+                        // notifications.value.splice(index, 1);
                     }
                 });
         }, (timeoutSecond ?? 5) * 1000)
 
-        if (notifications.value.length > 5) {
-            notifications.value.shift();
+        if (notifications.value.length > 2) {
+            // notifications.value.shift();
         }
     }
 
@@ -68,7 +69,7 @@ export class Notification {
     private readonly _message: string;
 
     constructor(type: AlertType, title: string, message: string) {
-        this._timestamp = Date.now();
+        this._timestamp = TemporalUtil.getEpochSecond(false)
         this._type = type;
         this._title = title;
         this._message = message;

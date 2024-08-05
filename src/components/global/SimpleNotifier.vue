@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {AlertType, useAlertStore} from "@/stores/AlertStore";
 import {reactive} from "vue";
 
-const notificationStore = useAlertStore();
+const alertStore = useAlertStore()
 
 const methods = {
   getNoticeIcon(type: AlertType) {
@@ -21,17 +21,17 @@ const methods = {
     }
   },
   dismissAlert(index: number) {
-    notificationStore.notifications.splice(index, 1);
+    alertStore.notifications.splice(index, 1)
   }
 }
 
 const state = reactive({
-  notifications: notificationStore.notifications
+  notifications: alertStore.notifications
 })
 </script>
 <template>
   <div class="notifications-wrapper">
-    <TransitionGroup name="list" tag="ul" class="notice-message-list">
+    <TransitionGroup name="up-fade" tag="ul" class="notice-message-list">
       <li class="message-item" v-for="(notification, index) in state.notifications"
           :key="notification.timestamp">
         <div class="message-header">
@@ -40,7 +40,7 @@ const state = reactive({
             <span class="message-title">{{ notification.title }}</span>
           </div>
           <div class="close-box" v-on:click="methods.dismissAlert(index)">
-            <FontAwesomeIcon :icon="['fas', 'xmark']" class="fa-1x"/>
+            <FontAwesomeIcon :icon="['fas', 'xmark']" class="fa-xs" />
           </div>
         </div>
         <div class="message-body">
@@ -57,11 +57,11 @@ const state = reactive({
 @import '@assets/main.scss';
 
 .notifications-wrapper {
-  width: 250px;
-  max-height: 300px;
+  max-height: 60px;
   z-index: 10;
   position: absolute;
-  bottom: 0px;
+  transform: translate(-50%, 10px);
+  left: 50%;
 
   .all-clear {
     display: flex;
@@ -91,17 +91,19 @@ const state = reactive({
   }
 
   .notice-message-list {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
-    padding: 0px;
+    padding: 0;
 
     .message-item {
       z-index: 2;
       background-color: rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(5px);
       color: $standard-light-gray-in-white;
-      width: 250px;
+      width: 160px;
       display: flex;
       flex-direction: column;
       border-radius: 10px;
@@ -110,6 +112,7 @@ const state = reactive({
       box-shadow: $standard-box-shadow;
       border: 1px $standard-weight-gray-in-white solid;
       user-select: none;
+      position: relative;
 
       &:hover {
         .message-header {
@@ -121,7 +124,7 @@ const state = reactive({
       }
 
       .message-header {
-        height: 25px;
+        height: 15px;
         display: flex;
         flex-direction: row;
         padding: 5px 5px 0px;
@@ -160,12 +163,14 @@ const state = reactive({
           .message-title {
             padding: 0 8px;
             color: white;
+            font-size: .74rem;
           }
         }
 
 
         .close-box {
-          width: 20px;
+          width: 15px;
+          height: 15px;
           flex-shrink: 0;
           display: flex;
           justify-content: center;
@@ -173,8 +178,8 @@ const state = reactive({
           transition: .2s;
           color: $standard-gray-in-white;
           position: relative;
-          right: -13px;
-          top: -13px;
+          right: -10px;
+          top: -10px;
           border-radius: 50%;
           border: 1.4px #787878 solid;
           background-color: #333333;
@@ -197,10 +202,20 @@ const state = reactive({
           display: flex;
           align-items: center;
           padding: 2px 8px;
-          font-size: .82rem;
+          font-size: .62rem;
           text-overflow: ellipsis;
 
         }
+      }
+
+      &:nth-child(2) {
+        transform: scale(1.05);
+        top: -30px
+      }
+
+      &:last-child {
+        transform: scale(1.1);
+        top: -60px;
       }
     }
   }

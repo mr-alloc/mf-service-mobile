@@ -39,7 +39,9 @@ import type CalendarAnniversary from "@/classes/CalendarAnniversary";
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import NavigateComponent from '@/classes/NavigateComponent'
 import { CalendarHoliday } from '@/classes/api-spec/mission/GetMemberCalendar'
+import { useAlertStore } from '@/stores/AlertStore'
 
+const alertStore = useAlertStore()
 const emitter: any = inject('emitter');
 const calendarStore = useCalendarStore();
 const navigateStackStore = useNavigateStackStore()
