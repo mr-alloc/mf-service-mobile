@@ -51,6 +51,9 @@
                   :option="props.members.find(member => member.id === props.detail.reporter) ?? SelectImageOption.of(0, profileStore.profileMember.nickname, LocalAsset.DEFAULT_USER_PROFILE)"/>
             </div>
           </div>
+          <div class="mission-state-changer">
+            <SimpleButton :button-name="props.status" click-behavior="" />
+          </div>
         </div>
       </Transition>
     </div>
@@ -78,6 +81,7 @@ import {useOwnFamiliesStore} from "@/stores/OwnFamiliesStore";
 import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
 import MissionStatusTimeline from '@/components/MissionStatusTimeline.vue'
 import BlinkSelect from '@/components/global/BlinkSelect.vue'
+import SimpleButton from '@/components/global/SimpleButton.vue'
 
 const emitter: any = inject("emitter");
 const ownFamiliesStore = useOwnFamiliesStore();
@@ -96,6 +100,7 @@ const state = reactive({
   openDetail: false,
   statusOptions: MissionStatus.values().filter(MissionStatus.NOT_DELETED_FILTER).map(MissionStatus.toSelectOption),
   members: familiesViewStore.members.map(member => member.toSelectImageOption())
+
 });
 const methods = {
   selectType(option: SelectOption, afterChange: () => void) {

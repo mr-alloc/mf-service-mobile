@@ -2,6 +2,7 @@
 import {onMounted, reactive, ref} from "vue";
 import SelectImageOption from "@/classes/api-spec/SelectImageOption";
 import LocalAsset from "@/constant/LocalAsset";
+import SelectOption from '@/classes/SelectOption'
 
 const select = ref<HTMLSelectElement | null>(null);
 const props = defineProps({
@@ -47,6 +48,8 @@ defineExpose({
 onMounted(() => {
   state.selectedOption = props.options?.[0] as SelectImageOption;
   if (props.currentIndex) {
+    console.log('hi', props.currentIndex)
+    state.selectedOption = props.options?.[props.currentIndex] as SelectImageOption
     Array.from(select.value?.options!).filter((opt, idx) => idx === props.currentIndex).forEach(opt => opt.selected = true);
   }
 })

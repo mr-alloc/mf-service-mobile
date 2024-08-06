@@ -20,7 +20,7 @@
                top: ((geometry.y * 17) - 17) +'px',
                width: ((width / 7) * geometry.width)+'px'
              }">
-          <div class="schedule-item-title">
+          <div class="schedule-item-title" :class="MissionType.fromValue(geometry.mission.mission.type).simpleName">
             <span class="title-text">{{ geometry.mission.mission.name }}</span>
           </div>
         </div>
@@ -40,6 +40,7 @@ import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import NavigateComponent from '@/classes/NavigateComponent'
 import { CalendarHoliday } from '@/classes/api-spec/mission/GetMemberCalendar'
 import { useAlertStore } from '@/stores/AlertStore'
+import MissionType from '@/constant/MissionType'
 
 const alertStore = useAlertStore()
 const emitter: any = inject('emitter');
@@ -142,6 +143,14 @@ const methods = {
 
         .title-text {
           user-select: none;
+        }
+
+        &.schedule {
+          background-color: #056105;
+        }
+
+        &.mission {
+          background-color: #193a8e;
         }
       }
     }
