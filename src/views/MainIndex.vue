@@ -84,10 +84,6 @@ const methods = {
       cursor: pointer;
       transition: .2s;
 
-      &:hover {
-        color: $soft-dark;
-        background-color: white;
-      }
     }
   }
 }

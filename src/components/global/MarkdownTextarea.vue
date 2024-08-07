@@ -2,6 +2,7 @@
   <div class="markdown-textarea-container">
     <textarea v-if="state.isEditorMode" class="markdown-editor blink-input"
               placeholder="내용을 입력해주세요."
+              rows="10"
               v-model="state.content" v-on:focusout="() => state.isEditorMode = false"></textarea>
     <div v-else class="markup-content-wrapper" :class="{ 'no-content': state.content.length === 0 }" v-html="methods.toMarkUp(state.content)"
          v-on:click="methods.clickViewer">

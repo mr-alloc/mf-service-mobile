@@ -95,9 +95,5 @@ const methods = {
       overflow: hidden;
     }
   }
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 </style>

@@ -163,16 +163,6 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     transition: .2s;
-
-
-    &:hover {
-      color: rgb(0, 0, 0, .5);
-
-      svg {
-
-        cursor: pointer;
-      }
-    }
   }
 }
 

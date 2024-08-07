@@ -59,11 +59,6 @@ const methods = {
       background-color: white;
       transition: $duration;
 
-      &:hover {
-        background-color: $standard-light-gray-in-white !important;
-        cursor: pointer;
-      }
-
       &:focus {
         background-color: white !important;
         cursor: text;

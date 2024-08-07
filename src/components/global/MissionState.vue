@@ -14,13 +14,12 @@
       </div>
       <Transition name="down-fade-smooth">
         <div class="collapse-area" v-show="state.openDetail">
-          <div class="detail-pair" v-if="MissionStatus.fromCode(props.status).isNotIn(MissionStatus.ALWAYS)">
+          <div class="detail-pair" v-if="props.status.isNotIn(MissionStatus.ALWAYS)">
             <div class="state-text">
               <span>미션 종류</span>
             </div>
             <div class="detail-content">
-              <BlinkSelect id="mission-type" :options="state.typeOptions" :before-change="methods.selectType"
-                           :current-index="state.typeOptions.findIndex(option => option.value === `${props.detail.type}`)"/>
+              {{ MissionType.fromValue(props.detail.type).name }}
             </div>
           </div>
           <div class="detail-pair" v-if="MissionType.fromValue(props.detail.type).isNotIn(MissionType.SCHEDULE)">
@@ -28,11 +27,11 @@
               <span>상태</span>
             </div>
             <div class="detail-content">
-              <MissionStatusTimeline  :state-id="props.stateId" :status="props.status" :detail="props.detail" :start-stamp="props.stateTime"/>
+              <MissionStatusTimeline :status="props.status.code" />
             </div>
           </div>
           <div class="detail-pair"
-               v-if="ownFamiliesStore.hasSelectFamily && MissionStatus.fromCode(props.status).isNotIn(MissionStatus.ALWAYS)">
+               v-if="ownFamiliesStore.hasSelectFamily && props.status.isNotIn(MissionStatus.ALWAYS)">
             <div class="state-text">
               <span>담당자</span>
             </div>
@@ -51,9 +50,8 @@
                   :option="props.members.find(member => member.id === props.detail.reporter) ?? SelectImageOption.of(0, profileStore.profileMember.nickname, LocalAsset.DEFAULT_USER_PROFILE)"/>
             </div>
           </div>
-          <div class="mission-state-changer">
-            <SimpleButton :button-name="props.status" click-behavior="" />
-          </div>
+          <MissionStatusChanger :status="props.status" :detail="props.detail" :state-id="props.stateId"
+                                :start-stamp="props.stateTime" />
         </div>
       </Transition>
     </div>
@@ -82,6 +80,7 @@ import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
 import MissionStatusTimeline from '@/components/MissionStatusTimeline.vue'
 import BlinkSelect from '@/components/global/BlinkSelect.vue'
 import SimpleButton from '@/components/global/SimpleButton.vue'
+import MissionStatusChanger from '@/components/global/MissionStatusChanger.vue'
 
 const emitter: any = inject("emitter");
 const ownFamiliesStore = useOwnFamiliesStore();
@@ -90,7 +89,7 @@ const alertStore = useAlertStore();
 const profileStore = useProfileMemberStore();
 const props = defineProps<{
   detail: MissionDetail,
-  status: number,
+  status: MissionStatus,
   stateId: number,
   stateTime: number,
   members: SelectImageOption [],
@@ -100,7 +99,6 @@ const state = reactive({
   openDetail: false,
   statusOptions: MissionStatus.values().filter(MissionStatus.NOT_DELETED_FILTER).map(MissionStatus.toSelectOption),
   members: familiesViewStore.members.map(member => member.toSelectImageOption())
-
 });
 const methods = {
   selectType(option: SelectOption, afterChange: () => void) {
@@ -199,11 +197,6 @@ const methods = {
         align-items: center;
         transition: .4s;
         height: 1.5rem;
-      }
-
-      &:hover {
-        cursor: pointer;
-        background-color: $standard-light-gray-in-white;
       }
     }
 

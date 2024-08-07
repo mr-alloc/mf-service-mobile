@@ -142,9 +142,6 @@ const methods = {
       }
     }
 
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   .select-items {

@@ -172,12 +172,6 @@ const props = defineProps({
             transition: .2s;
             border-radius: 10px;
             user-select: none;
-
-            &:hover {
-              cursor: pointer;
-              background-color: $standard-gray-in-white;
-              transform: scale(.9);
-            }
           }
         }
       }

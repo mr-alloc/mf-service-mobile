@@ -58,11 +58,6 @@ const methods = {
   &.disable button {
     cursor: default;
     background-color: lightgray;
-
-    &:hover {
-      cursor: default;
-      background-color: lightgray;
-    }
   }
 }
 

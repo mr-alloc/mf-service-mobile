@@ -88,11 +88,6 @@ $option-height: 25px;
     transition: all .2s ease-in-out;
     position: relative;
 
-    &:hover {
-      cursor: pointer;
-      background-color: $standard-light-gray-in-white;
-    }
-
     .selected-value {
       height: 30px;
       flex-grow: 1;
@@ -129,10 +124,6 @@ $option-height: 25px;
 
 
         &.selected {
-          background-color: $text-signature-purple;
-        }
-
-        &:hover {
           background-color: $text-signature-purple;
         }
       }

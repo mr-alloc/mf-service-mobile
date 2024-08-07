@@ -114,15 +114,6 @@ const state = reactive({
       user-select: none;
       position: relative;
 
-      &:hover {
-        .message-header {
-
-          .close-box {
-            opacity: 1;
-          }
-        }
-      }
-
       .message-header {
         height: 15px;
         display: flex;
@@ -132,9 +123,6 @@ const state = reactive({
         color: $standard-gray-in-white;
         flex-shrink: 0;
 
-        &:hover {
-          color: $standard-weight-gray-in-white;
-        }
 
         .message-icon {
           flex-grow: 1;
@@ -185,9 +173,6 @@ const state = reactive({
           background-color: #333333;
           opacity: 0;
 
-          &:hover {
-            cursor: pointer;
-          }
         }
       }
 

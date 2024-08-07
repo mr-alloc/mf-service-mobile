@@ -113,11 +113,6 @@ defineExpose({
         transition: .2s;
         cursor: pointer;
 
-
-        &:hover {
-          background-color: rgb(0, 0, 0, .3);
-        }
-
         &.selected {
           box-shadow: inset 3px 3px 8px rgb(0, 0, 0, .3);
           background-color: rgb(0, 0, 0, .3);

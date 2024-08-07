@@ -7,12 +7,12 @@ import SelectOption from '@/classes/SelectOption'
 const select = ref<HTMLSelectElement | null>(null);
 const props = defineProps<{
   id: string,
-  name: string,
-  title: string,
+  name?: string,
+  title?: string,
   options: Array<SelectImageOption>,
   defaultOptionName: string,
-  allowNoImage: boolean,
-  defaultSelected: number,
+  allowNoImage?: boolean,
+  defaultSelected?: number,
   currentIndex: number,
   beforeChange: (option: SelectImageOption, afterChange: () => void) => void
 }>();
@@ -131,10 +131,6 @@ onMounted(() => {
 
       .option-item {
 
-        &:hover {
-          cursor: pointer;
-          background-color: rgb(0, 0, 0, .1);
-        }
       }
     }
   }

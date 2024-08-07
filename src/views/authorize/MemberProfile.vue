@@ -150,10 +150,6 @@ onMounted(async () => {
         right: -5px;
         transition: .4s;
 
-        &:hover {
-          transform: scale(1.1);
-          cursor: pointer;
-        }
       }
     }
 
@@ -173,11 +169,6 @@ onMounted(async () => {
         transition: .4s;
         display: inline-block;
 
-        &:hover {
-          cursor: pointer;
-          transform: scale(1.1);
-          box-shadow: $standard-box-shadow;
-        }
       }
     }
 
@@ -189,11 +180,6 @@ onMounted(async () => {
 
       button {
         transition: .4s;
-      }
-
-      button:hover {
-        color: $standard-clean-black;
-        cursor: pointer;
       }
     }
   }

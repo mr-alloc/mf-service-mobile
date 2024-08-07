@@ -392,20 +392,10 @@ onMounted(() => {
           width: 30px;
           height: 30px;
           line-height: 1;
-
-          &:hover {
-            background-color: $standard-gray-in-white;
-            cursor: pointer;
-          }
         }
 
         &.hide {
           opacity: 0;
-
-          &:hover {
-            background-color: unset;
-            cursor: unset;
-          }
         }
 
 
@@ -415,10 +405,6 @@ onMounted(() => {
             border: 2px $signature-purple solid;
             font-weight: bold;
             color: black;
-
-            &:hover {
-              cursor: pointer;
-            }
           }
         }
 

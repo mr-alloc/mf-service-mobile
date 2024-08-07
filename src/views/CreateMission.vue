@@ -250,11 +250,6 @@ const methods = {
           padding: 0;
         }
 
-        &:hover {
-          cursor: pointer;
-          background-color: $standard-light-gray-in-white;
-        }
-
       }
     }
   }

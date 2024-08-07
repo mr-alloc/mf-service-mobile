@@ -97,9 +97,6 @@ defineExpose({
         border-right: 1px solid $standard-gray-in-white;
       }
 
-      &:hover {
-        cursor: pointer;
-      }
     }
 
   }

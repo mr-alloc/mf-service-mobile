@@ -286,11 +286,6 @@ onMounted(() => {
               background-color: $standard-dark-gray-in-white;
               color: white;
               transition: $duration;
-
-              &:hover {
-                background-color: $standard-clean-black;
-                cursor: pointer;
-              }
             }
 
             &.more-than-two {

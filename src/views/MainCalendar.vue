@@ -158,9 +158,6 @@ onMounted(() => {
           cursor: pointer;
           height: 30px;
 
-          &:hover {
-            background-color: rgb(0, 0, 0, .2);
-          }
         }
       }
     }

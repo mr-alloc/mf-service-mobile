@@ -67,10 +67,6 @@ onMounted(() => {
     background-color: $super-light-signature-purple;
   }
 
-  &:hover {
-    cursor: pointer;
-  }
-
   &.anniversary {
     background-color: #dfe7fc;
 

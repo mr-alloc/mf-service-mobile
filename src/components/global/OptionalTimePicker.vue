@@ -130,11 +130,6 @@ onMounted(() => {
       .button-text {
         padding: 2px 5px;
       }
-
-      &:hover {
-        background-color: $standard-light-gray-in-white;
-        cursor: pointer;
-      }
     }
 
     .time-group {
@@ -153,11 +148,6 @@ onMounted(() => {
         padding: 3px 12px;
         font-weight: bold;
         transition: $duration;
-
-        &:hover {
-          background-color: $standard-light-gray-in-white;
-          cursor: pointer;
-        }
       }
     }
 
@@ -207,11 +197,6 @@ onMounted(() => {
                 color: #084f91;
               }
             }
-
-            &:hover {
-              cursor: pointer;
-              background-color: $standard-light-gray-in-white;
-            }
           }
 
           .status-group {
@@ -247,11 +232,6 @@ onMounted(() => {
                   color: #084f91;
                 }
               }
-
-              &:hover {
-                cursor: pointer;
-                background-color: $standard-light-gray-in-white;
-              }
             }
           }
         }
@@ -273,11 +253,6 @@ onMounted(() => {
             font-size: 1.1rem;
             padding: 5px 8px;
           }
-
-          &:hover {
-            cursor: pointer;
-            background-color: $standard-light-gray-in-white;
-          }
         }
       }
 
@@ -295,10 +270,6 @@ onMounted(() => {
           transition: $duration;
           margin: 0 3px;
 
-          &:hover {
-            background-color: $standard-light-gray-in-white;
-            cursor: pointer;
-          }
         }
       }
     }

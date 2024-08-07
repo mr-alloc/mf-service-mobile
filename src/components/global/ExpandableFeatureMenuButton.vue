@@ -51,7 +51,7 @@ const methods = {
     transition: $duration;
 
 
-    &.select, &:hover {
+    &.select {
       cursor: pointer;
       background-color: $standard-gray-in-white;
     }
@@ -70,11 +70,6 @@ const methods = {
 
     .feature-item {
       padding: 3px 5px;
-
-      &:hover {
-        cursor: pointer;
-        background-color: $standard-light-gray-in-white;
-      }
     }
   }
 }

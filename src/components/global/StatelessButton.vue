@@ -41,15 +41,6 @@ const props = defineProps<{
 
     }
 
-    &:hover {
-      background-color: $standard-dark-gray-in-white;
-      cursor: pointer;
-
-      .button-inner {
-        color: white;
-      }
-    }
-
     &:active {
       transform: scale(.9);
     }

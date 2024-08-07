@@ -143,10 +143,6 @@ defineExpose({
               background-color: $standard-light-gray-in-white;
               border-radius: 5px;
 
-              &:hover {
-                background-color: $standard-gray-in-white;
-                cursor: pointer;
-              }
 
               &:before {
                 content: "+";

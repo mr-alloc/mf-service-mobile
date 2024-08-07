@@ -1,7 +1,7 @@
 <template>
   <div class="status-indicator-container">
     <div class="status-frame" :class="[`${state.status.simpleName}`]">
-      <span class="status-alias">{{ state.status.name }}</span>
+      <span class="status-alias">{{ props.status.name }}</span>
     </div>
   </div>
 </template>
@@ -11,17 +11,12 @@ import MissionStatus from "@/constant/MissionStatus";
 import MissionType from "@/constant/MissionType";
 
 const props = defineProps<{
-  status: number,
+  status: MissionStatus,
   type: number
 }>();
 const state = reactive({
   status: MissionStatus.CREATED
 });
-onMounted(() => {
-  state.status = MissionType.SCHEDULE.value === props.type
-      ? MissionStatus.ALWAYS
-      : MissionStatus.fromCode(props.status);
-})
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

@@ -76,9 +76,6 @@ const props = defineProps({
     }
   }
 
-  &:hover {
-    background-color: rgb(0, 0, 0, .2);
-  }
 }
 
 </style>
