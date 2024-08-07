@@ -146,11 +146,11 @@ const methods = {
         }
 
         &.schedule {
-          background-color: #056105;
+          background-color: #0a900a;
         }
 
         &.mission {
-          background-color: #193a8e;
+          background-color: #113caa;
         }
       }
     }

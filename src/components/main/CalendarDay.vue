@@ -72,7 +72,13 @@ onMounted(() => {
   }
 
   &.anniversary {
-    background-color: #D8F4D7;
+    background-color: #dfe7fc;
+
+    .item-header {
+      .date {
+        color: $soft-blue;
+      }
+    }
   }
 
   &.holiday {
