@@ -27,6 +27,15 @@
         </div>
       </button>
     </div>
+    <div class="navigate-button-wrapper" v-on:click="methods.moveTo('/settings')"
+         :class="{ selected: navigateMenuStore.state.activeSettingsMenu }">
+      <button class="navigate-button">
+        <div class="button-content">
+          <FontAwesomeIcon :icon="['fas', 'gear']" class="fa-xl" />
+          <span class="menu-name">설정</span>
+        </div>
+      </button>
+    </div>
 
   </div>
 </template>

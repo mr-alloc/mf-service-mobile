@@ -16,6 +16,7 @@ import ApiSpecification from '@/constant/api-meta/ApiSpecification'
 import type { AxiosError } from 'axios'
 import RefreshToken from '@/views/RefreshToken.vue'
 import MemberProfile from '@/views/authorize/MemberProfile.vue'
+import AppSetting from '@/views/AppSetting.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,7 @@ const router = createRouter({
     {path: '/calendar', name: 'calendar', component: MainCalendar, meta: {role: 1}},
     {path: '/profile', name: 'profile', component: MemberProfile, meta: {role: 1}},
     {path: '/families', name: 'families', component: Families, meta: {role: 1}},
+      { path: '/settings', name: 'settings', component: AppSetting, meta: { role: 1 } },
     {path: '/refresh', name: 'refresh', component: RefreshToken, meta: {role: 0}}
   ]
 })
@@ -43,6 +45,8 @@ router.afterEach((to, from) => {
     case '/families':
       navigateMenuStore.state.activeFamiliesMenu = true;
       break;
+      case '/settings':
+          navigateMenuStore.state.activeSettingsMenu = true
   }
 });
 

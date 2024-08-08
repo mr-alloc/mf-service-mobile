@@ -6,11 +6,13 @@ export const useNavigateMenuStore = defineStore("leftMenu", () => {
         activeHomeMenu: false,
         activeCalendarMenu: false,
         activeFamiliesMenu: false,
+        activeSettingsMenu: false
     });
     function refreshAllActivated() {
         state.activeHomeMenu = false;
         state.activeCalendarMenu = false;
         state.activeFamiliesMenu = false;
+        state.activeSettingsMenu = false
     }
 
     return {
