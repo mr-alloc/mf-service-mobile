@@ -44,6 +44,7 @@ const backgroundStore = useBackgroundStore();
 
   .container {
     height: calc(100% - 120px);
+    overflow-y: scroll;
   }
 
   .background {

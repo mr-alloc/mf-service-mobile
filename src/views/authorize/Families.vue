@@ -8,6 +8,10 @@ import { MemberRole } from '@/constant/MemberRole'
 import { useMemberInfoStore } from '@/stores/MemberInfoStore'
 import { useFamiliesViewStore } from '@/stores/FamiliesViewStore'
 import { useFamilyMemberInfoStore } from '@/stores/FamilyMemberInfoStore'
+import { TabViewComponent } from '@/classes/TabViewComponent'
+import FamilyInfo from '@/views/authorize/FamilyInfo.vue'
+import FamilySelector from '@/components/header/FamilySelector.vue'
+import PageButtonGroup from '@/components/global/PageButtonGroup.vue'
 
 const ownFamiliesStore = useOwnFamiliesStore();
 const familiesViewStore = useFamiliesViewStore();
@@ -35,12 +39,13 @@ onMounted(() => {
 
 <template>
   <div class="families-container">
-<!--    <span class="page-title">패밀리</span>-->
-<!--    <div class="family-selector-wrapper">-->
-<!--      <FamilySelector/>-->
-<!--    </div>-->
-<!--    <FamilyInfo v-if="ownFamiliesStore.hasSelectFamily"/>-->
-<!--    <PageButtonGroup :buttons="state.buttons.filter(button => button.visibleCondition()) as Array<DefaultButtonValue>"/>-->
+    <span class="page-title">패밀리</span>
+    <div class="family-selector-wrapper">
+      <FamilySelector />
+    </div>
+    <FamilyInfo v-if="ownFamiliesStore.hasSelectFamily" />
+    <PageButtonGroup
+      :buttons="state.buttons.filter(button => button.visibleCondition()) as Array<DefaultButtonValue>" />
 <!--    <TappableView v-if="ownFamiliesStore.hasSelectFamily" :components="[-->
 <!--        new TabViewComponent('멤버', 'FamilyMembers', familiesViewStore.members.length),-->
 <!--        new TabViewComponent('가입요청', 'JoinRequests', familiesViewStore.joinRequests.length)-->
@@ -52,7 +57,7 @@ onMounted(() => {
 @import "@assets/main";
 
 .families-container {
-  max-width: 768px;
+  padding: 8px 20px 0;
   margin: 0 auto;
 
   .family-selector-wrapper {

@@ -83,7 +83,8 @@ const navigateStackStore = useNavigateStackStore()
       }
 
       .panel-body {
-
+        overflow-y: scroll;
+        height: 100%;
       }
     }
   }

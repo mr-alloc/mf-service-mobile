@@ -4,8 +4,8 @@
          :class="{ selected: navigateMenuStore.state.activeHomeMenu }">
       <button class="navigate-button">
         <div class="button-content">
-          <FontAwesomeIcon :icon="['fas', 'house']" class="fa-xl" />
-          <span class="menu-name">메인</span>
+          <FontAwesomeIcon :icon="['fas', 'business-time']" class="fa-xl" />
+          <span class="menu-name">준비</span>
         </div>
       </button>
     </div>

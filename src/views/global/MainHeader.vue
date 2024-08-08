@@ -2,6 +2,7 @@
   <div class="main-header-container">
     <FamilySelector v-if="memberInfoStore.getCurrentAccountRole().isGrantedFrom(AccountRole.MEMBER)" />
     <ProfilePreview/>
+    <NotificationIndicator />
     <SimpleNotifier/>
   </div>
 </template>
@@ -11,6 +12,7 @@ import FamilySelector from '@/components/header/FamilySelector.vue'
 import { AccountRole } from '@/constant/AccountRole'
 import { useMemberInfoStore } from '@/stores/MemberInfoStore'
 import SimpleNotifier from '@/components/global/SimpleNotifier.vue'
+import NotificationIndicator from '@/components/header/NotificationIndicator.vue'
 
 const memberInfoStore = useMemberInfoStore()
 </script>

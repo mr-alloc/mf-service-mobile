@@ -101,6 +101,7 @@ const methods = {
             await router.push('/calendar')
           }
 
+
           return true
         },
         (spec, error) => {

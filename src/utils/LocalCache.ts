@@ -54,7 +54,7 @@ export const refreshToken = async () => {
     const router = useRouter();
     const alertStore = useAlertStore();
     const requestBody = {
-        deviceCode: 0,
+        deviceCode: 1,
         refreshToken: getRefreshToken(),
         accessToken: getAccessToken()
     }
