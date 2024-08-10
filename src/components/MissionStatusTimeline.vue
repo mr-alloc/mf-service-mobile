@@ -1,12 +1,12 @@
 <template>
   <div class="mission-status-timeline-container">
     <ul class="timeline-groups">
-      <li class="each-case" :class="[status.simpleName, {
-        current: status.code === props.status,
-      }, {
-        'signature-shiny': status.code === props.status
-      }]" v-bind:key="status.code"
-          v-for="status in state.missionStatuses">{{ status.name }}</li>
+      <li class="each-case" v-for="missionStatus in state.missionStatuses"
+          :class="[missionStatus.simpleName, {
+            current: missionStatus.code === props.status,
+            'signature-shiny': missionStatus.code === props.status
+      }]" v-bind:key="missionStatus.code">{{ missionStatus.name }}
+      </li>
     </ul>
   </div>
 </template>

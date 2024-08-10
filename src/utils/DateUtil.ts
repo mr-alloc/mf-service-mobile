@@ -74,6 +74,16 @@ function getCalendarDays(momentValue: Moment, calculatedWith?: (startOfCalendar:
         });
 }
 
+function getCalendarPeriod<T>(momentValue: Moment, daysAfter: number, rangeFunction: (startOfRange: number, endOfRange: number) => T): T {
+    const starOfDayInRange = momentValue.startOf('day')
+    const endOfDayInRange = starOfDayInRange.clone().add(daysAfter, 'day').startOf('day')
+
+    const start = starOfDayInRange.unix() - TempralUtil.getOffsetSecond()
+    const end = endOfDayInRange.unix() - TempralUtil.getOffsetSecond()
+
+    return rangeFunction(start, end)
+}
+
 function getCalendarWeeks(momentValue: Moment, calculatedWith?: (startOfCalendar: Moment, startOfThisMonth: Moment, endOfThisMonth: Moment, endOfCalendar: Moment) => void): Map<number, Array<CalendarDate>> {
     const startOfThisMonth = moment(momentValue).startOf('month');
     const startOfCalendar = startOfThisMonth.clone().subtract(startOfThisMonth.day(), 'days');
@@ -136,6 +146,7 @@ export default {
     YYYYMM,
     YYYYMMDD,
     getCalendarWeeks,
+    getCalendarPeriod,
 
 
     isSameMonth(m1: Moment, m2: Moment): boolean {

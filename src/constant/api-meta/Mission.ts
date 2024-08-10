@@ -1,6 +1,6 @@
-import Spec from "@/constant/api-meta/ApiSpecification";
-import {HttpMethod} from "@/constant/HttpMethod";
-import FamilyMission from "@/constant/api-meta/FamilyMission";
+import Spec from '@/constant/api-meta/ApiSpecification'
+import { HttpMethod } from '@/constant/HttpMethod'
+import FamilyMission from '@/constant/api-meta/FamilyMission'
 
 const createMissionSpec = Spec.of(HttpMethod.POST, "/v1/mission")
     .andDefaultMessage("미션 생성에 실패 하였습니다.")
@@ -27,4 +27,8 @@ export default {
             [-1, "존재하지 않는 미션입니다."],
             [-5, "잘못된 접근입니다."]
         ]),
+    GetComingMission: Spec.of(HttpMethod.GET, '/v1/mission/coming-missions')
+        .andDefaultMessage('예정된 미션을 불러오는데 실패했어요.')
+        .whenFamily(FamilyMission.GetComingMission)
+        .andPairs([])
 }

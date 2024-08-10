@@ -119,12 +119,13 @@ onMounted(() => {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   z-index: 1;
   background: rgb(255, 255, 255, .3);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 120px;
   align-items: center;
   flex-direction: column;
   backdrop-filter: blur(10px);
@@ -138,13 +139,13 @@ onMounted(() => {
     position: absolute;
     display: flex;
     top: 0;
-    height: 120px;
+    height: 30px;
     margin: 30px 0;
     justify-content: center;
     align-items: center;
 
     .nickname-initializer-title {
-      font-size: 1.8rem;
+      font-size: 1.2rem;
       font-weight: 600;
     }
   }

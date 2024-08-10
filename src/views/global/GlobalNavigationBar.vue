@@ -5,7 +5,7 @@
       <button class="navigate-button">
         <div class="button-content">
           <FontAwesomeIcon :icon="['fas', 'business-time']" class="fa-xl" />
-          <span class="menu-name">준비</span>
+          <span class="menu-name">예정</span>
         </div>
       </button>
     </div>

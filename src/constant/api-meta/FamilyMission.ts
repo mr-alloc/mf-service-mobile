@@ -1,5 +1,5 @@
-import Spec from "@/constant/api-meta/ApiSpecification";
-import {HttpMethod} from "@/constant/HttpMethod";
+import Spec from '@/constant/api-meta/ApiSpecification'
+import { HttpMethod } from '@/constant/HttpMethod'
 
 const getFamilyCalendarSpec = Spec.of(HttpMethod.GET, "/v1/family/mission/calendar")
     .andDefaultMessage("이번달 패밀리 미션정보 조회에 실패 했어요.")
@@ -23,5 +23,8 @@ export default {
         .andPairs([
             [-2, "존재하지 않는 미션입니다."],
             [-5, "잘못된 접근입니다."]
-        ])
+        ]),
+    GetComingMission: Spec.of(HttpMethod.GET, '/v1/family/mission/coming-missions')
+        .andDefaultMessage('예정된 미션을 불러오는데 실패했어요.')
+        .andPairs([])
 }

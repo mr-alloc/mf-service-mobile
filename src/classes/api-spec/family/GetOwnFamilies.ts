@@ -1,3 +1,5 @@
+import SelectFamilyOption from '@/classes/SelectFamilyOption'
+
 export class FamilySummary {
     private readonly _id: number;
     private readonly _color: string;
@@ -48,6 +50,10 @@ export class FamilySummary {
             json.familyDescription,
             json.registeredAt
         );
+    }
+
+    toSelectFamilyOption(): SelectFamilyOption {
+        return new SelectFamilyOption(this._id, this._color, this._image ?? '', this._name)
     }
 }
 

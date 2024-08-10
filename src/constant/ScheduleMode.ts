@@ -3,19 +3,21 @@ import CollectionUtil from "@/utils/CollectionUtil";
 
 export default class ScheduleMode {
 
-    static readonly SINGLE = new ScheduleMode(1, "하루");
-    static readonly MULTIPLE = new ScheduleMode(2, "여러 날");
-    static readonly PERIOD = new ScheduleMode(3, "기간");
-    static readonly REPEAT = new ScheduleMode(4, "반복");
+    static readonly SINGLE = new ScheduleMode(1, '하루', 'single')
+    static readonly MULTIPLE = new ScheduleMode(2, '다중', 'multiple')
+    static readonly PERIOD = new ScheduleMode(3, '기간', 'period')
+    static readonly REPEAT = new ScheduleMode(4, '반복', 'repeat')
 
     private static readonly CACHED = CollectionUtil.toMap(ScheduleMode.values(), mode => mode.value);
 
     private readonly _value: number;
     private readonly _alias: string;
+    private readonly _name: string
 
-    private constructor(value: number, alias: string) {
+    private constructor(value: number, alias: string, name: string) {
         this._value = value;
         this._alias = alias;
+        this._name = name
     }
 
     get value(): number {
@@ -24,6 +26,10 @@ export default class ScheduleMode {
 
     get alias(): string {
         return this._alias;
+    }
+
+    get name(): string {
+        return this._name
     }
 
     isIn(...others: ScheduleMode[]) {

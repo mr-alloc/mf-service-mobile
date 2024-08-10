@@ -1,20 +1,34 @@
-<script setup lang="ts">
-
-import FamilySelector from '@/components/header/FamilySelector.vue'
-</script>
 <template>
   <div class="app-setting-container">
     <div class="container-title">앱 설정</div>
     <ul class="convenience-group">
       <li class="group-item">
-        <div class="item-title">주 패밀리 설정</div>
+        <div class="item-title">기본 일정</div>
         <div class="item-feature">
-          <FamilySelector />
+          <PreferFamilySelector :refresh-function="methods.changePreferFamily"
+                                :selected-family="new FamilySummary(0, '', LocalAsset.DEFAULT_NO_IMAGE, '개인 일정', '', 0)" />
         </div>
       </li>
     </ul>
   </div>
 </template>
+<script setup lang="ts">
+
+import { onMounted } from 'vue'
+import PreferFamilySelector from '@/components/global/PreferFamilySelector.vue'
+import { FamilySummary } from '@/classes/api-spec/family/GetOwnFamilies'
+import LocalAsset from '@/constant/LocalAsset'
+
+const methods = {
+  changePreferFamily(familyId: number) {
+
+  }
+}
+
+onMounted(() => {
+
+})
+</script>
 <style scoped lang="scss">
 @import '@assets/main';
 

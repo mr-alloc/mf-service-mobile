@@ -22,6 +22,9 @@ const state = reactive({
 @import "@assets/main";
 
 .status-indicator-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .status-frame {
     line-height: 1;

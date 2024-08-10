@@ -50,6 +50,7 @@ const methods = {
   display: flex;
   flex-direction: row;
   border-radius: 5px;
+  align-items: center;
   max-width: 200px;
   margin: 5px 2px;
   user-select: none;
