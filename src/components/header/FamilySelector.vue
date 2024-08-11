@@ -33,13 +33,16 @@
 </template>
 <script setup lang="ts">
 import {useOwnFamiliesStore} from "@/stores/OwnFamiliesStore";
-import {inject, reactive} from "vue";
+import { inject, onMounted, reactive } from 'vue'
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import SelectItem from "@/components/global/SelectFamilyItem.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {useNavigateMenuStore} from "@/stores/NavigateMenuStore";
 import SelectFamilyOption from "@/classes/SelectFamilyOption";
 import {getSelectedFamilyId} from "@/utils/LocalCache";
+import { call } from '@/utils/NetworkUtil'
+import { ResponseBody } from '@/classes/api-spec/member/GetUserSetting'
+import Member from '@/constant/api-meta/Member'
 
 const emitter = inject("emitter")!;
 const ownFamiliesStore = useOwnFamiliesStore();
@@ -66,6 +69,14 @@ const methods = {
     ownFamiliesStore.changeFamily(emitter, item)
   }
 }
+onMounted(() => {
+  call<any, ResponseBody>(Member.GetUserSetting, null, (response) => {
+    const setting = ResponseBody.fromJson(response.data)
+    const selected = ownFamiliesStore.families.find(family => family.id === setting.mainFamily)?.toSelectFamilyOption()
+      ?? ownFamiliesStore.selectorState.defaultOption as SelectFamilyOption
+    ownFamiliesStore.changeFamily(emitter, selected)
+  })
+})
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

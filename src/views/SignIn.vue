@@ -106,14 +106,7 @@ const methods = {
             const {accessToken, refreshToken} = response.data
             setAccessToken(accessToken)
             setRefreshToken(refreshToken)
-
-            await call<any, ResponseBody>(Member.GetUserSetting, null, (response) => {
-              const setting = ResponseBody.fromJson(response.data)
-              const selected = ownFamiliesStore.families.find(family => family.id === setting.mainFamily)?.toSelectFamilyOption()
-                ?? ownFamiliesStore.selectorState.defaultOption as SelectFamilyOption
-              ownFamiliesStore.changeFamily(emitter, selected)
-              router.push('/calendar')
-            })
+            await router.push('/calendar')
           }
 
           return true

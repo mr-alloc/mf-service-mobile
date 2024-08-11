@@ -78,7 +78,6 @@ export default class ScheduleValue {
                     .filter(date => {
                         switch (repeatOption) {
                             case RepeatOption.WEEK:
-                                console.log(`${date.timestamp} ${date.date}일(${date.dayOfWeek.alias}): ${this._repeatValues.includes(date.dayOfWeek.value)}`)
                                 return this._repeatValues.includes(date.dayOfWeek.value)
                             case RepeatOption.MONTH:
                                 return date.date === repeatDay.date
