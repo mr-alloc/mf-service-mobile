@@ -78,8 +78,8 @@ function getCalendarPeriod<T>(momentValue: Moment, daysAfter: number, rangeFunct
     const starOfDayInRange = momentValue.startOf('day')
     const endOfDayInRange = starOfDayInRange.clone().add(daysAfter, 'day').startOf('day')
 
-    const start = starOfDayInRange.unix() - TempralUtil.getOffsetSecond()
-    const end = endOfDayInRange.unix() - TempralUtil.getOffsetSecond()
+    const start = starOfDayInRange.unix()
+    const end = endOfDayInRange.unix()
 
     return rangeFunction(start, end)
 }

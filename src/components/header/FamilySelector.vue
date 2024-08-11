@@ -61,10 +61,9 @@ const methods = {
       state.isSelectMode = false;
       return;
     }
-    ownFamiliesStore.selectorState.selectedOption = item;
     state.isSelectMode = false;
 
-    ownFamiliesStore.changeFamily(emitter);
+    ownFamiliesStore.changeFamily(emitter, item)
   }
 }
 </script>

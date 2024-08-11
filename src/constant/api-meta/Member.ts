@@ -1,6 +1,6 @@
-import Spec from "@/constant/api-meta/ApiSpecification";
-import {HttpMethod} from "@/constant/HttpMethod";
-import Family from "@/constant/api-meta/Family";
+import Spec from '@/constant/api-meta/ApiSpecification'
+import { HttpMethod } from '@/constant/HttpMethod'
+import Family from '@/constant/api-meta/Family'
 
 export default {
     GetInfo: Spec.of(HttpMethod.GET, "/v1/member/info")
@@ -24,5 +24,9 @@ export default {
             [-5, "잘못된 초대코드 입니다."],
             [-6, "이미 가입을 요청한 패밀리 입니다."],
             [-7, "이미 가입된 패밀리 입니다."],
-        ])
+        ]),
+    GetUserSetting: Spec.of(HttpMethod.GET, '/v1/user-setting')
+        .andDefaultMessage('앱 설정정보 조회에 실패 하였습니다.'),
+    ChangeMainFamilySetting: Spec.of(HttpMethod.PUT, '/v1/user-setting')
+        .andDefaultMessage('메인 패밀리 변경에 실패 하였습니다.')
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="status-indicator-container">
     <div class="status-frame" :class="[`${state.status.simpleName}`]">
-      <span class="status-alias">{{ props.status.name }}</span>
+      <span class="status-alias">{{ state.status.name }}</span>
     </div>
   </div>
 </template>
@@ -17,6 +17,12 @@ const props = defineProps<{
 const state = reactive({
   status: MissionStatus.CREATED
 });
+
+onMounted(() => {
+  state.status = MissionType.SCHEDULE.value === props.type
+    ? MissionStatus.ALWAYS
+    : props.status
+})
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

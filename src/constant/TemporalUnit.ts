@@ -52,4 +52,8 @@ export default class TemporalUnit {
                 return pre + tobeReduced;
             }, 0);
     }
+
+    static getSecond(value: number, unit: TemporalUnit) {
+        return value * unit.seconds
+    }
 }

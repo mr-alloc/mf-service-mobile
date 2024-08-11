@@ -120,12 +120,11 @@ const methods = {
 @import "@assets/main";
 
 .sign-up-container {
-  max-width: 400px;
+  padding: 0 20px;
   height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   .form-wrapper-deployer {
 

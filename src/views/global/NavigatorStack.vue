@@ -84,7 +84,7 @@ const navigateStackStore = useNavigateStackStore()
 
       .panel-body {
         overflow-y: scroll;
-        height: 100%;
+        height: calc(100% - 50px);
       }
     }
   }

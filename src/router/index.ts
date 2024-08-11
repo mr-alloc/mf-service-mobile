@@ -21,13 +21,13 @@ import AppSetting from '@/views/AppSetting.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {path: '/', name: 'home', component: MainIndex, meta: {role: 0}},
+    { path: '/', name: 'home', component: MainIndex, meta: { role: 1 } },
     {path: '/sign-in', name: 'sign-in', component: SignIn, meta: {role: 0}},
     {path: '/sign-up', name: 'sign-up', component: SignUp, meta: {role: 0}},
     {path: '/calendar', name: 'calendar', component: MainCalendar, meta: {role: 1}},
     {path: '/profile', name: 'profile', component: MemberProfile, meta: {role: 1}},
     {path: '/families', name: 'families', component: Families, meta: {role: 1}},
-      { path: '/settings', name: 'settings', component: AppSetting, meta: { role: 1 } },
+    { path: '/settings', name: 'settings', component: AppSetting, meta: { role: 1 } },
     {path: '/refresh', name: 'refresh', component: RefreshToken, meta: {role: 0}}
   ]
 })

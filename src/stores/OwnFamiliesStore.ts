@@ -40,11 +40,11 @@ export const useOwnFamiliesStore = defineStore("ownFamilies", () => {
     }
 
 
-    async function changeFamily(emitter: any) {
+    async function changeFamily(emitter: any, item: SelectFamilyOption) {
+        selectorState.value.selectedOption = item
         const memberInfoStore = useMemberInfoStore();
         const familiesViewStore = useFamiliesViewStore();
         const familyMemberInfoStore = useFamilyMemberInfoStore();
-        const item = selectorState.value.selectedOption;
 
         //패밀리 선택시 갱신정보
         setSelectedFamilyId(item.id);

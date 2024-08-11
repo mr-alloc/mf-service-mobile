@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { inject, reactive, ref } from 'vue'
 import BlinkInput from "@/components/global/BlinkInput.vue";
 import {Patterns, validate} from "@/utils/Util";
 import SimpleButton from "@/components/global/SimpleButton.vue";
@@ -39,8 +39,16 @@ import {
 import {AlertType, useAlertStore} from "@/stores/AlertStore";
 import type InputComponent from '@/classes/InputComponent'
 import { ex } from '@/utils/Undefinable'
+import PopupUtil from '@/utils/PopupUtil'
+import * as GetUserSetting from '@/classes/api-spec/member/GetUserSetting'
+import Member from '@/constant/api-meta/Member'
+import { ResponseBody } from '@/classes/api-spec/member/GetUserSetting'
+import { useOwnFamiliesStore } from '@/stores/OwnFamiliesStore'
+import type SelectFamilyOption from '@/classes/SelectFamilyOption'
 
+const emitter: any = inject('emitter')
 const router = useRouter();
+const ownFamiliesStore = useOwnFamiliesStore()
 const memberInfoStore = useMemberInfoStore();
 const notificationStore = useAlertStore();
 
@@ -98,9 +106,15 @@ const methods = {
             const {accessToken, refreshToken} = response.data
             setAccessToken(accessToken)
             setRefreshToken(refreshToken)
-            await router.push('/calendar')
-          }
 
+            await call<any, ResponseBody>(Member.GetUserSetting, null, (response) => {
+              const setting = ResponseBody.fromJson(response.data)
+              const selected = ownFamiliesStore.families.find(family => family.id === setting.mainFamily)?.toSelectFamilyOption()
+                ?? ownFamiliesStore.selectorState.defaultOption as SelectFamilyOption
+              ownFamiliesStore.changeFamily(emitter, selected)
+              router.push('/calendar')
+            })
+          }
 
           return true
         },
@@ -114,6 +128,8 @@ const methods = {
           }
           const body = error.response.data
           const message = spec.getMessage(body.code) ?? spec.defaultMessage;
+
+          PopupUtil.alert('로그인 오류', message)
           notificationStore.alert(AlertType.INFO, "로그인 오류", message)
           return false
         }

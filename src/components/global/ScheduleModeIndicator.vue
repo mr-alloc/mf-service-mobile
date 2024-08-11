@@ -46,10 +46,10 @@ const props = defineProps<{
 
     .mode-frame {
       background-color: #edddfa;
-      border: 1px solid #9d6ff6;
+      border: 1px solid $signature-purple;
 
       .mode-alias {
-        color: #9d6ff6;
+        color: $signature-purple;
       }
 
     }
@@ -66,6 +66,28 @@ const props = defineProps<{
       }
     }
 
+  }
+
+  &.period {
+    .mode-frame {
+      background-color: #d5e2f4;
+      border: 1px solid $soft-navy;
+
+      .mode-alias {
+        color: $soft-navy;
+      }
+    }
+  }
+
+  &.repeat {
+    .mode-frame {
+      background-color: $standard-light-gray-in-white;
+      border: 1px solid $warm-black;
+
+      .mode-alias {
+        color: $warm-black;
+      }
+    }
   }
 }
 </style>

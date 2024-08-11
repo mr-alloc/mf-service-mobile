@@ -65,6 +65,7 @@ import {useCalendarStore} from "@/stores/CalendarStore";
 import BlinkInput from '@/components/global/BlinkInput.vue'
 import BlinkSelect from '@/components/global/BlinkSelect.vue'
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
+import SingleModeOutput from '@/classes/component-protocol/SingleModeOutput'
 
 const missionAssigneeInput = ref<NumberValueComponent | null>(null);
 const missionTypeInput = ref<NumberValueComponent | null>(null);
@@ -182,10 +183,12 @@ const methods = {
   },
   getRequestBody(): CreateMission.RequestBody {
     const deadline = state.missionType.value === MissionType.SCHEDULE.value ? 0 : timePicker.value?.getValue();
+    console.log('mode:', datePicker.value?.getScheduleMode())
     const isSingleSchedule = datePicker.value?.getScheduleMode().value === ScheduleMode.SINGLE.value;
     const scheduleInfo = isSingleSchedule
-        ? new MultipleModeOutput(new Set([props.timestamp]))
+      ? new SingleModeOutput(props.timestamp)
         : datePicker.value?.extractResult()!;
+
 
     scheduleInfo.setScheduleTime(inputValues.scheduleTime);
 
@@ -230,7 +233,6 @@ const methods = {
   display: flex;
   justify-content: center;
   padding: 20px;
-  overflow-y: scroll;
 
   .container-body {
 

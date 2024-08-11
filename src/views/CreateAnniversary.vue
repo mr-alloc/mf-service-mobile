@@ -32,6 +32,7 @@ import Anniversary from "@/constant/api-meta/Anniversary";
 import MultipleModeOutput from "@/classes/component-protocol/MultipleModeOutput";
 import {useAlertStore} from "@/stores/AlertStore";
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
+import SingleModeOutput from '@/classes/component-protocol/SingleModeOutput'
 
 const navigateStackStore = useNavigateStackStore()
 const alertStore = useAlertStore();
@@ -69,7 +70,7 @@ const methods = {
     const scheduleMode = state.scheduleMode as ScheduleMode;
     const isSingle = scheduleMode.value === ScheduleMode.SINGLE.value;
     const scheduleInfo = isSingle
-        ? new MultipleModeOutput(new Set([props.timestamp]))
+      ? new SingleModeOutput(props.timestamp)
         : multipleDatePicker.value?.extractResult();
 
     return new RequestBody(state.anniversaryName, scheduleInfo);

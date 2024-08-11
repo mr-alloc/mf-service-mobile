@@ -29,6 +29,10 @@ export const useMemberInfoStore = defineStore('memberInfo', () => {
         memberInfo.value = ProfileMember.ofDefault();
     }
 
+    function resetMemberInfo() {
+        removeMemberInfo()
+    }
+
     async function fetchMemberInfo() {
         await call<any, any>(MemberAPI.GetInfo, null,
             (response) => {
@@ -66,6 +70,7 @@ export const useMemberInfoStore = defineStore('memberInfo', () => {
         removeMemberInfo,
         fetchMemberInfo,
         getCurrentAccountRole,
+        resetMemberInfo
     }
 })
 

@@ -74,20 +74,23 @@ export default class ScheduleValue {
                 const repeatOption = RepeatOption.fromValue(this._repeatOption)
                 const repeatDay = new CalendarDate(this._repeatValues[0]);
                 const days = TemporalUtil.getDiffDays(calendarStartAt, calendarEndAt);
-                return TemporalUtil.getLocalDaysArray(calendarStartAt, days).filter(calendarDay => {
-                    switch (repeatOption) {
-                        case RepeatOption.WEEK:
-                            return this._repeatValues.includes(calendarDay.dayOfWeek.value);
-                        case RepeatOption.MONTH:
-                            return calendarDay.date === repeatDay.date;
-                        case RepeatOption.YEAR:
-                            return calendarDay.month === repeatDay.month && calendarDay.date === repeatDay.date;
-                        default:
-                            throw new Error(`Invalid repeat option: ${repeatOption}`);
-                    }
-                })
+                return TemporalUtil.getLocalDaysArray(calendarStartAt, days)
+                    .filter(date => {
+                        switch (repeatOption) {
+                            case RepeatOption.WEEK:
+                                console.log(`${date.timestamp} ${date.date}일(${date.dayOfWeek.alias}): ${this._repeatValues.includes(date.dayOfWeek.value)}`)
+                                return this._repeatValues.includes(date.dayOfWeek.value)
+                            case RepeatOption.MONTH:
+                                return date.date === repeatDay.date
+                            case RepeatOption.YEAR:
+                                return date.month === repeatDay.month && date.date === repeatDay.date
+                            default:
+                                throw new Error(`Invalid repeat option: ${repeatOption}`)
+                        }
+                    })
+                    //반복은 시작일을 기준으로 표시 되어야하기 때문에, 현재 설정된 시작시간보다 이전 일자는 허용하지 않는다.
                     .filter(date => this._startAt <= date.timestamp && (date.timestamp <= this._endAt || this._endAt === 0))
-                    .map(date => Period.of(date.timestamp, date.timestamp + (TemporalUtil.SECONDS_IN_DAY - 1)));
+                    .map(date => Period.of(date.timestamp, date.timestamp + (TemporalUtil.SECONDS_IN_DAY - 1)))
             }
             default:
                 throw new Error(`Invalid schedule mode: ${JSON.stringify(this._mode)}`);

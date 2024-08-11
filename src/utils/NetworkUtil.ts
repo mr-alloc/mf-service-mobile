@@ -17,7 +17,10 @@ axios.interceptors.response.use(
     response => response,
     async error => {
         const alertStore = useAlertStore();
-        if (error.response?.status === 403) {
+
+        if (error.response?.status === 401) {
+            handleUnAuthorize()
+        } else if (error.response?.status === 403) {
             handleForbidden(error, alertStore);
         } else if (error.response?.status === 500) {
             // alertStore.warning("서버오류", "처리 중 오류가 발생했습니다. 잠시후 다시 시도해 주시기 바랍니다.");
@@ -40,6 +43,11 @@ function handleForbidden(error: AxiosError, alertStore: AlertStore) {
 }
 const pathVariableRE = /{(\w+)}/g;
 
+
+function handleUnAuthorize() {
+    const memberInfoStore = useMemberInfoStore()
+    memberInfoStore.resetMemberInfo()
+}
 
 function getHeader(): AxiosHeaders {
     const headers = new AxiosHeaders();
