@@ -31,7 +31,7 @@ const state = reactive({
 </script>
 <template>
   <div class="notifications-wrapper">
-    <TransitionGroup name="up-fade" tag="ul" class="notice-message-list">
+    <TransitionGroup name="down-fade" tag="ul" class="notice-message-list">
       <li class="message-item" v-for="(notification, index) in state.notifications"
           :key="notification.timestamp">
         <div class="message-header">
@@ -156,6 +156,7 @@ const state = reactive({
         }
 
 
+
         .close-box {
           width: 15px;
           height: 15px;
@@ -193,15 +194,15 @@ const state = reactive({
         }
       }
 
-      &:nth-child(2) {
-        transform: scale(1.05);
-        top: -30px
-      }
-
-      &:last-child {
-        transform: scale(1.1);
-        top: -60px;
-      }
+      //&:nth-child(2) {
+      //  transform: scale(1.05);
+      //  top: -30px
+      //}
+      //
+      //&:last-child {
+      //  transform: scale(1.1);
+      //  top: -10px;
+      //}
     }
   }
 }

@@ -13,8 +13,8 @@ const props = defineProps<{
   defaultOptionName: string,
   allowNoImage?: boolean,
   defaultSelected?: number,
-  currentIndex: number,
-  beforeChange: (option: SelectImageOption, afterChange: () => void) => void
+  currentIndex?: number,
+  beforeChange?: (option: SelectImageOption, afterChange: () => void) => void
 }>();
 const state = reactive({
   isSelectMode: false,

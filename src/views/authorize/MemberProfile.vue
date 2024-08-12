@@ -203,7 +203,7 @@ onMounted(async () => {
         .item-key {
           padding: 3px 5px;
           flex-shrink: 0;
-          width: 200px;
+          width: 150px;
           font-size: .84rem;
 
         }

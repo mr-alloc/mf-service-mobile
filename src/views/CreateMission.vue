@@ -210,6 +210,7 @@ const methods = {
 
     const requestBody = methods.getRequestBody();
     if (ex(requestBody).no()) {
+      console.log('요청 바디가 없음')
       return;
     }
 

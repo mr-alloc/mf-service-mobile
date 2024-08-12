@@ -8,19 +8,20 @@ export const useAlertStore = defineStore('alert', () => {
 
     function alert(type: AlertType, title: string, message: string, timeoutSecond?: number) {
         const notification = new Notification(type, title, message);
-        // notifications.value.push(notification);
+        console.log('notification', notification)
+        notifications.value.push(notification)
 
         setTimeout(() => {
             notifications.value
                 .forEach((alert, index) => {
                     if (alert.timestamp === notification.timestamp) {
-                        // notifications.value.splice(index, 1);
+                        notifications.value.splice(index, 1)
                     }
                 });
         }, (timeoutSecond ?? 5) * 1000)
 
         if (notifications.value.length > 2) {
-            // notifications.value.shift();
+            notifications.value.shift()
         }
     }
 

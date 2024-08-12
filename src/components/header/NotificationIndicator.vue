@@ -10,6 +10,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faBell } from '@fortawesome/free-regular-svg-icons'
+import { useAlertStore } from '@/stores/AlertStore'
 </script>
 <style scoped lang="scss">
 @import '@assets/main';
