@@ -38,6 +38,7 @@ onMounted(() => {
     padding: 2px 5px;
     border-radius: 5px;
 
+
     &.created {
       background-color: #ffdada;
       border: 1px solid #ffa7a7;
@@ -61,8 +62,19 @@ onMounted(() => {
       }
     }
 
+
+    &.completed {
+      background-color: $soft-orange;
+      border: 1px solid #c17137;
+
+      .status-alias {
+        color: $soft-dark;
+      }
+    }
+
     .status-alias {
       color: black;
+      font-weight: bold;
     }
   }
 }

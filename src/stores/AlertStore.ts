@@ -8,7 +8,6 @@ export const useAlertStore = defineStore('alert', () => {
 
     function alert(type: AlertType, title: string, message: string, timeoutSecond?: number) {
         const notification = new Notification(type, title, message);
-        console.log('notification', notification)
         notifications.value.push(notification)
 
         setTimeout(() => {

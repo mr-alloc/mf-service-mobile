@@ -1,12 +1,12 @@
 <template>
   <div class="mission-state-changer-container">
-    <SimpleButton :button-name="methods.getButtonName()"
+    <SimpleButton :button-name="state.buttonName"
                   :click-behavior="methods.changeStatus"
                   :submittable="state.nextStatus.code !== MissionStatus.DELETED.code" />
   </div>
 </template>
 <script setup lang="ts">
-import { inject, onMounted, reactive } from 'vue'
+import { inject, onMounted, reactive, watch } from 'vue'
 import MissionStatus from '@/constant/MissionStatus'
 import PopupUtil from '@/utils/PopupUtil'
 import * as ChangeFamilyMissionAttribute from '@/classes/api-spec/mission/ChangeFamilyMissionAttribute'
@@ -39,15 +39,18 @@ const methods = {
           const statusCode = changed.findStateById(props.stateId)?.status ?? 0
           const status = MissionStatus.fromCode(statusCode)
           switch (status) {
-            case MissionStatus.IN_PROGRESS:
+            case MissionStatus.IN_PROGRESS: {
               alertStore.guide('상태 변경', `미션이 시작되었습니다. 남은 시간 안에 완료할 수 있도록 노력하세요!`)
               emitter.emit('fetchMissionDetail')
               emitter.emit('fetchCalendar', true)
               break
-            case MissionStatus.COMPLETED:
+            }
+            case MissionStatus.COMPLETED: {
               alertStore.success('미션 클리어!', `"${props.detail.name}" 미션을 완료하였습니다.`)
+              emitter.emit('fetchMissionDetail')
               emitter.emit('fetchCalendar')
               break
+            }
             default:
               break
           }
@@ -69,7 +72,7 @@ const methods = {
       case MissionStatus.IN_PROGRESS.code:
         return '미션을 시작 할까요?'
       case MissionStatus.COMPLETED.code:
-        return '미션을 종료(완료) 할까요?'
+        return '미션을 종료 할까요?'
       default:
         return ''
     }
@@ -79,19 +82,27 @@ const methods = {
       case MissionStatus.IN_PROGRESS.code:
         return '미션 시작!'
       case MissionStatus.COMPLETED.code:
-        return '미션 처리!'
+        return '미션 종료!'
       default:
         return '완료된 미션'
     }
-  }
+  },
 }
 
 const state = reactive({
-  nextStatus: methods.getNextStatus(props.status)
-})
+  nextStatus: methods.getNextStatus(props.status),
+  buttonName: ''
+});
 onMounted(() => {
-  console.log('next status', state.nextStatus.name)
+  state.buttonName = methods.getButtonName()
 })
+watch(
+  () => props.status,
+  (newStatus) => {
+    state.nextStatus = methods.getNextStatus(newStatus)
+    state.buttonName = methods.getButtonName()
+  })
+
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

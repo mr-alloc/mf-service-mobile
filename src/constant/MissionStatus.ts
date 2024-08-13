@@ -56,16 +56,16 @@ export default class MissionStatus {
     }
 
     isNotIn(...others: MissionStatus[]): boolean {
-        return others.every(other => other.code !== this.code);
+        return others.every(other => other.code !== this._code)
     }
 
     isIn(...others: MissionStatus[]): boolean {
-        return others.some(other => other.code === this.code);
+        return others.some(other => other.code === this._code)
     }
 
 
     static toSelectOption(status: MissionStatus): SelectOption {
-        return new SelectOption(status.code.toString(), status.name, status.color);
+        return new SelectOption(status._code.toString(), status.name, status.color)
     }
 
 

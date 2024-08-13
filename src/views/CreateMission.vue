@@ -147,7 +147,7 @@ const methods = {
     inputValues.missionDeadline = ex(timePicker.value?.getValue()).num();
     state.isValidDeadline = state.missionType.value === MissionType.SCHEDULE.value || inputValues.missionDeadline > 0;
     if (!state.isValidDeadline) {
-      alertStore.alert(AlertType.INFO, "생성 가이드", "기한을 선택해 주세요.")
+      PopupUtil.alert('생성 가이드', '기한을 선택해 주세요.')
     }
 
     return state.isValidDeadline;
@@ -183,7 +183,6 @@ const methods = {
   },
   getRequestBody(): CreateMission.RequestBody {
     const deadline = state.missionType.value === MissionType.SCHEDULE.value ? 0 : timePicker.value?.getValue();
-    console.log('mode:', datePicker.value?.getScheduleMode())
     const isSingleSchedule = datePicker.value?.getScheduleMode().value === ScheduleMode.SINGLE.value;
     const scheduleInfo = isSingleSchedule
       ? new SingleModeOutput(props.timestamp)
@@ -210,7 +209,6 @@ const methods = {
 
     const requestBody = methods.getRequestBody();
     if (ex(requestBody).no()) {
-      console.log('요청 바디가 없음')
       return;
     }
 

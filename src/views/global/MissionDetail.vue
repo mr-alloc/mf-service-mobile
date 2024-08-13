@@ -7,10 +7,13 @@
     <MissionState v-if="state.detail" :state-time="props.mission.startAt" :detail="state.detail as MissionDetail"
                   :status="MissionStatus.fromValue(state.status)" :state-id="state.stateId"
                   :members="state.members as Array<SelectImageOption>" />
-    <div class="deadline-timer" v-if="state.detail && MissionType.fromValue(state.detail.type).isNotIn(MissionType.SCHEDULE)">
+    <div class="deadline-timer" v-if="state.detail && MissionType.SCHEDULE.value !== state.detail.type">
       <div class="timer-count-wrapper">
-        <span class="guide-text signature-shiny">남은 시간</span>
+        <span class="guide-text signature-shiny" :class="{
+          competed: MissionStatus.COMPLETED.code === state.status,
+        }">남은 시간</span>
         <span class="remain-time">{{ state.remainTimeStr }}</span>
+        <span v-if="state.spentSeconds > 0" class="saved-time">(+{{ state.spentSecondsStr }})</span>
       </div>
       <div class="fuse-wire-wrapper">
         <span class="progress-fuse-wire"></span>
@@ -21,7 +24,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { inject, onMounted, reactive } from 'vue'
+import { inject, onMounted, onUnmounted, reactive } from 'vue'
 import PopupUtil from '@/utils/PopupUtil'
 import { useAlertStore } from '@/stores/AlertStore'
 import { call } from '@/utils/NetworkUtil'
@@ -91,22 +94,31 @@ const methods = {
     });
   },
   calcRemainTime(currentStatus: MissionStatus) {
+    //카운트를 계속 계산해야 바뀜
+    console.log('calcRemainTime')
     methods.calcRemainSeconds();
-    switch (currentStatus) {
-      case MissionStatus.COMPLETED:
-        state.remainTimeStr = '완료';
-        return;
-    }
     if (state.remainSeconds <= 0) return;
     state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds);
+    state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds)
+
+    state.timerId = setTimeout(() => methods.calcRemainTime(currentStatus), 1000)
+    if (state.status === MissionStatus.COMPLETED.code) {
+      clearTimeout(state.timerId)
+    }
   },
   calcRemainSeconds() {
+    const currentState = state.detail?.findStateById(state.stateId)
+    const expectedDeadline = ex(currentState?.concreteStartAt).num() + ex(state.detail?.deadline).num()
+    const timestamp = TemporalUtil.getEpochSecond(false)
+
     if (state.status === MissionStatus.IN_PROGRESS.code) {
-      const currentState = state.detail?.findStateById(state.stateId);
-      const expectedDeadline = ex(currentState?.concreteStartAt).num() + ex(state.detail?.deadline).num();
-      const timestamp = TemporalUtil.getEpochSecond(false);
       state.remainSeconds = expectedDeadline <= timestamp ? 0 : expectedDeadline - timestamp;
-    } else {
+      state.remainSeconds === 0 && (state.remainTimeStr = '만료')
+    } else if (state.status === MissionStatus.COMPLETED.code) {
+      state.spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
+      state.remainSeconds = ex(state.detail?.deadline).num() - state.spentSeconds
+      console.log('remainSeconds', state.remainSeconds)
+    } else if (state.status === MissionStatus.CREATED.code) {
       state.remainSeconds = ex(state.detail?.deadline).num();
     }
   },
@@ -114,9 +126,6 @@ const methods = {
     const currentStatus = MissionStatus.fromCode(state.status);
     methods.calcRemainSeconds();
     methods.calcRemainTime(currentStatus);
-    if (currentStatus === MissionStatus.IN_PROGRESS) {
-      setInterval(methods.calcRemainTime, 1000);
-    }
   },
   async fetchMissionDetail() {
     await call<any, GetMissionDetail.ResponseBody>(Mission.GetMissionDetail, {missionId: props.mission.mission.id}, (response) => {
@@ -125,6 +134,7 @@ const methods = {
       const missionState = state.detail.states.find(state => state.startAt === props.mission.startAt);
       state.stateId = missionState?.id ?? 0;
       state.status = missionState?.status ?? 0;
+
       methods.countRemainTime();
     });
   }
@@ -141,7 +151,10 @@ const state = reactive({
   stateId: 0,
   status: 0,
   remainSeconds: 0,
-  remainTimeStr: '00:00:00'
+  remainTimeStr: '00:00:00',
+  spentSeconds: 0,
+  spentSecondsStr: '00:00:00',
+  timerId: 0
 });
 onMounted(async () => {
   await methods.fetchMissionDetail();
@@ -150,6 +163,10 @@ onMounted(async () => {
     await methods.fetchMissionDetail();
   });
 });
+
+onUnmounted(() => {
+  clearTimeout(state.timerId)
+})
 </script>
 <style scoped lang="scss">
 @import "@assets/main";
@@ -233,6 +250,12 @@ onMounted(async () => {
         color: white;
         padding: 3px 5px;
         border-radius: 5px;
+
+        &.competed {
+          animation: none;
+          background-color: $super-light-signature-purple;
+        }
+
       }
 
       .remain-time {
@@ -256,6 +279,11 @@ onMounted(async () => {
         &.overdue {
           color: $standard-gray-in-white;
         }
+      }
+
+      .saved-time {
+        color: #e72626;
+        font-weight: bold;
       }
     }
 

@@ -122,6 +122,7 @@ onMounted(() => {
     overflow: hidden;
     top: 60px;
     z-index: 1;
+    box-shadow: $standard-box-shadow;
 
     .option-item-group {
       list-style: none;
