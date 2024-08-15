@@ -122,7 +122,7 @@ const methods = {
       const responseBody = ResponseBody.fromJson(response.data);
       const textArea = commentInput.value?.getInput() as HTMLTextAreaElement;
       textArea.value = "";
-      state.stateId = responseBody.created.discussionId
+      state.stateId = ex(props.detail.findState(props.timestamp)?.id).num()
       methods.fetchComments();
     });
   },
