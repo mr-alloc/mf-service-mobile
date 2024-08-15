@@ -46,7 +46,6 @@ export const useMemberInfoStore = defineStore('memberInfo', () => {
                 //인증 실패
                 if (res.status === 401) {
                     removeAccessToken()
-                    console.error('[Failed to authenticate user.]')
                     router.push('/sign-in')
                 }
             })

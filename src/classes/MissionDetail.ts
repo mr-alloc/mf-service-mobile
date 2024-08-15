@@ -1,5 +1,8 @@
 import ScheduleValue from "@/classes/api-spec/ScheduleValue";
 import MissionState from "@/classes/MissionState";
+import MissionStatus from '@/constant/MissionStatus'
+import MissionType from '@/constant/MissionType'
+import { ex } from '@/utils/Undefinable'
 
 export default class MissionDetail {
     private readonly _id: number;
@@ -58,6 +61,14 @@ export default class MissionDetail {
 
     get assignee(): number | undefined {
         return this._assignee;
+    }
+
+    getStatus(timestamp: number): MissionStatus {
+        if (MissionType.SCHEDULE.valEqual(this._type)) {
+            return MissionStatus.ALWAYS
+        }
+        const foundState = this._states.find((state) => state.startAt == timestamp)
+        return ex(foundState?.status).to<number, MissionStatus>((status) => MissionStatus.fromValue(status), MissionStatus.CREATED)
     }
 
     findState(timestamp: number): MissionState | undefined {

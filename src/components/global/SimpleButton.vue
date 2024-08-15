@@ -3,8 +3,9 @@
       { loading: status.isLoading },
       { disable: !props.submittable || status.isDisable },
       { hide: status.isHide }
-      ]">
-    <button class="btn-primary" type="button" v-on:click="methods.clickBehaviorProxy()" :disabled="status.isHide">
+      ]" :style="props.wrapperStyle">
+    <button class="btn-primary" type="button" v-on:click="methods.clickBehaviorProxy()"
+            :disabled="status.isHide" :style="props.buttonStyle">
       <FontAwesomeIcon v-if="status.isLoading" class="fa-1x" :icon="faSpinner" spin />
       <span v-else>{{ props.buttonName }}</span>
     </button>
@@ -16,11 +17,13 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {reactive} from "vue";
 
-const props = defineProps({
-  clickBehavior: Function,
-  buttonName: String,
-  submittable: Boolean,
-});
+const props = defineProps<{
+  clickBehavior: () => boolean,
+  buttonName: string,
+  submittable: boolean,
+  buttonStyle?: any,
+  wrapperStyle?: any
+}>()
 
 const status = reactive({
   isLoading: false,

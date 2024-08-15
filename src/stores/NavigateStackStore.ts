@@ -11,7 +11,11 @@ export const useNavigateStackStore = defineStore('navigatorStack', () => {
     }
 
     function pullComponent() {
-        stack.value.pop();
+        const lastStack = stack.value[stack.value.length - 1]
+        lastStack.notVisible()
+        setTimeout(() => {
+            stack.value.pop()
+        }, 300)
     }
 
     return {

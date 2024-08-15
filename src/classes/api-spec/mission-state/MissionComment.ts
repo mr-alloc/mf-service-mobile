@@ -3,12 +3,14 @@ import CalendarDate from "@/classes/CalendarDate";
 export default class MissionComment {
 
     private readonly _id: number;
+    private readonly _discussionId: number
     private readonly _memberId: number;
     private readonly _content: string;
     private readonly _createdAt: CalendarDate;
 
-    constructor(id: number, memberId: number, content: string, createdAt: number) {
+    constructor(id: number, discussionId: number, memberId: number, content: string, createdAt: number) {
         this._id = id;
+        this._discussionId = discussionId
         this._memberId = memberId;
         this._content = content;
         this._createdAt = new CalendarDate(createdAt);
@@ -16,6 +18,10 @@ export default class MissionComment {
 
     get id(): number {
         return this._id;
+    }
+
+    get discussionId(): number {
+        return this._discussionId
     }
 
     get memberId(): number {
@@ -31,6 +37,6 @@ export default class MissionComment {
     }
 
     public static fromJson(json: any): MissionComment {
-        return new MissionComment(json.id, json.memberId, json.content, json.createdAt);
+        return new MissionComment(json.id, json.discussionId, json.memberId, json.content, json.createdAt)
     }
 }

@@ -1,4 +1,4 @@
-import type MissionComment from "@/classes/api-spec/MissionComment";
+import type MissionComment from '@/classes/api-spec/mission-state/MissionComment'
 
 export default class UserComments {
 

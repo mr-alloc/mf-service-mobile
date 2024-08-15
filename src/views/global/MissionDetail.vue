@@ -20,7 +20,9 @@
       </div>
     </div>
     <MarkdownTextarea v-if="state.detail" :content="state.detail?.description" />
-    <MissionComments v-if="state.detail" :mission="props.mission as CalendarWeekMission" :detail="state.detail"/>
+    <div class="float-discussions">
+      <SimpleIconButton button-name="토론" :click-behavior="methods.openDiscussion" :icon="['fas', 'comments']" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -46,9 +48,14 @@ import { useFamiliesViewStore } from '@/stores/FamiliesViewStore'
 import SelectImageOption from '@/classes/api-spec/SelectImageOption'
 import MarkdownTextarea from '@/components/global/MarkdownTextarea.vue'
 import { ex } from '@/utils/Undefinable'
+import SimpleIconButton from '@/components/global/SimpleIconButton.vue'
+import { useNavigateStackStore } from '@/stores/NavigateStackStore'
+import NavigateComponent from '@/classes/NavigateComponent'
+import type CalendarMission from '@/classes/CalendarMission'
 
 
 const emitter: any = inject("emitter");
+const navigateStackStore = useNavigateStackStore()
 const familiesViewStore = useFamiliesViewStore();
 const alertStore = useAlertStore();
 const props = defineProps<{
@@ -95,9 +102,8 @@ const methods = {
   },
   calcRemainTime(currentStatus: MissionStatus) {
     //카운트를 계속 계산해야 바뀜
-    console.log('calcRemainTime')
     methods.calcRemainSeconds();
-    if (state.remainSeconds <= 0) return;
+    if (state.remainSeconds <= 0 || currentStatus.code === MissionStatus.CREATED.code) return
     state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds);
     state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds)
 
@@ -117,7 +123,6 @@ const methods = {
     } else if (state.status === MissionStatus.COMPLETED.code) {
       state.spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
       state.remainSeconds = ex(state.detail?.deadline).num() - state.spentSeconds
-      console.log('remainSeconds', state.remainSeconds)
     } else if (state.status === MissionStatus.CREATED.code) {
       state.remainSeconds = ex(state.detail?.deadline).num();
     }
@@ -137,6 +142,13 @@ const methods = {
 
       methods.countRemainTime();
     });
+  },
+  openDiscussion(event: MouseEvent) {
+    const component = new NavigateComponent(ex(state.detail?.name).str(), 'MissionComments', {
+      timestamp: props.mission.startAt,
+      detail: state.detail
+    })
+    navigateStackStore.stackComponent(component)
   }
 }
 

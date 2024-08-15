@@ -41,6 +41,10 @@ export default class MissionType {
         return others.every(other => other.value !== this.value);
     }
 
+    valEqual(value: number) {
+        return this._value === value
+    }
+
     static fromValue(value: number): MissionType {
         return MissionType.CACHED.get(value) ?? MissionType.NONE;
     }

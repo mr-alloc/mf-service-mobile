@@ -1,4 +1,4 @@
-import MissionComment from "@/classes/api-spec/MissionComment";
+import MissionComment from '@/classes/api-spec/mission-state/MissionComment'
 
 export class ResponseBody {
     private readonly _comments: Array<MissionComment>;
@@ -12,6 +12,6 @@ export class ResponseBody {
     }
 
     public static fromJson(json: any): ResponseBody {
-        return new ResponseBody(json.comments.map((comment: any) => MissionComment.fromJson(comment)));
+        return new ResponseBody(json.comments.map(MissionComment.fromJson))
     }
 }

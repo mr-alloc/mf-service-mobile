@@ -34,6 +34,12 @@ export class Undefinable<T> {
     get(): force {
         return this._value!;
     }
+
+    to<V, R>(toFunction: (value: V) => R, defaultReturn: R) {
+
+        return this._value === undefined ? defaultReturn : toFunction(this._value as V)
+    }
+
 }
 
 export const ex = Undefinable.ex;

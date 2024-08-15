@@ -51,7 +51,7 @@
             </div>
           </div>
           <MissionStatusChanger :status="props.status" :detail="props.detail" :state-id="props.stateId"
-                                :start-stamp="props.stateTime" />
+                                :start-stamp="props.stateTime" v-if="MissionType.MISSION.valEqual(props.detail.type)" />
         </div>
       </Transition>
     </div>

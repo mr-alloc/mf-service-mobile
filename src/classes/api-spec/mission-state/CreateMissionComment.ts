@@ -1,4 +1,4 @@
-import MissionComment from "@/classes/api-spec/MissionComment";
+import MissionComment from '@/classes/api-spec/mission-state/MissionComment'
 
 export class RequestBody {
 

@@ -3,15 +3,16 @@
 import {reactive, ref} from "vue";
 
 const textarea = ref<HTMLTextAreaElement | null>(null);
-const props = defineProps({
-  label: String,
-  id: String,
-  name: String,
-  placeHolder: String,
-  isHold: Boolean,
-  defaultValue: String,
-  onInput: Function
-});
+const props = defineProps<{
+  label?: string,
+  id?: string,
+  name?: string,
+  placeHolder: string,
+  isHold?: boolean,
+  defaultValue?: string,
+  onInput: () => void,
+  isFixSize?: boolean
+}>()
 
 const state = reactive({
   value: props.defaultValue ?? ""
@@ -28,7 +29,7 @@ defineExpose({
     <div class="text-area-wrapper">
       <textarea class="blink-input" ref="textarea" :id="props.id" :name="props.name" :placeholder="props.placeHolder"
                 v-on:input="props.onInput" v-model="state.value"
-                :class="{ hold: props.isHold }"></textarea>
+                :class="{ hold: props.isHold, 'fix-size': props.isFixSize }"></textarea>
     </div>
   </div>
 </template>
@@ -43,6 +44,9 @@ defineExpose({
   justify-content: center;
 
   .text-area-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
 
     textarea {
       width: 100%;
@@ -53,6 +57,10 @@ defineExpose({
       font-size: .92rem;
       resize: vertical;
       background-color: white;
+    }
+
+    .fix-size {
+      resize: none;
     }
   }
 }

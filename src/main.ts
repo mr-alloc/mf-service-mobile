@@ -14,6 +14,7 @@ import MissionDetail from '@/views/global/MissionDetail.vue'
 import CreateAnniversary from '@/views/CreateAnniversary.vue'
 import CreateFamily from '@/components/global/CreateFamily.vue'
 import InviteFamily from '@/components/InviteFamily.vue'
+import MissionComments from '@/components/global/MissionComments.vue'
 
 const emitter = mitt();
 const app = createApp(App)
@@ -25,6 +26,7 @@ library.add(fas)
 
 app.component('CreateFamily', CreateFamily)
 app.component("CreateMission", CreateMission);
+app.component('MissionComments', MissionComments)
 app.component('InviteFamily', InviteFamily)
 app.component('CreateAnniversary', CreateAnniversary)
 app.component("MissionDetail", MissionDetail);

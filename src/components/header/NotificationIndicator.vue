@@ -18,8 +18,9 @@ import { useAlertStore } from '@/stores/AlertStore'
 .notification-indicator-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  padding: 0 10px;
 
   .icon-wrapper {
     display: flex;

@@ -17,6 +17,7 @@ import type { AxiosError } from 'axios'
 import RefreshToken from '@/views/RefreshToken.vue'
 import MemberProfile from '@/views/authorize/MemberProfile.vue'
 import AppSetting from '@/views/AppSetting.vue'
+import DiscussList from '@/views/DiscussionList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,7 @@ const router = createRouter({
     {path: '/sign-in', name: 'sign-in', component: SignIn, meta: {role: 0}},
     {path: '/sign-up', name: 'sign-up', component: SignUp, meta: {role: 0}},
     {path: '/calendar', name: 'calendar', component: MainCalendar, meta: {role: 1}},
+    { path: '/discuss', name: 'discuss', component: DiscussList, meta: { role: 1 } },
     {path: '/profile', name: 'profile', component: MemberProfile, meta: {role: 1}},
     {path: '/families', name: 'families', component: Families, meta: {role: 1}},
     { path: '/settings', name: 'settings', component: AppSetting, meta: { role: 1 } },
@@ -45,8 +47,12 @@ router.afterEach((to, from) => {
     case '/families':
       navigateMenuStore.state.activeFamiliesMenu = true;
       break;
-      case '/settings':
-          navigateMenuStore.state.activeSettingsMenu = true
+    case '/settings':
+      navigateMenuStore.state.activeSettingsMenu = true
+      break
+    case '/discuss':
+      navigateMenuStore.state.activeDiscussMenu = true
+      break
   }
 });
 
@@ -58,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
 
   const onlyForGuest = ['/sign-in', '/sign-up', '/refresh'];
 
-  console.debug(`${from.path} → ${to.path} [No Session: ${noAccessToken()} / No Member: ${memberInfoStore.needMemberInfo()}]`)
+  // console.debug(`${from.path} → ${to.path} [No Session: ${noAccessToken()} / No Member: ${memberInfoStore.needMemberInfo()}]`)
 
 
   //토큰 재발급 페이지
@@ -68,13 +74,13 @@ router.beforeEach(async (to, from, next) => {
 
   //로그인 정보가 없는 경우
   if (noAccessToken() && to.meta.role !== 0) {
-    console.debug('no access token')
+    // console.debug('no access token')
     return next({ path: '/sign-in' })
   }
 
   // 미로그인, 게스트일때만 들어갈수 있는 페이지 인경우
   if (!noAccessToken() && onlyForGuest.includes(to.path)) {
-    console.debug('not allow for signed in user')
+    // console.debug('not allow for signed in user')
     return next({ path: '/' })
   }
 
@@ -85,7 +91,7 @@ router.beforeEach(async (to, from, next) => {
 
   //로그인은 했지만, 멤버 정보가 없는경우.
   if (!noAccessToken() && memberInfoStore.needMemberInfo()) {
-    console.debug('call member info in router proxy')
+    // console.debug('call member info in router proxy')
     await call<any, any>(MemberAPI.GetInfo, null,
       (response) => {
         const {id, nickname, role, profileImageUrl} = response.data
@@ -115,7 +121,7 @@ router.beforeEach(async (to, from, next) => {
       return next({path: '/sign-in'})
     }
   }
-  console.debug('All pass router guard')
+  // console.debug('All pass router guard')
   return next()
 });
 

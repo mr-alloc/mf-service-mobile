@@ -36,8 +36,7 @@ const methods = {
         (response) => {
           const responseBody = ChangeFamilyMissionAttribute.ResponseBody.fromJson(response.data)
           const changed = responseBody.changed
-          const statusCode = changed.findStateById(props.stateId)?.status ?? 0
-          const status = MissionStatus.fromCode(statusCode)
+          const status = changed.getStatus(props.startStamp)
           switch (status) {
             case MissionStatus.IN_PROGRESS: {
               alertStore.guide('상태 변경', `미션이 시작되었습니다. 남은 시간 안에 완료할 수 있도록 노력하세요!`)

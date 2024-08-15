@@ -4,7 +4,7 @@
          :class="{ selected: navigateMenuStore.state.activeHomeMenu }">
       <button class="navigate-button">
         <div class="button-content">
-          <FontAwesomeIcon :icon="['fas', 'business-time']" class="fa-xl" />
+          <FontAwesomeIcon :icon="[navigateMenuStore.state.activeHomeMenu ? 'fas' : 'far', 'clock']" class="fa-xl" />
           <span class="menu-name">예정</span>
         </div>
       </button>
@@ -15,6 +15,16 @@
         <div class="button-content">
           <FontAwesomeIcon :icon="['fas', 'calendar-days']" class="fa-xl" />
           <span class="menu-name">일정</span>
+        </div>
+      </button>
+    </div>
+    <div class="navigate-button-wrapper" v-on:click="methods.moveTo('/discuss')"
+         :class="{ selected: navigateMenuStore.state.activeDiscussMenu }">
+      <button class="navigate-button">
+        <div class="button-content">
+          <FontAwesomeIcon :icon="[navigateMenuStore.state.activeDiscussMenu ? 'fas' : 'far', 'comments']"
+                           class="fa-xl" />
+          <span class="menu-name">토론</span>
         </div>
       </button>
     </div>
@@ -91,6 +101,7 @@ const methods = {
 
     &.selected {
       color: $text-signature-purple !important;
+      animation: bounce-in .3s;
     }
   }
 }

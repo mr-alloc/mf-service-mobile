@@ -30,6 +30,7 @@ function secondsToString(second: number, format: string): string {
 }
 
 function toKoreanString(second: number): string {
+
     const now = moment().utc(false).unix();
     const seconds = now - second;
 

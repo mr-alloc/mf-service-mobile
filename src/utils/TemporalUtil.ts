@@ -82,6 +82,11 @@ function toDateStr(timestamp: number) {
     return toLocalMoment(timestamp).format(DateUtil.DEFAULT_DATE_FORMAT);
 }
 
+function to(timestamp: number, format: string) {
+    return toLocalMoment(timestamp).format(format)
+}
+
+
 export default {
     SECONDS_IN_MINUTE,
     SECONDS_IN_HOUR,
@@ -97,5 +102,6 @@ export default {
     getLocalDaysArray,
     toUnix,
     toDateTimeStr,
-    toDateStr
+    toDateStr,
+    to
 }
