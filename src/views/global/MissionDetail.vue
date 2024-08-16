@@ -100,13 +100,15 @@ const methods = {
           });
     });
   },
+  updateSecondsDisplay() {
+    state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds)
+    state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds)
+  },
   calcRemainTime(currentStatus: MissionStatus) {
     //카운트를 계속 계산해야 바뀜
     methods.calcRemainSeconds();
     if (state.remainSeconds <= 0 || currentStatus.code === MissionStatus.CREATED.code) return
-    state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds);
-    state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds)
-
+    this.updateSecondsDisplay()
     state.timerId = setTimeout(() => methods.calcRemainTime(currentStatus), 1000)
     if (state.status === MissionStatus.COMPLETED.code) {
       clearTimeout(state.timerId)
@@ -126,6 +128,7 @@ const methods = {
     } else if (state.status === MissionStatus.CREATED.code) {
       state.remainSeconds = ex(state.detail?.deadline).num();
     }
+    this.updateSecondsDisplay()
   },
   countRemainTime() {
     const currentStatus = MissionStatus.fromCode(state.status);
