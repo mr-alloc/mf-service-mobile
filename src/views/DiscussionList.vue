@@ -157,7 +157,8 @@ onMounted(() => {
 
           .updated-text {
             flex-shrink: 0;
-            width: 40px;
+            width: 60px;
+            text-align: right;
           }
         }
       }

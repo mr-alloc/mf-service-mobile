@@ -181,12 +181,14 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   padding: 5px 10px;
+  height: 100%;
 
   .mission-information {
     display: flex;
     flex-direction: row;
     padding: 10px 0;
     border-bottom: 1px solid $standard-light-gray-in-white;
+    flex-shrink: 0;
 
     .schedule-text {
       padding: 3px 5px;
@@ -212,6 +214,7 @@ onMounted(() => {
     min-height: 200px;
     overflow-y: auto;
     padding: 10px 0;
+    flex-grow: 1;
 
     .no-comment-text {
       margin: 0 auto;
@@ -360,6 +363,7 @@ onMounted(() => {
   }
 
   .new-comment-area {
+    flex-shrink: 0;
 
     .comments-input {
       display: flex;

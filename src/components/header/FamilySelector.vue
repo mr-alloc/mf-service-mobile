@@ -87,7 +87,7 @@ onMounted(() => {
   margin: 5px 2px;
 
   .current-selected-item {
-    height: 35px;
+    height: 100%;
     padding: 3px 5px;
     transition: .2s;
     display: flex;

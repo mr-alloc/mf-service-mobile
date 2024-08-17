@@ -52,12 +52,15 @@ const navigateStackStore = useNavigateStackStore()
       height: 100%;
       width: 100%;
       position: absolute;
+      display: flex;
+      flex-direction: column;
 
       .panel-header {
         display: flex;
         flex-direction: row;
         width: 100%;
         height: 50px;
+        flex-shrink: 0;
         position: relative;
 
         .back-icon-area {
@@ -86,11 +89,16 @@ const navigateStackStore = useNavigateStackStore()
 
       .panel-body {
         overflow-y: scroll;
-        height: calc(100% - 90px);
+        flex-grow: 1;
       }
 
       .panel-footer {
-        height: 40px;
+        height: 80px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 10px 0;
 
       }
     }

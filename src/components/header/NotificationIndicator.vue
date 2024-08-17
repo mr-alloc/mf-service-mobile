@@ -1,8 +1,8 @@
 <template>
   <div class="notification-indicator-container">
     <div class="icon-wrapper">
-      <FontAwesomeIcon :icon="faBell" class="fa-2x" />
-      <span class="alert-count">1</span>
+      <FontAwesomeIcon :icon="faBell" class="fa-xl" />
+      <span class="alert-count">8</span>
     </div>
   </div>
 </template>

@@ -12,7 +12,8 @@
              v-for="day in DayOfWeek.values()" :key="day.value">{{ day.alias }}</div>
       </div>
       <Swiper :modules="swiperModules" class="calendar-swiper" @swiper="methods.getSwiperRef" @slideChange="methods.whenSlideChange">
-        <SwiperSlide class="calendar-swiper-slide" :key="month.unix()" v-for="(month, index) in state.months" :virtual-index="index">
+        <SwiperSlide class="calendar-swiper-slide" :key="month.unix()"
+                     v-for="(month, index) in state.months" :virtual-index="index">
           <CalendarMonth :month="month"/>
         </SwiperSlide>
       </Swiper>
