@@ -227,14 +227,12 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    padding: 20px 0;
+    padding-top: 20px;
     flex-grow: 1;
 
     .daily-comments-group {
       padding: 20px 0;
       position: relative;
-      flex-grow: 1;
-      margin: 10px 0;
 
       .daily-group-time {
         background-color: $standard-weight-gray-in-white;
@@ -281,7 +279,7 @@ onMounted(() => {
             width: 100%;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            //overflow: hidden;
 
             .balloon-item {
               padding: 2px 0;
@@ -356,15 +354,22 @@ onMounted(() => {
               justify-content: center;
               align-items: flex-end;
 
+              .balloon-item {
+                position: relative;
 
-              .comment-text {
-                background-color: $standard-dark-gray-in-white;
-                color: white;
-                transition: $duration;
+                .comment-text {
+                  background-color: $soft-green;
+                  color: white;
+                  transition: $duration;
+
+                }
               }
 
+
               &.more-than-two {
+
                 .balloon-item {
+
                   .comment-text {
                     border-radius: 10px 3px 3px 10px;
                   }
