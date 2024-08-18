@@ -1,3 +1,5 @@
+import Pair from '@/classes/Pair'
+
 export default {
     toMap<K, T>(list: Array<T>, keyMapper: (t: T) => K): Map<K, T> {
         const map = new Map<K, T>();
@@ -38,4 +40,8 @@ export default {
         });
         return result;
     },
+    toPairs<K, V>(dailyComments: Map<K, V>): Array<Pair<K, V>> {
+        const entries = [...dailyComments.entries()]
+        return entries.map(([key, value]) => Pair.of(key, value))
+    }
 }

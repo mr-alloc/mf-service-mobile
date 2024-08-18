@@ -123,8 +123,11 @@ const methods = {
       state.remainSeconds = expectedDeadline <= timestamp ? 0 : expectedDeadline - timestamp;
       state.remainSeconds === 0 && (state.remainTimeStr = '만료')
     } else if (state.status === MissionStatus.COMPLETED.code) {
-      state.spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
-      state.remainSeconds = ex(state.detail?.deadline).num() - state.spentSeconds
+      const spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
+      const deadline = ex(state.detail?.deadline).num()
+      state.spentSeconds = spentSeconds > deadline ? deadline : spentSeconds
+      const remainSeconds = deadline - state.spentSeconds
+      state.remainSeconds = remainSeconds < 0 ? 0 : remainSeconds
     } else if (state.status === MissionStatus.CREATED.code) {
       state.remainSeconds = ex(state.detail?.deadline).num();
     }

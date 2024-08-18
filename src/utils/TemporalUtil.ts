@@ -24,7 +24,6 @@ function secondsToTimeStr(remainSeconds: number, ignoreSeconds?: boolean) {
     const isNegative = remainSeconds < 0;
     const days = Math.floor(absRemainSeconds / SECONDS_IN_DAY);
     absRemainSeconds -= days * SECONDS_IN_DAY;
-    const hasSecondsMod = absRemainSeconds > 0;
     const hours = Math.floor(absRemainSeconds / SECONDS_IN_HOUR);
     absRemainSeconds -= hours * SECONDS_IN_HOUR;
     const minutes = Math.floor(absRemainSeconds / SECONDS_IN_MINUTE);
@@ -39,7 +38,7 @@ function secondsToTimeStr(remainSeconds: number, ignoreSeconds?: boolean) {
     const second = String(`${seconds}`).padStart(2, "0");
 
     const dayPrefix = negativeStr + daysStr;
-    const timeSuffix = hasSecondsMod
+    const timeSuffix = ignoreSeconds
         ? [hour, minute, second].filter((temporal, idx) => !ignoreSeconds || (ignoreSeconds && idx !== 2)).join(":")
         : "00:00";
     return dayPrefix + timeSuffix;

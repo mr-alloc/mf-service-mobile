@@ -55,11 +55,11 @@ const props = defineProps<{
 
 
     &.completed {
-      background-color: $soft-orange;
-      border: 1px solid #c17137;
+      background-color: $super-light-signature-purple;
+      border: 1px solid $signature-purple;
 
       .status-alias {
-        color: $soft-dark;
+        color: $signature-purple;
       }
     }
 

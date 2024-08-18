@@ -13,7 +13,8 @@
       </div>
       <Swiper :modules="swiperModules" class="calendar-swiper" @swiper="methods.getSwiperRef" @slideChange="methods.whenSlideChange">
         <SwiperSlide class="calendar-swiper-slide" :key="month.unix()"
-                     v-for="(month, index) in state.months" :virtual-index="index">
+                     v-for="(month, index) in state.months" :virtual-index="index"
+        >
           <CalendarMonth :month="month"/>
         </SwiperSlide>
       </Swiper>
@@ -79,6 +80,7 @@ const methods = {
     const lastIndex = state.months.length -1;
     state.monthTitle = activeMonth.format("YYYY년 MM월");
 
+
     //맨앞에 한개 추가
     if (active === 0) {
       const firstMonth = state.months[0];
@@ -89,6 +91,7 @@ const methods = {
       const lastMonth = state.months[lastIndex]
       state.months.push(lastMonth.clone().add(1, 'month'));
     }
+
   },
   resetComponent() {
     calendarStore.resetSelected();

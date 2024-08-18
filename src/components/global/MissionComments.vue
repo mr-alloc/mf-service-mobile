@@ -5,30 +5,37 @@
       <MissionStatusIndicator :status="props.detail.getStatus(props.timestamp)" :type="props.detail.type" />
       <span class="schedule-text">{{ TemporalUtil.to(props.timestamp, 'MM월 DD일') }} 일정</span>
     </div>
-    <TransitionGroup name="fade" tag="ul" class="comments-wrapper">
-      <li v-show="state.comments.length === 0" class="no-comment-text" :key="0">작성된 의견이 없습니다.</li>
-      <li class="comment-item" :class="{ me: memberInfoStore.memberInfo.id === comment.memberId }"
-          v-for="(comment, index) in state.comments"
-          :key="index">
-        <div class="chatting-balloons-layer">
-          <ImageNicknamePair v-if="memberInfoStore.memberInfo.id !== comment.memberId"
-                             :option="methods.getMemberInfo(comment.memberId)"/>
-          <TransitionGroup tag="ul" class="text-balloons" :class="{
+    <div class="comments-wrapper">
+      <ul class="daily-comments-group none" v-if="state.comments.length === 0">
+        <li class="no-comment-text" :key="0">작성된 의견이 없습니다.</li>
+      </ul>
+      <TransitionGroup name="fade" tag="ul" class="daily-comments-group" v-for="pair in state.comments"
+                       :key="pair.left">
+        <span class="daily-group-time">{{ TemporalUtil.to(pair.left, 'YYYY년 MM월 DD일') }}</span>
+        <li class="comment-item" :class="{ me: memberInfoStore.memberInfo.id === comment.memberId }"
+            v-for="(comment, index) in pair.right"
+            :key="index">
+          <div class="chatting-balloons-layer">
+            <ImageNicknamePair v-if="memberInfoStore.memberInfo.id !== comment.memberId"
+                               :option="methods.getMemberInfo(comment.memberId)" />
+            <TransitionGroup tag="ul" class="text-balloons" :class="{
             one: comment.comments.length === 1,
             'more-than-two': comment.comments.length >= 2
           }">
-            <li class="balloon-item" v-show="commentText" v-for="(commentText, index) in comment.comments" :key="index">
-              <span class="comment-text">{{ commentText.content }}</span>
-            </li>
-          </TransitionGroup>
-          <div class="time-area">
+              <li class="balloon-item" v-show="commentText" v-for="(commentText, index) in comment.comments"
+                  :key="index">
+                <span class="comment-text">{{ commentText.content }}</span>
+              </li>
+            </TransitionGroup>
+            <div class="time-area">
             <span class="time-text">{{
                 `${TemporalUtil.secondsToTimeStr((comment.minuteAsSecond + TemporalUtil.getOffsetSecond()) % TemporalUtil.SECONDS_IN_DAY, true)}`
               }}</span>
+            </div>
           </div>
-        </div>
-      </li>
-    </TransitionGroup>
+        </li>
+      </TransitionGroup>
+    </div>
     <div class="new-comment-area">
       <ImageNicknamePair :option="state.currentMember as SelectImageOption"/>
       <div class="comments-input">
@@ -77,11 +84,13 @@ import * as GetComments from "@/classes/api-spec/mission-state/GetComments";
 import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
 import UserComments from "@/classes/UserComments";
 import TemporalUtil from "../../utils/TemporalUtil";
-import MissionStatus from '@/constant/MissionStatus'
 import { ex } from '@/utils/Undefinable'
 import ScheduleModeIndicator from '@/components/global/ScheduleModeIndicator.vue'
 import MissionStatusIndicator from '@/components/global/MissionStatusIndicator.vue'
-import { height } from '@fortawesome/free-regular-svg-icons/faRectangleXmark'
+import CollectionUtil from '@/utils/CollectionUtil'
+import TemporalUnit from '@/constant/TemporalUnit'
+import type Pair from '@/classes/Pair'
+import { comment } from 'postcss'
 
 const ownFamiliesStore = useOwnFamiliesStore();
 const familiesViewStore = useFamiliesViewStore();
@@ -95,9 +104,8 @@ const props = defineProps<{
 const state = reactive({
   currentMember: SelectImageOption.ofDefault(),
   isSubmittable: false,
-  comments: [] as Array<UserComments>,
+  comments: [] as Array<Pair<number, Array<UserComments>>>,
   notFoundUserOption: SelectImageOption.of(0, "알수없는 유저", LocalAsset.DEFAULT_NO_IMAGE),
-  commentGroup: new Map<string, Map<number, MissionComment []>>(),
   stateId: props.detail.states.find((state) => state.startAt === props.timestamp)?.id ?? 0
 });
 const methods = {
@@ -141,32 +149,39 @@ const methods = {
     }
     call<any, GetComments.ResponseBody>(MissionState.GetComments, requestBody, (response) => {
       const responseBody = GetComments.ResponseBody.fromJson(response.data);
-      state.comments = responseBody.comments.sort((a, b) => a.createdAt.timestamp - b.createdAt.timestamp)
-          .reduce((users, comment) => {
-            const modular = comment.createdAt.timestamp % 60;
-            const minuteAsComment = comment.createdAt.timestamp - modular;
-            if (users.length === 0) {
-              users.push(new UserComments(comment.memberId, minuteAsComment, [comment]));
-              return users;
-            }
-            //멤버도 같고 같은 분단위이라면 넣는다.
-            const lastComments = users[users.length - 1];
-            if (lastComments.memberId === comment.memberId && lastComments.minuteAsSecond === minuteAsComment) {
-              lastComments.comments.push(comment);
-              return users;
-            }
+      //일단위로 코멘트 묶기
+      const dailyComments = CollectionUtil.groupingAndThen(
+        responseBody.comments.sort((a, b) => a.createdAt.timestamp - b.createdAt.timestamp),
+        (comment) => comment.createdAt.value.startOf('day').unix() - TemporalUtil.getOffsetSecond(),
+        comments => this.divideByMinute(comments)
+      )
 
-            //다른 멤버라면 새로운 유저를 추가한다.
-            if (lastComments.memberId !== comment.memberId || lastComments.minuteAsSecond !== minuteAsComment) {
-              users.push(new UserComments(comment.memberId, minuteAsComment, [comment]));
-              return users;
-            }
-
-            return users;
-          }, new Array<UserComments>);
-
-
+      state.comments = CollectionUtil.toPairs(dailyComments).sort((a, b) => a.left - b.left)
     });
+  },
+  divideByMinute(comments: Array<MissionComment>) {
+    return comments.reduce((users, comment) => {
+      const modular = comment.createdAt.timestamp % 60
+      const minuteAsComment = comment.createdAt.timestamp - modular
+      if (users.length === 0) {
+        users.push(new UserComments(comment.memberId, minuteAsComment, [comment]))
+        return users
+      }
+      //멤버도 같고 같은 분단위이라면 넣는다.
+      const lastComments = users[users.length - 1]
+      if (lastComments.memberId === comment.memberId && lastComments.minuteAsSecond === minuteAsComment) {
+        lastComments.comments.push(comment)
+        return users
+      }
+
+      //다른 멤버라면 새로운 유저를 추가한다.
+      if (lastComments.memberId !== comment.memberId || lastComments.minuteAsSecond !== minuteAsComment) {
+        users.push(new UserComments(comment.memberId, minuteAsComment, [comment]))
+        return users
+      }
+
+      return users
+    }, new Array<UserComments>)
   }
 }
 onMounted(() => {
@@ -213,137 +228,104 @@ onMounted(() => {
     flex-direction: column;
     min-height: 200px;
     overflow-y: auto;
-    padding: 10px 0;
+    padding: 20px 0;
     flex-grow: 1;
 
-    .no-comment-text {
-      margin: 0 auto;
-      padding: 5px 10px;
-      display: inline-block;
-      font-weight: bold;
-      font-size: .84rem;
-      line-height: 1;
-      border-radius: 15px;
-      color: $standard-dark-gray-in-white;
-      background-color: $standard-light-gray-in-white;
-      user-select: none;
-    }
-
-    .comment-item {
-      display: flex;
-      align-items: flex-start;
-      padding: 2px 10px;
+    .daily-comments-group {
+      border-top: 1px solid $standard-gray-in-white;
+      padding: 20px 0;
       position: relative;
-      justify-content: flex-start;
-      flex-direction: row;
+      display: flex;
 
-      .chatting-balloons-layer {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        width: 100%;
-
-        .text-balloons {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-
-          .balloon-item {
-            padding: 2px 0;
-
-            .comment-text {
-              padding: 5px 10px;
-              font-size: .92rem;
-              line-height: 1.2;
-              background-color: $standard-light-gray-in-white;
-              color: $standard-clean-black;
-              max-width: 200px;
-              width: max-content;
-              white-space: pre-wrap;
-              word-break: break-all;
-              overflow-wrap: break-word; /* 내용이 넘칠 경우 줄바꿈 */
-
-              display: inline-block;
-              margin-left: 25px;
-            }
-          }
-
-          &.one {
-            .balloon-item {
-              .comment-text {
-                border-radius: 10px;
-              }
-            }
-          }
-
-          &.more-than-two {
-            .balloon-item {
-              .comment-text {
-                border-radius: 3px 10px 10px 3px;
-              }
-
-              &:first-child {
-                .comment-text {
-                  border-radius: 10px 10px 10px 3px;
-                }
-              }
-
-              &:last-child {
-                .comment-text {
-                  border-radius: 3px 10px 10px 10px;
-                }
-              }
-            }
-          }
-        }
-
-        .time-area {
-          display: flex;
-          justify-content: flex-start;
-
-          .time-text {
-            width: 100%;
-            font-size: .64rem;
-            align-items: flex-end;
-            padding: 0 5px;
-            margin-left: 25px;
-          }
-        }
+      .daily-group-time {
+        background-color: $standard-weight-gray-in-white;
+        border-radius: 15px;
+        color: white;
+        font-size: .64rem;
+        font-weight: bold;
+        padding: 2px 5px;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translate(-50%, 50%);
       }
 
+      .no-comment-text {
+        margin: 0 auto;
+        padding: 5px 10px;
+        display: inline-block;
+        font-weight: bold;
+        font-size: .84rem;
+        line-height: 1;
+        border-radius: 15px;
+        color: $standard-dark-gray-in-white;
+        background-color: $standard-light-gray-in-white;
+        user-select: none;
+      }
 
-      &.me {
-        justify-content: flex-end;
+      .comment-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 2px 10px;
+        position: relative;
+        justify-content: flex-start;
+        flex-direction: row;
 
         .chatting-balloons-layer {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          width: 100%;
 
           .text-balloons {
-            justify-content: center;
-            align-items: flex-end;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
 
+            .balloon-item {
+              padding: 2px 0;
 
-            .comment-text {
-              background-color: $standard-dark-gray-in-white;
-              color: white;
-              transition: $duration;
+              .comment-text {
+                padding: 5px 10px;
+                font-size: .92rem;
+                line-height: 1.2;
+                background-color: $standard-light-gray-in-white;
+                color: $standard-clean-black;
+                max-width: 200px;
+                width: max-content;
+                white-space: pre-wrap;
+                word-break: break-all;
+                overflow-wrap: break-word; /* 내용이 넘칠 경우 줄바꿈 */
+
+                display: inline-block;
+                margin-left: 25px;
+              }
+            }
+
+            &.one {
+              .balloon-item {
+                .comment-text {
+                  border-radius: 10px;
+                }
+              }
             }
 
             &.more-than-two {
               .balloon-item {
                 .comment-text {
-                  border-radius: 10px 3px 3px 10px;
+                  border-radius: 3px 10px 10px 3px;
                 }
 
                 &:first-child {
                   .comment-text {
-                    border-radius: 10px 10px 3px 10px;
+                    border-radius: 10px 10px 10px 3px;
                   }
                 }
 
                 &:last-child {
                   .comment-text {
-                    border-radius: 10px 3px 10px 10px;
+                    border-radius: 3px 10px 10px 10px;
                   }
                 }
               }
@@ -351,14 +333,72 @@ onMounted(() => {
           }
 
           .time-area {
-            justify-content: flex-end;
+            display: flex;
+            justify-content: flex-start;
 
             .time-text {
-              text-align: right;
+              width: 100%;
+              font-size: .64rem;
+              align-items: flex-end;
+              padding: 0 5px;
+              margin-left: 25px;
+            }
+          }
+        }
+
+
+        &.me {
+          justify-content: flex-end;
+
+          .chatting-balloons-layer {
+
+            .text-balloons {
+              justify-content: center;
+              align-items: flex-end;
+
+
+              .comment-text {
+                background-color: $standard-dark-gray-in-white;
+                color: white;
+                transition: $duration;
+              }
+
+              &.more-than-two {
+                .balloon-item {
+                  .comment-text {
+                    border-radius: 10px 3px 3px 10px;
+                  }
+
+                  &:first-child {
+                    .comment-text {
+                      border-radius: 10px 10px 3px 10px;
+                    }
+                  }
+
+                  &:last-child {
+                    .comment-text {
+                      border-radius: 10px 3px 10px 10px;
+                    }
+                  }
+                }
+              }
+            }
+
+            .time-area {
+              justify-content: flex-end;
+
+              .time-text {
+                text-align: right;
+              }
             }
           }
         }
       }
+    }
+
+    .none {
+      border: none;
+      padding: 0;
     }
   }
 
