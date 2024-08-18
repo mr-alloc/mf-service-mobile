@@ -226,16 +226,15 @@ onMounted(() => {
   .comments-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 200px;
     overflow-y: auto;
     padding: 20px 0;
     flex-grow: 1;
 
     .daily-comments-group {
-      border-top: 1px solid $standard-gray-in-white;
       padding: 20px 0;
       position: relative;
-      display: flex;
+      flex-grow: 1;
+      margin: 10px 0;
 
       .daily-group-time {
         background-color: $standard-weight-gray-in-white;
@@ -243,11 +242,12 @@ onMounted(() => {
         color: white;
         font-size: .64rem;
         font-weight: bold;
-        padding: 2px 5px;
+        padding: 2px 8px;
         position: absolute;
         top: -20px;
         left: 50%;
         transform: translate(-50%, 50%);
+        z-index: 1;
       }
 
       .no-comment-text {
