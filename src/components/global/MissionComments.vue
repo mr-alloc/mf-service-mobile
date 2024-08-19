@@ -5,12 +5,12 @@
       <MissionStatusIndicator :status="props.detail.getStatus(props.timestamp)" :type="props.detail.type" />
       <span class="schedule-text">{{ TemporalUtil.to(props.timestamp, 'MM월 DD일') }} 일정</span>
     </div>
-    <div class="comments-wrapper">
+    <div class="comments-wrapper" ref="messageContainer">
       <ul class="daily-comments-group none" v-if="state.comments.length === 0">
         <li class="no-comment-text" :key="0">작성된 의견이 없습니다.</li>
       </ul>
-      <TransitionGroup name="fade" tag="ul" class="daily-comments-group" v-for="pair in state.comments"
-                       :key="pair.left">
+      <TransitionGroup name="fade" tag="ul" class="daily-comments-group" v-for="(pair, index) in state.comments"
+                       :key="index">
         <span class="daily-group-time">{{ TemporalUtil.to(pair.left, 'YYYY년 MM월 DD일') }}</span>
         <li class="comment-item" :class="{ me: memberInfoStore.memberInfo.id === comment.memberId }"
             v-for="(comment, index) in pair.right"
@@ -19,9 +19,9 @@
             <ImageNicknamePair v-if="memberInfoStore.memberInfo.id !== comment.memberId"
                                :option="methods.getMemberInfo(comment.memberId)" />
             <TransitionGroup tag="ul" class="text-balloons" :class="{
-            one: comment.comments.length === 1,
-            'more-than-two': comment.comments.length >= 2
-          }">
+              one: comment.comments.length === 1,
+              'more-than-two': comment.comments.length >= 2
+            }">
               <li class="balloon-item" v-show="commentText" v-for="(commentText, index) in comment.comments"
                   :key="index">
                 <span class="comment-text">{{ commentText.content }}</span>
@@ -29,7 +29,7 @@
             </TransitionGroup>
             <div class="time-area">
             <span class="time-text">{{
-                `${TemporalUtil.secondsToTimeStr((comment.minuteAsSecond + TemporalUtil.getOffsetSecond()) % TemporalUtil.SECONDS_IN_DAY, true)}`
+                `${TemporalUtil.secondsToTimeStr((comment.minuteAsSecond + TemporalUtil.getOffsetSecond()) % TemporalUtil.SECONDS_IN_DAY, true, false)}`
               }}</span>
             </div>
           </div>
@@ -67,7 +67,7 @@
 
 import {useProfileMemberStore} from "@/stores/ProfileMemberStore";
 import SelectImageOption from "@/classes/api-spec/SelectImageOption";
-import {onMounted, reactive, ref} from "vue";
+import { inject, onMounted, onUnmounted, reactive, ref } from 'vue'
 import ImageNicknamePair from "@/components/global/ImageNicknamePair.vue";
 import BlinkTextArea from "@/components/global/BlinkTextArea.vue";
 import SimpleButton from "@/components/global/SimpleButton.vue";
@@ -91,12 +91,15 @@ import CollectionUtil from '@/utils/CollectionUtil'
 import TemporalUnit from '@/constant/TemporalUnit'
 import type Pair from '@/classes/Pair'
 import { comment } from 'postcss'
+import { useThrottleFn } from '@vueuse/core'
 
+const messageContainer = ref<HTMLDivElement | null>(null)
 const ownFamiliesStore = useOwnFamiliesStore();
 const familiesViewStore = useFamiliesViewStore();
 const memberInfoStore = useMemberInfoStore();
 const profileMemberStore = useProfileMemberStore();
 const commentInput = ref<GetStringValueExpose | null>(null);
+const emitter: any = inject('emitter')
 const props = defineProps<{
   timestamp: number,
   detail: MissionDetail
@@ -117,7 +120,7 @@ const methods = {
     }
     state.isSubmittable = false;
   },
-  submitComment() {
+  submitComment: useThrottleFn(() => {
     const comment = commentInput.value?.getValue() ?? "";
     if (comment.length === 0) {
       return;
@@ -130,10 +133,11 @@ const methods = {
       const responseBody = ResponseBody.fromJson(response.data);
       const textArea = commentInput.value?.getInput() as HTMLTextAreaElement;
       textArea.value = "";
+      state.isSubmittable = false
       state.stateId = ex(props.detail.findState(props.timestamp)?.id).num()
       methods.fetchComments();
     });
-  },
+  }),
   getMemberInfo(memberId: number): SelectImageOption {
     if (ownFamiliesStore.hasSelectFamily) {
       const found = familiesViewStore.members.find((member) => member.id === memberId);
@@ -187,6 +191,14 @@ const methods = {
 onMounted(() => {
   state.currentMember = SelectImageOption.ofProfileMember(profileMemberStore.profileMember);
   methods.fetchComments();
+  const container = messageContainer.value!
+  container?.scrollTo({
+    top: container?.offsetHeight
+  })
+});
+
+onUnmounted(() => {
+  emitter.emit('fetchDiscussions')
 })
 </script>
 <style scoped lang="scss">
@@ -295,6 +307,7 @@ onMounted(() => {
                 white-space: pre-wrap;
                 word-break: break-all;
                 overflow-wrap: break-word; /* 내용이 넘칠 경우 줄바꿈 */
+                user-select: text;
 
                 display: inline-block;
                 margin-left: 25px;

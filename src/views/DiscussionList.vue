@@ -27,7 +27,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { inject, onMounted, reactive } from 'vue'
 import { call } from '@/utils/NetworkUtil'
 import MissionState from '@/constant/api-meta/MissionState'
 import { ResponseBody } from '@/classes/api-spec/mission-state/GetDiscussions'
@@ -40,10 +40,12 @@ import NavigateComponent from '@/classes/NavigateComponent'
 import { ex } from '@/utils/Undefinable'
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 
+
 const navigateStackStore = useNavigateStackStore()
+const emitter: any = inject('emitter')
 const state = reactive({
   discussions: new Array<Discussion>()
-})
+});
 const methods = {
   fetchDiscussions() {
     call<any, ResponseBody>(MissionState.GetDiscussions, null, (response) => {
@@ -65,6 +67,10 @@ const methods = {
 }
 onMounted(() => {
   methods.fetchDiscussions()
+
+  emitter.on('fetchDiscussions', () => {
+    methods.fetchDiscussions()
+  })
 })
 </script>
 <style scoped lang="scss">

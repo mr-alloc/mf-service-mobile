@@ -1,5 +1,18 @@
 <template>
   <div class="main-index-container">
+    <div class="page-header">
+      <ul class="feature-option-group">
+        <li class="switch-all-schedule">
+          <div class="feature-name">
+            <span class="name-text">패밀리 일정</span>
+          </div>
+          <SwitchButton :default="state.switchStatus" :switch="() => {
+            useAlertStore().info('일정 필터사용', '아직 준비중인 기능에요!');
+            return state.switchStatus = !state.switchStatus;
+          }" />
+        </li>
+      </ul>
+    </div>
     <Transition name="fade">
       <div class="empty-schedule-indicator" v-show="state.missions.length === 0">
         <span class="empty-text">당분간 예정된 일정이 없어요.</span>
@@ -40,12 +53,15 @@ import MissionStatusIndicator from '@/components/global/MissionStatusIndicator.v
 import ScheduleModeIndicator from '@/components/global/ScheduleModeIndicator.vue'
 import type ScheduleValue from '@/classes/api-spec/ScheduleValue'
 import TemporalUnit from '@/constant/TemporalUnit'
+import SwitchButton from '@/components/global/SwitchButton.vue'
+import { useAlertStore } from '@/stores/AlertStore'
 
 const emitter: any = inject('emitter')
 const state = reactive({
   details: new Map<number, MissionDetail>,
   missions: new Array<CalendarMission>,
-  stateMap: new Map<number, Map<number, MissionState>>
+  stateMap: new Map<number, Map<number, MissionState>>,
+  switchStatus: false
 })
 const methods = {
   fetchComingMissions() {
@@ -93,7 +109,30 @@ onMounted(() => {
 @import "@assets/main";
 
 .main-index-container {
-  padding: 8px 10px;
+  padding: 0 10px;
+
+  .page-header {
+    padding: 10px 0;
+
+    .feature-option-group {
+      display: flex;
+
+      .switch-all-schedule {
+
+        .feature-name {
+          height: 20px;
+          display: flex;
+          align-items: center;
+
+          .name-text {
+            font-size: .64rem;
+            font-weight: bold;
+          }
+        }
+
+      }
+    }
+  }
 
   .empty-schedule-indicator {
     background-color: $standard-gray-in-white;

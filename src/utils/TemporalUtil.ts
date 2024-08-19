@@ -19,8 +19,13 @@ function isAfterNoon(seconds: number): boolean {
     return seconds >= SECONDS_IN_HOUR * 12;
 }
 
-function secondsToTimeStr(remainSeconds: number, ignoreSeconds?: boolean) {
+function secondsToTimeStr(remainSeconds: number, ignoreSeconds?: boolean, needOperator?: boolean) {
     let absRemainSeconds = Math.abs(remainSeconds);
+    if (absRemainSeconds === 0) {
+        return '00:00' + (ignoreSeconds ? '' : ':00')
+    }
+
+
     const isNegative = remainSeconds < 0;
     const days = Math.floor(absRemainSeconds / SECONDS_IN_DAY);
     absRemainSeconds -= days * SECONDS_IN_DAY;
@@ -30,18 +35,14 @@ function secondsToTimeStr(remainSeconds: number, ignoreSeconds?: boolean) {
     absRemainSeconds -= minutes * SECONDS_IN_MINUTE;
     const seconds = absRemainSeconds;
 
-
-    const negativeStr = isNegative ? "-" : "";
     const daysStr = days > 0 ? days + "일 " : "";
     const hour = String(`${hours}`).padStart(2, "0");
     const minute = String(`${minutes}`).padStart(2, "0");
     const second = String(`${seconds}`).padStart(2, "0");
 
-    const dayPrefix = negativeStr + daysStr;
-    const timeSuffix = ignoreSeconds
-        ? [hour, minute, second].filter((temporal, idx) => !ignoreSeconds || (ignoreSeconds && idx !== 2)).join(":")
-        : "00:00";
-    return dayPrefix + timeSuffix;
+    const operator = needOperator ? (isNegative ? '-' : '+') : ''
+    const timeSuffix = [hour, minute, second].filter((temporal, idx) => !ignoreSeconds || (ignoreSeconds && idx !== 2)).join(':')
+    return operator + daysStr + timeSuffix
 }
 
 function toMoment(timestamp: number, isLocalTime: boolean) {

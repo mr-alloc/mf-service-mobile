@@ -13,7 +13,7 @@
           competed: MissionStatus.COMPLETED.code === state.status,
         }">남은 시간</span>
         <span class="remain-time">{{ state.remainTimeStr }}</span>
-        <span v-if="state.spentSeconds > 0" class="saved-time">(+{{ state.spentSecondsStr }})</span>
+        <span v-if="state.spentSeconds > 0" class="saved-time">({{ state.spentSecondsStr }})</span>
       </div>
       <div class="fuse-wire-wrapper">
         <span class="progress-fuse-wire"></span>
@@ -101,8 +101,8 @@ const methods = {
     });
   },
   updateSecondsDisplay() {
-    state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds)
-    state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds)
+    state.remainTimeStr = TemporalUtil.secondsToTimeStr(state.remainSeconds, false, true)
+    state.spentSecondsStr = TemporalUtil.secondsToTimeStr(state.spentSeconds, false, true)
   },
   calcRemainTime(currentStatus: MissionStatus) {
     //카운트를 계속 계산해야 바뀜
@@ -119,17 +119,19 @@ const methods = {
     const expectedDeadline = ex(currentState?.concreteStartAt).num() + ex(state.detail?.deadline).num()
     const timestamp = TemporalUtil.getEpochSecond(false)
 
-    if (state.status === MissionStatus.IN_PROGRESS.code) {
+    if (state.status === MissionStatus.CREATED.code) {
+      state.remainSeconds = ex(state.detail?.deadline).num()
+    } else if (state.status === MissionStatus.IN_PROGRESS.code) {
       state.remainSeconds = expectedDeadline <= timestamp ? 0 : expectedDeadline - timestamp;
       state.remainSeconds === 0 && (state.remainTimeStr = '만료')
     } else if (state.status === MissionStatus.COMPLETED.code) {
       const spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
       const deadline = ex(state.detail?.deadline).num()
+      console.log('spentSeconds:', spentSeconds)
+      console.log('deadline:', deadline)
       state.spentSeconds = spentSeconds > deadline ? deadline : spentSeconds
       const remainSeconds = deadline - state.spentSeconds
       state.remainSeconds = remainSeconds < 0 ? 0 : remainSeconds
-    } else if (state.status === MissionStatus.CREATED.code) {
-      state.remainSeconds = ex(state.detail?.deadline).num();
     }
     this.updateSecondsDisplay()
   },
