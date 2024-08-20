@@ -9,7 +9,7 @@
       <ul class="daily-comments-group none" v-if="state.comments.length === 0">
         <li class="no-comment-text" :key="0">작성된 의견이 없습니다.</li>
       </ul>
-      <TransitionGroup name="fade" tag="ul" class="daily-comments-group" v-for="(pair, index) in state.comments"
+      <TransitionGroup name="down-fade" tag="ul" class="daily-comments-group" v-for="(pair, index) in state.comments"
                        :key="index">
         <span class="daily-group-time">{{ TemporalUtil.to(pair.left, 'YYYY년 MM월 DD일') }}</span>
         <li class="comment-item" :class="{ me: memberInfoStore.memberInfo.id === comment.memberId }"
@@ -431,6 +431,28 @@ onUnmounted(() => {
 
       .blink-textarea-container:first-child {
         display: flex;
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .mission-comments-container {
+    .mission-information {
+      border-bottom: 1px solid $dark-mode-border;
+
+      .schedule-text {
+        color: $standard-gray-in-white;
+      }
+    }
+
+    .comments-wrapper {
+
+      .daily-comments-group {
+
+        .daily-group-time {
+          background-color: $standard-dark-gray-in-white;
+        }
       }
     }
   }

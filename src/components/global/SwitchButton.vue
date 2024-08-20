@@ -69,4 +69,13 @@ const methods = {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .classic-switch {
+    background-color: $dark-mode-panel;
+
+    .switch-ball {
+      background-color: $dark-mode-edge;
+    }
+  }
+}
 </style>

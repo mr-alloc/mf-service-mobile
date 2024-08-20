@@ -64,4 +64,15 @@ defineExpose({
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .blink-textarea-container {
+    .text-area-wrapper {
+      textarea {
+        background-color: $dark-mode-panel;
+        color: $standard-gray-in-white;
+      }
+    }
+  }
+}
 </style>

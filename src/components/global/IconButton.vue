@@ -40,4 +40,15 @@ const methods = {
 
   }
 }
+
+@media (prefers-color-scheme: dark) {
+
+  .icon-button-container {
+
+    .icon-button {
+      background-color: $dark-mode-panel;
+      border: 1px solid $dark-mode-border;
+    }
+  }
+}
 </style>

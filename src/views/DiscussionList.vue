@@ -132,13 +132,13 @@ onMounted(() => {
 
       .content-wrapper {
         flex-grow: 1;
-        padding: 5px 10px;
+        padding: 8px 10px;
         display: flex;
         flex-direction: column;
         height: 100%;
 
         .discussion-information {
-          height: 35px;
+          height: 20px;
           flex-shrink: 0;
           display: flex;
           align-items: center;

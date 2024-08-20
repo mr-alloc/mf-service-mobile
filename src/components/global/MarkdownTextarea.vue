@@ -75,4 +75,26 @@ const state = reactive({
 
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .markdown-textarea-container {
+
+    .markup-content-wrapper {
+
+      &.no-content {
+        background-color: $standard-dark-gray-in-white;
+      }
+    }
+
+    .markdown-editor {
+      background-color: $dark-mode-background;
+      color: $standard-gray-in-white;
+      border: $dark-mode-border;
+
+      &:focus {
+        background-color: $dark-mode-panel;
+      }
+    }
+  }
+}
 </style>

@@ -73,4 +73,10 @@ const backgroundStore = useBackgroundStore();
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .container-wrapper {
+    background-color: $dark-mode-background;
+  }
+}
 </style>

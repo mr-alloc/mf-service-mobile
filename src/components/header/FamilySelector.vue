@@ -174,4 +174,18 @@ onMounted(() => {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .select-container {
+
+    .current-selected-item {
+      border: 1px solid $dark-mode-border;
+    }
+
+    .select-items {
+      border: 1px solid $dark-mode-border;
+      background-color: $dark-mode-panel;
+    }
+  }
+}
 </style>

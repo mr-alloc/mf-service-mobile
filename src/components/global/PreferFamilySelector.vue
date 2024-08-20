@@ -153,4 +153,13 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .select-container {
+
+    .current-selected-item {
+      border: 1px solid $dark-mode-border;
+    }
+  }
+}
 </style>

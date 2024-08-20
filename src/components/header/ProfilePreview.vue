@@ -97,4 +97,10 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .user-session-info {
+    border: 1px solid $dark-mode-border;
+  }
+}
 </style>

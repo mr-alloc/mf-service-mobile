@@ -215,7 +215,7 @@ onMounted(() => {
     padding: 10px 20px;
     flex-shrink: 0;
     background-color: white;
-    border-top: 1px solid $standard-light-gray-in-white;
+    border: 1px solid $standard-light-gray-in-white;
     bottom: 100px;
     left: 50%;
     transform: translate(-50%, 50%);
@@ -278,6 +278,32 @@ onMounted(() => {
           }
         }
       }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  .calendar-container {
+
+    .calendar-wrapper {
+      background-color: $dark-mode-background;
+
+      .calendar-title {
+        color: $standard-gray-in-white;
+      }
+
+      .day-of-weeks {
+
+        .day {
+          color: $standard-gray-in-white;
+        }
+      }
+    }
+
+    .calendar-controller {
+      background-color: $dark-mode-background;
+      border: 1px solid $dark-mode-border;
     }
   }
 }

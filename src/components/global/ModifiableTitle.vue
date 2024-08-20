@@ -66,4 +66,17 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .modifiable-title-container {
+
+    .input-wrapper {
+
+      input {
+        background-color: $dark-mode-panel;
+        color: $standard-light-gray-in-white;
+      }
+    }
+  }
+}
 </style>

@@ -228,4 +228,27 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .mission-state-container {
+
+    .detail-collapse-controller {
+
+      &.open {
+
+        .collapse-area {
+          height: max-content;
+          border-left: 1px solid $dark-mode-border;
+          border-right: 1px solid $dark-mode-border;
+          border-bottom: 1px solid $dark-mode-border;
+        }
+      }
+
+      .controller-button {
+
+        border: 1px solid $dark-mode-border;
+      }
+    }
+  }
+}
 </style>

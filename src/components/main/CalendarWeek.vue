@@ -156,4 +156,11 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+
+  .day-position {
+    border: 0.5px solid $dark-mode-border !important;
+  }
+}
 </style>

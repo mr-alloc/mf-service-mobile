@@ -6,10 +6,7 @@
           <div class="feature-name">
             <span class="name-text">패밀리 일정</span>
           </div>
-          <SwitchButton :default="state.switchStatus" :switch="() => {
-            useAlertStore().info('일정 필터사용', '아직 준비중인 기능에요!');
-            return state.switchStatus = !state.switchStatus;
-          }" />
+          <SwitchButton :default="state.familyFilter" :switch="() => state.familyFilter = !state.familyFilter" />
         </li>
       </ul>
     </div>
@@ -18,8 +15,10 @@
         <span class="empty-text">당분간 예정된 일정이 없어요.</span>
       </div>
     </Transition>
-    <TransitionGroup name="down-fade" tag="ul" class="coming-mission-group">
-      <li class="each-mission" v-for="(mission, index) in state.missions as Array<CalendarMission>" :key="index">
+    <TransitionGroup name="falling" tag="ul" class="coming-mission-group">
+      <li class="each-mission" :key="index"
+          v-show="state.familyFilter || state.details.get(mission.id)?.assignee === memberInfoStore.memberInfo.id"
+          v-for="(mission, index) in state.missions as Array<CalendarMission>">
         <div class="card-header">
           <ScheduleModeIndicator :mode="state.details.get(mission.id)?.schedule.mode" />
           <MissionStatusIndicator
@@ -55,14 +54,18 @@ import type ScheduleValue from '@/classes/api-spec/ScheduleValue'
 import TemporalUnit from '@/constant/TemporalUnit'
 import SwitchButton from '@/components/global/SwitchButton.vue'
 import { useAlertStore } from '@/stores/AlertStore'
+import { useProfileMemberStore } from '@/stores/ProfileMemberStore'
+import { useMemberInfoStore } from '@/stores/MemberInfoStore'
 
+
+const memberInfoStore = useMemberInfoStore()
 const emitter: any = inject('emitter')
 const state = reactive({
   details: new Map<number, MissionDetail>,
   missions: new Array<CalendarMission>,
   stateMap: new Map<number, Map<number, MissionState>>,
-  switchStatus: false
-})
+  familyFilter: false
+});
 const methods = {
   fetchComingMissions() {
     call<any, ResponseBody>(Mission.GetComingMission, null, (response) => {
@@ -175,15 +178,36 @@ onMounted(() => {
   }
 }
 
-@keyframes blink {
+.falling-enter-active {
+  animation: falling-in .4s;
+}
+
+.falling-leave-active {
+  animation: falling-in .4s reverse;
+}
+
+@keyframes falling-in {
   0% {
-    opacity: 1;
-  }
-  50% {
     opacity: 0;
+    transform: translateY(-10px);
   }
+
   100% {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .main-index-container {
+
+    .each-mission {
+      border: 1px solid $dark-mode-border;
+    }
+
+    .empty-schedule-indicator {
+      background-color: $dark-mode-panel;
+    }
   }
 }
 </style>

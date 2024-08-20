@@ -64,4 +64,14 @@ const methods = {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .simple-button {
+    &.disable {
+      button {
+        background-color: $dark-mode-panel;
+        color: $standard-dark-gray-in-white;
+      }
+    }
+  }
+}
 </style>

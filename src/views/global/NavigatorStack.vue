@@ -104,4 +104,15 @@ const navigateStackStore = useNavigateStackStore()
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .navigator-stack-container {
+    .stack-element-group {
+
+      .each-stack {
+        background-color: $dark-mode-background;
+      }
+    }
+  }
+}
 </style>

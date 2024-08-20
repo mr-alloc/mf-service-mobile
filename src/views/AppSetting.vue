@@ -90,4 +90,17 @@ onMounted(() => {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .app-setting-container {
+
+    .convenience-group {
+      border-top: 1px solid $dark-mode-border;
+
+      .group-item {
+        border-bottom: 1px solid $dark-mode-border;
+      }
+    }
+  }
+}
 </style>

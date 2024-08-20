@@ -26,4 +26,10 @@ const memberInfoStore = useMemberInfoStore()
   display: flex;
   flex-shrink: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+  .main-header-container {
+    border-bottom: 1px solid $dark-mode-border;
+  }
+}
 </style>

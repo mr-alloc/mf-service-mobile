@@ -43,4 +43,13 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .simple-icon-button-container {
+
+    .icon-button {
+      color: $light-signature-purple;
+    }
+  }
+}
 </style>

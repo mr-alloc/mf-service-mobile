@@ -105,4 +105,28 @@ const methods = {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .global-navigation-bar-container {
+    background-color: $dark-mode-background;
+
+    .navigate-button-wrapper {
+      color: $standard-gray-in-white;
+
+      .navigate-button {
+
+        .button-content {
+
+          .menu-name {
+
+          }
+        }
+      }
+
+      &.selected {
+        color: $light-signature-purple !important;
+      }
+    }
+  }
+}
 </style>

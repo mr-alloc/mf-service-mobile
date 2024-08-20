@@ -32,12 +32,19 @@ $soft-dark: #1e1e1e;
 
 $footer-height: 80px;
 
+//dark mode
+$dark-mode-background: #010409;
+$dark-mode-panel: #21262d;
+$dark-mode-border: #30363d;
+$dark-mode-edge: #c9d1d9;
+
 body {
   //background-color: $standard-light-gray-in-white;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   user-select: none !important;
 }
+
 
 a {
   text-decoration: none;
@@ -94,6 +101,12 @@ div.pushable {
   color: $warm-black;
 }
 
+
+@media (prefers-color-scheme: dark) {
+  button {
+    background-color: $dark-mode-background;
+  }
+}
 
 @media (max-width: 767px) {
   body {

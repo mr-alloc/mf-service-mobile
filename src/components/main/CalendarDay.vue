@@ -105,11 +105,11 @@ onMounted(() => {
       line-height: 1;
 
       &.sun {
-        color: $soft-red;
+        color: $soft-red !important;
       }
 
       &.sat {
-        color: $soft-blue;
+        color: $soft-blue !important;
       }
 
       &.today {
@@ -128,6 +128,24 @@ onMounted(() => {
 
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  .each-day-item {
+    border: 0.5px solid $dark-mode-border;
+
+    .item-header {
+
+      .date {
+        color: $standard-gray-in-white;
+      }
+    }
+
+    &.anniversary {
+      background-color: #2da1fb40;
+    }
   }
 }
 </style>
