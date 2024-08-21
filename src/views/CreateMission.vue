@@ -22,6 +22,7 @@
         <TimePicker ref="timePicker" :default-value="0" v-if="state.missionType.isNotIn(MissionType.SCHEDULE)"/>
         <OptionalTimePicker ref="scheduleTimeInput" id="schedule-time" name="scheduleTime" label="일정"
                             v-if="state.missionType.isIn(MissionType.SCHEDULE)"/>
+        <SimpleIconButton button-name="카테고리 생성" :icon="['fas', 'tag']" :click-behavior="methods.createCategory" />
       </div>
       <div class="control-panel">
         <div class="control-button" v-on:click="methods.createMission">
@@ -66,6 +67,8 @@ import BlinkInput from '@/components/global/BlinkInput.vue'
 import BlinkSelect from '@/components/global/BlinkSelect.vue'
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import SingleModeOutput from '@/classes/component-protocol/SingleModeOutput'
+import SimpleIconButton from '@/components/global/SimpleIconButton.vue'
+import NavigateComponent from '@/classes/NavigateComponent'
 
 const missionAssigneeInput = ref<NumberValueComponent | null>(null);
 const missionTypeInput = ref<NumberValueComponent | null>(null);
@@ -85,7 +88,6 @@ const emitter: any = inject("emitter");
 onMounted(() => {
   methods.setMembers();
 });
-
 
 const props = defineProps<{
   timestamp: number,
@@ -222,6 +224,10 @@ const methods = {
       backgroundStore.returnGlobalPopup();
     });
 
+  }, 2000),
+  createCategory: useThrottleFn(() => {
+    const component = new NavigateComponent('카테고리 생성', 'CreateCategory', {})
+    navigateStackStore.stackComponent(component)
   }, 2000)
 }
 </script>
