@@ -46,4 +46,16 @@ const props = defineProps<{
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .stateless-button-container {
+
+    .stateless-button {
+
+      .button-inner {
+        color: $standard-light-gray-in-white;
+      }
+    }
+  }
+}
 </style>

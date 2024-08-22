@@ -508,4 +508,45 @@ onMounted(() => {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .datepicker-container {
+
+    .mini-calendar-area {
+      .days-item-group {
+
+        .day {
+
+          &.today {
+            .day-text {
+              background-color: $dark-mode-panel;
+
+              color: $standard-gray-in-white;
+            }
+          }
+        }
+      }
+
+      .repeat-option-container {
+
+        .option-indicator {
+
+          .months-option-specification {
+
+            .month-option-text {
+              color: $light-signature-purple;
+            }
+          }
+
+          .years-option-specification {
+
+            .year-option-text {
+              color: $light-signature-purple;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

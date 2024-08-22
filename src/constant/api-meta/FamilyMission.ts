@@ -24,7 +24,7 @@ export default {
             [-2, "존재하지 않는 미션입니다."],
             [-5, "잘못된 접근입니다."]
         ]),
-    GetComingMission: Spec.of(HttpMethod.GET, '/v1/family/mission/coming-missions')
-        .andDefaultMessage('예정된 미션을 불러오는데 실패했어요.')
+    GetTodayMission: Spec.of(HttpMethod.GET, '/v1/family/mission/daily')
+        .andDefaultMessage('일일 미션을 불러오는데 실패했어요.')
         .andPairs([])
 }

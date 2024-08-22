@@ -1,4 +1,4 @@
-import Discussion from '@/classes/api-spec/mission-state/Discussion'
+import Discussion from '@/classes/Discussion'
 
 export class ResponseBody {
 

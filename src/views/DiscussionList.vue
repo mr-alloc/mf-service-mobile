@@ -7,7 +7,7 @@
     </Transition>
     <TransitionGroup tag="ul" name="fade" class="discussion-list">
       <li class="each-discussion" v-for="(discussion) in state.discussions"
-          :key="discussion.id" v-on:click="() => methods.openDiscussion(discussion)">
+          :key="discussion.id" v-on:click="() => methods.openDiscussion(discussion as Discussion)">
         <div class="image-frame">
           <div class="discussion-image">
             <img src="@assets/images/default_user_profile.png" alt="유저 프로필 이미지" />
@@ -31,13 +31,11 @@ import { inject, onMounted, reactive } from 'vue'
 import { call } from '@/utils/NetworkUtil'
 import MissionState from '@/constant/api-meta/MissionState'
 import { ResponseBody } from '@/classes/api-spec/mission-state/GetDiscussions'
-import Discussion from '@/classes/api-spec/mission-state/Discussion'
+import Discussion from '@/classes/Discussion'
 import DateUtil from '../utils/DateUtil'
-import TemporalUtil from '../utils/TemporalUtil'
 import * as GetMissionDetail from '@/classes/api-spec/mission/GetMissionDetail'
 import Mission from '@/constant/api-meta/Mission'
 import NavigateComponent from '@/classes/NavigateComponent'
-import { ex } from '@/utils/Undefinable'
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 
 

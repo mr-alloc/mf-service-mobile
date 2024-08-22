@@ -103,7 +103,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@assets/main.scss';
+@import '@assets/main';
+
 .input-wrapper {
   padding: 5px 0;
   width: 100%;
@@ -210,5 +211,20 @@ onMounted(() => {
 @keyframes correct-in {
   0% { transform: scale(0.9); }
   100% {transform: scale(1);}
+}
+
+@media (prefers-color-scheme: dark) {
+  .input-wrapper {
+
+    .input-area {
+      .blink-input-pair {
+
+        .blink-input {
+          background-color: $dark-mode-panel;
+        }
+      }
+    }
+  }
+
 }
 </style>

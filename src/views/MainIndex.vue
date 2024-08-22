@@ -2,7 +2,7 @@
   <div class="main-index-container">
     <div class="page-header">
       <ul class="feature-option-group">
-        <li class="switch-all-schedule">
+        <li class="switch-all-schedule" v-if="hasSelectedFamilyId()">
           <div class="feature-name">
             <span class="name-text">패밀리 일정</span>
           </div>
@@ -56,6 +56,7 @@ import SwitchButton from '@/components/global/SwitchButton.vue'
 import { useAlertStore } from '@/stores/AlertStore'
 import { useProfileMemberStore } from '@/stores/ProfileMemberStore'
 import { useMemberInfoStore } from '@/stores/MemberInfoStore'
+import { hasSelectedFamilyId } from '@/utils/LocalCache'
 
 
 const memberInfoStore = useMemberInfoStore()
@@ -68,7 +69,9 @@ const state = reactive({
 });
 const methods = {
   fetchComingMissions() {
-    call<any, ResponseBody>(Mission.GetComingMission, null, (response) => {
+    const timestamp = moment().startOf('day').utc().unix()
+    console.log('timestamp', timestamp)
+    call<any, ResponseBody>(Mission.GetTodayMission, { timestamp }, (response) => {
       const responseBody = ResponseBody.fromJson(response.data)
 
       state.details = CollectionUtil.toMap(responseBody.missions, detail => detail.id)

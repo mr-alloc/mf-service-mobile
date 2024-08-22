@@ -6,6 +6,7 @@
                         default-option-name="멤버 선택"
                         :options="state.members as Array<SelectImageOption>"
                         v-if="ownFamiliesStore.hasSelectFamily && state.missionType.isNotIn(MissionType.SCHEDULE)"/>
+        <CategorySelector ref="categorySelector" />
         <BlinkSelect ref="missionTypeInput" id="mission-type" title="미션종류" :options="state.missionOptions"
                      name="missionType"
                      :before-change="methods.changeType"/>
@@ -22,7 +23,6 @@
         <TimePicker ref="timePicker" :default-value="0" v-if="state.missionType.isNotIn(MissionType.SCHEDULE)"/>
         <OptionalTimePicker ref="scheduleTimeInput" id="schedule-time" name="scheduleTime" label="일정"
                             v-if="state.missionType.isIn(MissionType.SCHEDULE)"/>
-        <SimpleIconButton button-name="카테고리 생성" :icon="['fas', 'tag']" :click-behavior="methods.createCategory" />
       </div>
       <div class="control-panel">
         <div class="control-button" v-on:click="methods.createMission">
@@ -69,7 +69,9 @@ import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import SingleModeOutput from '@/classes/component-protocol/SingleModeOutput'
 import SimpleIconButton from '@/components/global/SimpleIconButton.vue'
 import NavigateComponent from '@/classes/NavigateComponent'
+import CategorySelector from '@/components/global/CategorySelector.vue'
 
+const categorySelector = ref(null)
 const missionAssigneeInput = ref<NumberValueComponent | null>(null);
 const missionTypeInput = ref<NumberValueComponent | null>(null);
 const missionTitleInput = ref<InputComponent | null>(null);
@@ -193,12 +195,15 @@ const methods = {
 
     scheduleInfo.setScheduleTime(inputValues.scheduleTime);
 
+    const categoryId = categorySelector.value?.getCategoryId()
+
     return new CreateMission.RequestBody(
         inputValues.missionTitle,
         inputValues.missionContent,
         inputValues.assignee,
         state.missionType.value,
         scheduleInfo,
+      categoryId,
         deadline
     )
   },
@@ -225,10 +230,6 @@ const methods = {
     });
 
   }, 2000),
-  createCategory: useThrottleFn(() => {
-    const component = new NavigateComponent('카테고리 생성', 'CreateCategory', {})
-    navigateStackStore.stackComponent(component)
-  }, 2000)
 }
 </script>
 <style scoped lang="scss">

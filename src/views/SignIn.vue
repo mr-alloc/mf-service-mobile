@@ -166,4 +166,13 @@ const methods = {
     padding: 5px 8px;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .sign-in-container {
+
+    .form-wrapper {
+      border: 1px solid $dark-mode-border;
+    }
+  }
+}
 </style>

@@ -134,7 +134,21 @@ $option-height: 25px;
 
     }
   }
+}
 
+@media (prefers-color-scheme: dark) {
+  .blink-select-container {
 
+    .option-selector {
+      border: 1px solid $dark-mode-border;
+      background-color: $dark-mode-panel;
+
+      .selected-value {
+        background-color: $dark-mode-panel;
+        border: 1px solid $dark-mode-border;
+        border-radius: 10px;
+      }
+    }
+  }
 }
 </style>

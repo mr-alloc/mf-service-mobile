@@ -9,12 +9,14 @@ export class RequestBody {
     private readonly _type: number;
     private readonly _deadline?: number;
     private readonly _scheduleInfo: IDatePickerOutput;
+    private readonly _categoryId: number
 
-    constructor(name: string, subName: string, assignee: number, type: number, scheduleInfo: IDatePickerOutput, deadline?: number) {
+    constructor(name: string, subName: string, assignee: number, type: number, scheduleInfo: IDatePickerOutput, categoryId: number, deadline?: number) {
         this._name = name;
         this._subName = subName;
         this._assignee = assignee;
         this._type = type;
+        this._categoryId = categoryId
         this._deadline = deadline;
         this._scheduleInfo = scheduleInfo;
     }
@@ -29,14 +31,16 @@ export class RequestBody {
             subName: this._subName,
             assignee: this._assignee,
             type: this._type,
-            scheduleInfo: this._scheduleInfo
+            scheduleInfo: this._scheduleInfo,
+            categoryId: this._categoryId
         } as {
             name: string,
             subName: string,
             assignee: number,
             type: number,
             scheduleInfo: IDatePickerOutput,
-            deadline?: number
+            deadline?: number,
+            categoryId: number
         }
 
         this._deadline && (body.deadline = this._deadline);

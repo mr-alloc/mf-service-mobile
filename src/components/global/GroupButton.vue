@@ -101,4 +101,20 @@ defineExpose({
 
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .group-button-container {
+
+    .option-button-group {
+
+      .option-item-wrapper {
+
+        &.selected {
+          background-color: rgb(255, 255, 255, .2);
+        }
+      }
+
+    }
+  }
+}
 </style>

@@ -275,4 +275,48 @@ onMounted(() => {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .optional-time-picker-container {
+
+    .time-picker-wrapper {
+
+      .active-button {
+        color: $standard-gray-in-white;
+      }
+
+      .current-picked-area {
+
+        .selector-group {
+
+          .am-pm-status {
+
+            .current-value {
+              background-color: $dark-mode-background;
+              border: 1px solid $dark-mode-border;
+            }
+
+            .status-group {
+              background-color: $dark-mode-panel;
+              border: 1px solid $dark-mode-border;
+            }
+          }
+
+        }
+
+        .time-group {
+          background-color: $dark-mode-background;
+          border: 1px solid $dark-mode-border;
+        }
+
+        .quick-times-group {
+
+          .quick-time-item {
+            border: 1px solid $dark-mode-border;
+          }
+        }
+      }
+    }
+  }
+}
 </style>
