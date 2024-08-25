@@ -15,7 +15,7 @@
           <li class="category-item" v-on:click="() => methods.selectCategory(defaultValue)">
             <div class="category-name">{{ defaultValue.name }}</div>
           </li>
-          <li class="category-item" v-for="category in state.categories"
+          <li class="category-item" v-for="category in scheduleCategoryStore.categories"
               :key="category.id" v-on:click="() => methods.selectCategory(category as ScheduleCategory)">
             <div class="color-frame">
               <span class="color-preview" :style="{ backgroundColor: `#${category.color}`}"></span>
@@ -25,7 +25,7 @@
         </ul>
       </Transition>
     </div>
-    <SimpleIconButton button-name="생성" :icon="['fas', 'tag']" :click-behavior="methods.createCategory" />
+    <SimpleIconButton button-name="생성" :icon="['fas', 'tag']" :click-behavior="scheduleCategoryStore.createCategory" />
   </div>
 </template>
 <script setup lang="ts">
@@ -38,13 +38,10 @@ import { call } from '@/utils/NetworkUtil'
 import { ResponseBody } from '@/classes/api-spec/schedule/GetScheduleCategories'
 import Schedule from '@/constant/api-meta/Schedule'
 import ScheduleCategory from '@/classes/ScheduleCategory'
+import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
 
-const navigateStackStore = useNavigateStackStore()
+const scheduleCategoryStore = useScheduleCategoryStore()
 const methods = {
-  createCategory: useThrottleFn(() => {
-    const component = new NavigateComponent('카테고리 생성', 'CreateCategory', {})
-    navigateStackStore.stackComponent(component)
-  }, 2000),
   selectCategory(category: ScheduleCategory) {
     state.selected = category
     state.isSelectMode = false
@@ -53,18 +50,11 @@ const methods = {
 const defaultValue = ScheduleCategory.fromJson({ categoryId: 0, name: '카테고리 선택', color: '' })
 const state = reactive({
   selected: defaultValue,
-  categories: new Array<ScheduleCategory>(),
   isSelectMode: false
 })
 defineExpose({
   getCategoryId: () => state.selected.id
-})
-onMounted(() => {
-  call<any, ResponseBody>(Schedule.GetCategories, null, (respose) => {
-    const responseBody = ResponseBody.fromJson(respose.data)
-    state.categories = responseBody.categories
-  })
-})
+});
 </script>
 <style scoped lang="scss">
 @import "@assets/main";

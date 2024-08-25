@@ -238,6 +238,7 @@ onUnmounted(() => {
   .comments-wrapper {
     display: flex;
     flex-direction: column;
+    align-items: center;
     overflow-y: auto;
     padding-top: 20px;
     flex-grow: 1;
@@ -449,6 +450,10 @@ onUnmounted(() => {
     .comments-wrapper {
 
       .daily-comments-group {
+        .no-comment-text {
+          background-color: $standard-dark-gray-in-white;
+          color: $standard-light-gray-in-white;
+        }
 
         .daily-group-time {
           background-color: $standard-dark-gray-in-white;

@@ -70,6 +70,7 @@ defineExpose({
     .text-area-wrapper {
       textarea {
         background-color: $dark-mode-panel;
+        border: 1px solid $dark-mode-border;
         color: $standard-gray-in-white;
       }
     }

@@ -15,11 +15,10 @@
         <span class="explain-text">적용 예시:</span>
         <span class="sample-schedule" :style="{
           backgroundColor: `#${state.selectedColor}`,
-          color: methods.isDarkColor(state.selectedColor) ? 'white' : 'black'
+          color: ColorUtil.isDarkColor(state.selectedColor) ? 'white' : 'black'
         }">🚨10시 유산소 운동🚨</span>
       </div>
       <ColorSelector :select-color="methods.whenSelectedColor" />
-
     </div>
     <div class="control-panel">
       <div class="control-button" v-on:click="methods.createCategory">
@@ -42,7 +41,11 @@ import { useAlertStore } from '@/stores/AlertStore'
 import { call } from '@/utils/NetworkUtil'
 import { RequestBody } from '@/classes/api-spec/schedule/CreateScheduleCategory'
 import Schedule from '@/constant/api-meta/Schedule'
+import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
+import ColorUtil from '@/utils/ColorUtil'
 
+
+const scheduleCategoryStore = useScheduleCategoryStore()
 const alertStore = useAlertStore()
 const navigateStackStore = useNavigateStackStore()
 const defaultValues = {
@@ -86,32 +89,6 @@ const methods = {
   whenSelectedColor(color: string) {
     state.selectedColor = color
   },
-  isDarkColor(hexColor: string) {
-    // hex 코드를 RGB 값으로 변환
-    const rgb = this.hexToRgb(hexColor)
-
-    // 밝기 계산
-    const brightness = (rgb.r + rgb.g + rgb.b) / 3
-
-    // 밝기 기준 값 설정 (예: 128)
-    const threshold = 128
-
-    // 밝기가 기준 값 미만이면 어두운 색으로 판단
-    return brightness < threshold
-  },
-  hexToRgb(hex: string) {
-    // hex 코드에서 '#' 제거
-    hex = hex.replace('#', '')
-
-    // 16진수 숫자를 두 자리씩 잘라서 배열에 저장
-    const bigint = parseInt(hex, 16)
-    const r = (bigint >> 16) & 255
-    const g = (bigint >> 8) & 255
-    const b = bigint & 255
-
-    // RGB 객체 생성
-    return { r, g, b }
-  },
   checkAllInput() {
     state.isSubmittable = this.validateName() && this.validateDescription() && state.selectedColor !== ''
   },
@@ -126,6 +103,7 @@ const methods = {
     call<RequestBody, any>(Schedule.CreateCategory, requestBody, (response) => {
       alertStore.success('카테고리 생성', `"${inputValues.name}" 카테고리를 생성했어요!`)
       navigateStackStore.pullComponent()
+      scheduleCategoryStore.fetchScheduleCategories()
     })
   }
 }

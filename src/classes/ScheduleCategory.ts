@@ -37,4 +37,8 @@ export default class ScheduleCategory {
     public static fromJson(json: any) {
         return new ScheduleCategory(json.categoryId, json.name, json.color, json.description, json.order)
     }
+
+    public static ofDefault() {
+        return new ScheduleCategory(0, '', '', '', 0)
+    }
 }

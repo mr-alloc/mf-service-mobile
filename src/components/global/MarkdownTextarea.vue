@@ -82,12 +82,12 @@ const state = reactive({
     .markup-content-wrapper {
 
       &.no-content {
-        background-color: $standard-dark-gray-in-white;
+        background-color: $dark-mode-panel;
       }
     }
 
     .markdown-editor {
-      background-color: $dark-mode-background;
+      background-color: $dark-mode-panel;
       color: $standard-gray-in-white;
       border: $dark-mode-border;
 

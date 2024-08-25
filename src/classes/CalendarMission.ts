@@ -9,14 +9,16 @@ export default class CalendarMission {
 
     private readonly _id: number;
     private readonly _status: MissionStatus;
+    private readonly _cateogryId: number
     private readonly _type: number;
     private readonly _name: string;
     private readonly _startAt: number;
     private readonly _endAt: number;
 
-    constructor(id: number, status: MissionStatus, type: number, name: string, startAt: number, endAt: number) {
+    constructor(id: number, status: MissionStatus, categoryId: number, type: number, name: string, startAt: number, endAt: number) {
         this._id = id;
         this._status = status;
+        this._cateogryId = categoryId
         this._type = type;
         this._name = name;
         this._startAt = startAt;
@@ -29,6 +31,10 @@ export default class CalendarMission {
 
     get status(): MissionStatus {
         return this._status;
+    }
+
+    get categoryId(): number {
+        return this._cateogryId
     }
 
     get type(): number {
@@ -60,6 +66,7 @@ export default class CalendarMission {
         return schedule.consist(startAt, endAt).map((period) => new CalendarMission(
             detail.id,
             MissionStatus.fromValue(stateMap.get(period.startAt)?.status ?? 0),
+            detail.schedule.categoryId,
             detail.type,
             detail.name,
             period.startAt,

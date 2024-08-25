@@ -26,8 +26,14 @@ import { useBackgroundStore } from '@/stores/BackgroundStore'
 import NicknameInitializer from '@/components/global/NicknameInitializer.vue'
 import GlobalPopup from '@/components/global/GlobalPopup.vue'
 import NavigatorStack from '@/views/global/NavigatorStack.vue'
+import { onMounted } from 'vue'
+import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
 
 const backgroundStore = useBackgroundStore();
+const scheduleCategoryStore = useScheduleCategoryStore()
+onMounted(() => {
+  scheduleCategoryStore.fetchScheduleCategories()
+})
 </script>
 <style scoped lang="scss">
 @import '@assets/main';

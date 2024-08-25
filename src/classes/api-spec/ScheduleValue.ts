@@ -6,6 +6,7 @@ import Period from "@/classes/Period";
 
 export default class ScheduleValue {
     private readonly _id: number;
+    private readonly _categoryId: number
     private readonly _mode: ScheduleMode;
     private readonly _startAt: number;
     private readonly _scheduleTime: number;
@@ -13,8 +14,9 @@ export default class ScheduleValue {
     private readonly _repeatOption: number;
     private readonly _repeatValues: Array<number>;
 
-    constructor(id: number, mode: number, startAt: number, scheduleTime: number, endAt: number, repeatOption: number, repeatValues: Array<number>) {
+    constructor(id: number, categoryId: number, mode: number, startAt: number, scheduleTime: number, endAt: number, repeatOption: number, repeatValues: Array<number>) {
         this._id = id;
+        this._categoryId = categoryId
         this._mode = ScheduleMode.fromValue(mode)!;
         this._startAt = startAt;
         this._scheduleTime = scheduleTime;
@@ -25,6 +27,10 @@ export default class ScheduleValue {
 
     get id(): number {
         return this._id;
+    }
+
+    get categoryId(): number {
+        return this._categoryId
     }
 
     get mode(): ScheduleMode {
@@ -54,6 +60,7 @@ export default class ScheduleValue {
     static fromJson(json: any): ScheduleValue {
         return new ScheduleValue(
             json.id,
+            json.categoryId,
             json.mode,
             json.startAt,
             json.scheduleTime,

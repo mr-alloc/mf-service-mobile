@@ -168,4 +168,29 @@ defineExpose({
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .timepicker-container {
+    .detail-time-setting {
+
+      .timer-wrapper {
+
+        .timer-controller {
+
+          .control-button-group {
+
+            .button-item {
+
+              .plus {
+                background-color: $dark-mode-panel;
+                border: 1px solid $dark-mode-border;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+}
 </style>

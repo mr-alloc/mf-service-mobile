@@ -20,7 +20,10 @@
                top: ((geometry.y * 17) - 17) +'px',
                width: ((width / 7) * geometry.width)+'px'
              }">
-          <div class="schedule-item-title" :class="MissionType.fromValue(geometry.mission.mission.type).simpleName">
+          <div class="schedule-item-title" :style="{
+            backgroundColor: `#${categoryStore.categoryColors.get(geometry.mission.mission.categoryId)?.color}`,
+            color: ColorUtil.isDarkColor(categoryStore.categoryColors.get(geometry.mission.mission.categoryId)?.color?? '') ? 'white' : 'black'
+          }">
             <span class="title-text">{{ geometry.mission.mission.name }}</span>
           </div>
         </div>
@@ -41,9 +44,10 @@ import NavigateComponent from '@/classes/NavigateComponent'
 import { CalendarHoliday } from '@/classes/api-spec/mission/GetMemberCalendar'
 import { useAlertStore } from '@/stores/AlertStore'
 import MissionType from '@/constant/MissionType'
+import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
+import ColorUtil from '@/utils/ColorUtil'
 
-const alertStore = useAlertStore()
-const emitter: any = inject('emitter');
+const categoryStore = useScheduleCategoryStore()
 const calendarStore = useCalendarStore();
 const navigateStackStore = useNavigateStackStore()
 const scheduleArea = ref<HTMLDivElement | null>(null);
