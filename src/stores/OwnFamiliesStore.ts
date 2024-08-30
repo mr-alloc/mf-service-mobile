@@ -9,6 +9,7 @@ import * as GetOwnFamilies from "@/classes/api-spec/family/GetOwnFamilies";
 import {hasSelectedFamilyId, setSelectedFamilyId} from "@/utils/LocalCache";
 import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
 import {useFamilyMemberInfoStore} from "@/stores/FamilyMemberInfoStore";
+import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
 
 export const useOwnFamiliesStore = defineStore("ownFamilies", () => {
     const notSelectedOption = new SelectFamilyOption(0, "", "NO_IMAGE", "본캐 선택");
@@ -45,6 +46,7 @@ export const useOwnFamiliesStore = defineStore("ownFamilies", () => {
         const memberInfoStore = useMemberInfoStore();
         const familiesViewStore = useFamiliesViewStore();
         const familyMemberInfoStore = useFamilyMemberInfoStore();
+        const scheduleCategoryStore = useScheduleCategoryStore()
 
         //패밀리 선택시 갱신정보
         setSelectedFamilyId(item.id);
@@ -61,6 +63,8 @@ export const useOwnFamiliesStore = defineStore("ownFamilies", () => {
         } else {
             await memberInfoStore.fetchMemberInfo();
         }
+
+        await scheduleCategoryStore.fetchScheduleCategories()
     }
 
 

@@ -9,8 +9,7 @@
       <ul class="daily-comments-group none" v-if="state.comments.length === 0">
         <li class="no-comment-text" :key="0">작성된 의견이 없습니다.</li>
       </ul>
-      <TransitionGroup name="down-fade" tag="ul" class="daily-comments-group" v-for="(pair, index) in state.comments"
-                       :key="index">
+      <ul class="daily-comments-group" v-for="(pair, index) in state.comments" :key="index">
         <span class="daily-group-time">{{ TemporalUtil.to(pair.left, 'YYYY년 MM월 DD일') }}</span>
         <li class="comment-item" :class="{ me: memberInfoStore.memberInfo.id === comment.memberId }"
             v-for="(comment, index) in pair.right"
@@ -34,7 +33,7 @@
             </div>
           </div>
         </li>
-      </TransitionGroup>
+      </ul>
     </div>
     <div class="new-comment-area">
       <ImageNicknamePair :option="state.currentMember as SelectImageOption"/>
@@ -91,7 +90,7 @@ import CollectionUtil from '@/utils/CollectionUtil'
 import TemporalUnit from '@/constant/TemporalUnit'
 import type Pair from '@/classes/Pair'
 import { comment } from 'postcss'
-import { useThrottleFn } from '@vueuse/core'
+import { useScroll, useThrottleFn } from '@vueuse/core'
 
 const messageContainer = ref<HTMLDivElement | null>(null)
 const ownFamiliesStore = useOwnFamiliesStore();
@@ -161,6 +160,7 @@ const methods = {
       )
 
       state.comments = CollectionUtil.toPairs(dailyComments).sort((a, b) => a.left - b.left)
+      console.log('command bottom')
       methods.messageContainerToBottom()
     });
   },
@@ -189,7 +189,10 @@ const methods = {
     }, new Array<UserComments>)
   },
   messageContainerToBottom() {
-    const container = messageContainer.value!
+    setTimeout(() => {
+      const container = messageContainer.value!
+      container.scrollTop = container.scrollHeight
+    }, 50)
   }
 }
 onMounted(() => {
@@ -477,7 +480,7 @@ onUnmounted(() => {
         }
 
         .daily-group-time {
-          background-color: $standard-dark-gray-in-white;
+          background-color: $standard-clean-dark;
         }
       }
     }

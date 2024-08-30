@@ -30,10 +30,6 @@ import { onMounted } from 'vue'
 import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
 
 const backgroundStore = useBackgroundStore();
-const scheduleCategoryStore = useScheduleCategoryStore()
-onMounted(() => {
-  scheduleCategoryStore.fetchScheduleCategories()
-})
 </script>
 <style scoped lang="scss">
 @import '@assets/main';
