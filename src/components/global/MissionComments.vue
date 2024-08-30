@@ -161,6 +161,7 @@ const methods = {
       )
 
       state.comments = CollectionUtil.toPairs(dailyComments).sort((a, b) => a.left - b.left)
+      methods.messageContainerToBottom()
     });
   },
   divideByMinute(comments: Array<MissionComment>) {
@@ -186,15 +187,14 @@ const methods = {
 
       return users
     }, new Array<UserComments>)
+  },
+  messageContainerToBottom() {
+    const container = messageContainer.value!
   }
 }
 onMounted(() => {
   state.currentMember = SelectImageOption.ofProfileMember(profileMemberStore.profileMember);
   methods.fetchComments();
-  const container = messageContainer.value!
-  container?.scrollTo({
-    top: container?.offsetHeight
-  })
 });
 
 onUnmounted(() => {
@@ -246,6 +246,8 @@ onUnmounted(() => {
     .daily-comments-group {
       padding: 20px 0;
       position: relative;
+      list-style: none;
+      width: 100%;
 
       .daily-group-time {
         background-color: $standard-weight-gray-in-white;
@@ -293,6 +295,8 @@ onUnmounted(() => {
             display: flex;
             flex-direction: column;
             //overflow: hidden;
+            list-style: none;
+            padding: 0;
 
             .balloon-item {
               padding: 2px 0;
@@ -453,6 +457,23 @@ onUnmounted(() => {
         .no-comment-text {
           background-color: $standard-dark-gray-in-white;
           color: $standard-light-gray-in-white;
+        }
+
+
+        .comment-item {
+
+          .chatting-balloons-layer {
+
+            .text-balloons {
+
+              .balloon-item {
+                .comment-text {
+                  background-color: $dark-mode-panel;
+                  color: $standard-gray-in-white;
+                }
+              }
+            }
+          }
         }
 
         .daily-group-time {

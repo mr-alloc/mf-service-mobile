@@ -122,6 +122,8 @@ onMounted(() => {
 
     .feature-option-group {
       display: flex;
+      padding: 0;
+      list-style: none;
 
       .switch-all-schedule {
 
@@ -153,29 +155,33 @@ onMounted(() => {
     }
   }
 
+  .coming-mission-group {
+    list-style: none;
+    padding: 0;
 
-  .each-mission {
-    border: 1px $standard-light-gray-in-white solid;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    .each-mission {
+      border: 1px $standard-light-gray-in-white solid;
+      border-radius: 5px;
+      margin-bottom: 5px;
 
-    .card-header {
-      display: flex;
-      flex-direction: row;
-      padding: 3px 5px;
+      .card-header {
+        display: flex;
+        flex-direction: row;
+        padding: 3px 5px;
 
-      .mission-name {
-        padding: 0 10px;
-        font-weight: bold;
+        .mission-name {
+          padding: 0 10px;
+          font-weight: bold;
+        }
       }
-    }
 
-    .card-body {
-      padding: 0 13px;
+      .card-body {
+        padding: 0 13px;
 
-      .registered-period {
-        font-size: .64rem;
-        font-weight: bold;
+        .registered-period {
+          font-size: .64rem;
+          font-weight: bold;
+        }
       }
     }
   }
@@ -204,8 +210,11 @@ onMounted(() => {
 @media (prefers-color-scheme: dark) {
   .main-index-container {
 
-    .each-mission {
-      border: 1px solid $dark-mode-border;
+    .coming-mission-group {
+
+      .each-mission {
+        border: 1px solid $dark-mode-border;
+      }
     }
 
     .empty-schedule-indicator {

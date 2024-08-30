@@ -94,6 +94,7 @@ onMounted(() => {
   .discussion-list {
     height: 100%;
     overflow-y: scroll;
+    padding: 0;
 
     .each-discussion {
       padding: 0;

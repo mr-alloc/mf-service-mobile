@@ -136,7 +136,7 @@ const methods = {
       text-wrap: nowrap;
 
       .schedule-item-title {
-        background-color: $soft-dark;
+        background-color: transparent;
         color: white;
         line-height: 1;
         border-radius: 3px;
