@@ -203,4 +203,20 @@ onMounted(() => {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .simple-selector-container {
+
+    .option-item {
+      background-color: $dark-mode-panel;
+
+      &.current-selected-area {
+        background-color: $dark-mode-background;
+      }
+    }
+
+    .select-item-area {
+      border: 1px solid $dark-mode-border;
+    }
+  }
+}
 </style>

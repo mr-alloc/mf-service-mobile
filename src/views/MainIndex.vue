@@ -17,18 +17,19 @@
     </Transition>
     <TransitionGroup name="falling" tag="ul" class="coming-mission-group">
       <li class="each-mission" :key="index"
-          v-show="state.familyFilter || state.details.get(mission.id)?.assignee === memberInfoStore.memberInfo.id"
-          v-for="(mission, index) in state.missions as Array<CalendarMission>">
+          v-on:click="() => methods.clickTodaySchedule(mission)"
+          v-show="state.familyFilter || state.details.get(mission.mission.id)?.assignee === memberInfoStore.memberInfo.id"
+          v-for="(mission, index) in state.missions as Array<CalendarWeekMission>">
         <div class="card-header">
-          <ScheduleModeIndicator :mode="state.details.get(mission.id)?.schedule.mode" />
+          <ScheduleModeIndicator :mode="state.details.get(mission.mission.id)?.schedule.mode" />
           <MissionStatusIndicator
-            :status="MissionStatus.fromValue(ex(state.stateMap.get(mission.id)?.get(mission.startAt)?.status).num())"
-            :type="mission.type" />
-          <span class="mission-name">{{ mission.name }}</span>
+            :status="MissionStatus.fromValue(ex(state.stateMap.get(mission.mission.id)?.get(mission.startAt)?.status).num())"
+            :type="mission.mission.type" />
+          <span class="mission-name">{{ mission.mission.name }}</span>
         </div>
         <div class="card-body">
           <div class="registered-period">
-            {{ methods.getScheduleTimeStr(mission.id) }}
+            {{ methods.getScheduleTimeStr(mission.mission.id) }}
           </div>
         </div>
       </li>
@@ -57,13 +58,18 @@ import { useAlertStore } from '@/stores/AlertStore'
 import { useProfileMemberStore } from '@/stores/ProfileMemberStore'
 import { useMemberInfoStore } from '@/stores/MemberInfoStore'
 import { hasSelectedFamilyId } from '@/utils/LocalCache'
+import CalendarWeekMission from '@/classes/CalendarWeekMission'
+import TempralUtil from '@/utils/TemporalUtil'
+import NavigateComponent from '@/classes/NavigateComponent'
+import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 
 
+const navigateStackStore = useNavigateStackStore()
 const memberInfoStore = useMemberInfoStore()
 const emitter: any = inject('emitter')
 const state = reactive({
   details: new Map<number, MissionDetail>,
-  missions: new Array<CalendarMission>,
+  missions: new Array<CalendarWeekMission>,
   stateMap: new Map<number, Map<number, MissionState>>,
   familyFilter: false
 });
@@ -85,12 +91,20 @@ const methods = {
         )
       )
 
+      const now = moment()
+      const startOfWeek = now.clone().startOf('week').unix() - TempralUtil.getOffsetSecond()
+      const endOfWeek = now.clone().endOf('week').unix() - TempralUtil.getOffsetSecond()
       DateUtil.getCalendarPeriod(moment(), 10, (start, end) => {
         state.missions = responseBody.missions
           .flatMap((detail: MissionDetail) => CalendarMission.of(detail, start, end))
+          .map(mission => CalendarWeekMission.of(startOfWeek, endOfWeek, mission))
           .sort((a, b) => a.startAt - b.startAt)
       })
     });
+  },
+  clickTodaySchedule(mission: CalendarWeekMission) {
+    const missionDetailComponent = new NavigateComponent('미션 상세', 'MissionDetail', { mission })
+    navigateStackStore.stackComponent(missionDetailComponent)
   },
   getScheduleTimeStr(missionId: number) {
     const detail: MissionDetail = state.details.get(missionId) as MissionDetail

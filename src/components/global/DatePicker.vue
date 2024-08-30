@@ -327,6 +327,8 @@ onMounted(() => {
       display: flex;
       justify-content: space-evenly;
       margin: 5px 0;
+      padding: 0;
+      list-style: none;
 
       .mode-item {
         padding: 3px 5px;
@@ -350,6 +352,8 @@ onMounted(() => {
     .days-name-group {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
+      padding: 0;
+      list-style: none;
 
       .day-name {
         font-size: .84rem;
@@ -372,6 +376,7 @@ onMounted(() => {
     .days-item-group {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
+      padding: 0;
 
       .day {
         width: 35px;

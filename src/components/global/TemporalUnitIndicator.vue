@@ -53,6 +53,8 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    list-style: none;
 
     .value-item {
       background-color: #353535;

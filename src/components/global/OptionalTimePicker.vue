@@ -143,6 +143,8 @@ onMounted(() => {
       top: 45px;
       left: 50%;
       z-index: 2;
+      padding: 0;
+      list-style: none;
 
       .minute-item {
         padding: 3px 12px;
@@ -207,6 +209,8 @@ onMounted(() => {
             border: 1px solid $standard-light-gray-in-white;
             width: max-content;
             transition: height 0s;
+            padding: 0;
+            list-style: none;
 
 
             .status-item {
@@ -262,6 +266,7 @@ onMounted(() => {
         flex-direction: row;
         justify-content: space-between;
         padding: 5px 0;
+        list-style: none;
 
         .quick-time-item {
           padding: 3px 5px;

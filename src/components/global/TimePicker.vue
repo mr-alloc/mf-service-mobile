@@ -134,6 +134,8 @@ defineExpose({
           display: flex;
           justify-content: center;
           align-items: center;
+          padding: 0;
+          list-style: none;
 
           .button-item {
             margin: 0 5px;

@@ -423,4 +423,49 @@ textarea.blink-input {
       border-color: $dark-mode-border;
     }
   }
+
+  @keyframes signature-shiny {
+    0% {
+    }
+
+    10% {
+      box-shadow: 0 0 2px 0 $super-light-signature-purple;
+    }
+
+    20% {
+      box-shadow: 0 0 4px 0 $little-light-signature-purple;
+    }
+
+    30% {
+      box-shadow: 0 0 6px 0 $light-signature-purple;
+    }
+
+    40% {
+      box-shadow: 0 0 8px 0 $greater-light-signature-purple;
+    }
+
+    50% {
+      box-shadow: 0 0 10px 0 $signature-purple;
+    }
+
+    60% {
+      box-shadow: 0 0 8px 0 $greater-light-signature-purple;
+    }
+
+    70% {
+      box-shadow: 0 0 6px 0 $light-signature-purple;
+    }
+
+    80% {
+      box-shadow: 0 0 4px 0 $little-light-signature-purple;
+    }
+
+    90% {
+      box-shadow: 0 0 2px 0 $super-light-signature-purple;
+    }
+
+    100% {
+    }
+
+  }
 }

@@ -64,6 +64,7 @@ defineExpose({
     width: 100%;
     display: flex;
     flex-direction: row;
+    padding: 0;
 
     .option-item-wrapper {
       flex: 1 1 30%;

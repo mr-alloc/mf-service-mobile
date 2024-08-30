@@ -335,4 +335,25 @@ onUnmounted(() => {
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .mission-detail-container {
+
+    .deadline-timer {
+
+      .timer-count-wrapper {
+
+        .guide-text {
+          border: 1px solid $little-light-signature-purple;
+
+          &.competed {
+            background-color: $light-signature-purple;
+
+          }
+        }
+      }
+
+    }
+  }
+}
 </style>

@@ -65,7 +65,6 @@ const props = defineProps<{
 
     .status-alias {
       color: black;
-      font-weight: bold;
     }
   }
 }

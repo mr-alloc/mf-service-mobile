@@ -48,16 +48,26 @@ const state = reactive({
       justify-content: center;
       align-items: center;
       word-break: keep-all;
-      background-color: $super-light-signature-purple;
       font-weight: bold;
       color: white;
       border: 1px solid $little-light-signature-purple;
+      background-color: $greater-light-signature-purple;
       user-select: none;
-      cursor: pointer;
 
       &.current {
-        background-color: $signature-purple;
-        cursor: default;
+        background-color: $text-signature-purple;
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .mission-status-timeline-container {
+    .timeline-groups {
+
+      .each-case {
+        background-color: $light-signature-purple;
+
       }
     }
   }

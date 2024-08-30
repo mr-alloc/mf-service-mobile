@@ -1,3 +1,26 @@
+<template>
+  <div class="notifications-wrapper">
+    <TransitionGroup name="down-fade" tag="ul" class="notice-message-list">
+      <li class="message-item" v-for="(notification, index) in state.notifications"
+          :key="notification.timestamp">
+        <div class="message-header">
+          <div class="message-icon" :class="[notification.type]">
+            <FontAwesomeIcon :icon="methods.getNoticeIcon(notification.type)" class="fa-sm" />
+            <span class="message-title">{{ notification.title }}</span>
+          </div>
+          <div class="close-box" v-on:click="methods.dismissAlert(index)">
+            <FontAwesomeIcon :icon="['fas', 'xmark']" class="fa-xs" />
+          </div>
+        </div>
+        <div class="message-body">
+          <div class="message-content">
+            <span>{{ notification.message }}</span>
+          </div>
+        </div>
+      </li>
+    </TransitionGroup>
+  </div>
+</template>
 <script setup lang="ts">
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {AlertType, useAlertStore} from "@/stores/AlertStore";
@@ -29,35 +52,10 @@ const state = reactive({
   notifications: alertStore.notifications
 })
 </script>
-<template>
-  <div class="notifications-wrapper">
-    <TransitionGroup name="down-fade" tag="ul" class="notice-message-list">
-      <li class="message-item" v-for="(notification, index) in state.notifications"
-          :key="notification.timestamp">
-        <div class="message-header">
-          <div class="message-icon" :class="[notification.type]">
-            <FontAwesomeIcon :icon="methods.getNoticeIcon(notification.type)" class="fa-sm"/>
-            <span class="message-title">{{ notification.title }}</span>
-          </div>
-          <div class="close-box" v-on:click="methods.dismissAlert(index)">
-            <FontAwesomeIcon :icon="['fas', 'xmark']" class="fa-xs" />
-          </div>
-        </div>
-        <div class="message-body">
-          <div class="message-content">
-            <span>{{ notification.message }}</span>
-          </div>
-        </div>
-      </li>
-    </TransitionGroup>
-  </div>
-</template>
-
 <style scoped lang="scss">
 @import '@assets/main.scss';
 
 .notifications-wrapper {
-  max-height: 60px;
   z-index: 10;
   position: absolute;
   transform: translate(-50%, 10px);

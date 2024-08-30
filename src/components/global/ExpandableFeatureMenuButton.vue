@@ -61,7 +61,7 @@ const methods = {
     z-index: 1;
     position: absolute;
     right: 3px;
-    bottom: -25px;
+    bottom: -20%;
     border: 1px solid $standard-gray-in-white;
     border-radius: 5px;
     background-color: white;
@@ -70,6 +70,26 @@ const methods = {
 
     .feature-item {
       padding: 3px 5px;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .expandable-feature-menu-button {
+
+    .feature-button {
+      background-color: $dark-mode-background;
+
+      &.select {
+        background-color: $dark-mode-panel;
+      }
+    }
+
+    .expandable-features {
+      background-color: $dark-mode-panel;
+      border: 1px solid $dark-mode-border;
+      padding: 0;
+      list-style: none;
     }
   }
 }

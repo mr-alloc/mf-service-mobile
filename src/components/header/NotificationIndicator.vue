@@ -1,6 +1,6 @@
 <template>
   <div class="notification-indicator-container">
-    <div class="icon-wrapper">
+    <div class="icon-wrapper" v-on:click="useAlertStore().guide('준비중', '알림은 준비중이에요.')">
       <FontAwesomeIcon :icon="faBell" class="fa-xl" />
       <span class="alert-count">8</span>
     </div>
