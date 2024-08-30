@@ -133,7 +133,7 @@ const methods = {
       const textArea = commentInput.value?.getInput() as HTMLTextAreaElement;
       textArea.value = "";
       state.isSubmittable = false
-      state.stateId = ex(props.detail.findState(props.timestamp)?.id).num()
+      state.stateId = responseBody.stateId
       methods.fetchComments();
     });
   }),
@@ -147,6 +147,7 @@ const methods = {
     throw new Error(`Illegal state with: ${memberId}`)
   },
   fetchComments() {
+    if (state.stateId === 0) return
     const requestBody = {
       stateId: state.stateId
     }
@@ -160,7 +161,6 @@ const methods = {
       )
 
       state.comments = CollectionUtil.toPairs(dailyComments).sort((a, b) => a.left - b.left)
-      console.log('command bottom')
       methods.messageContainerToBottom()
     });
   },
@@ -458,6 +458,8 @@ onUnmounted(() => {
 
       .daily-comments-group {
         .no-comment-text {
+          display: flex;
+          justify-content: center;
           background-color: $standard-dark-gray-in-white;
           color: $standard-light-gray-in-white;
         }

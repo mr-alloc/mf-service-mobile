@@ -96,7 +96,6 @@ import MultipleModeOutput from "@/classes/component-protocol/MultipleModeOutput"
 import PeriodModeOutput from "@/classes/component-protocol/PeriodModeOutput";
 import RepeatModeOutput from "@/classes/component-protocol/RepeatModeOutput";
 import type {GroupButtonExpose} from "@/types/ExposeType";
-import {parseInt} from "lodash";
 import moment from "moment-timezone";
 
 const repeatOptionButton = ref<GroupButtonExpose | null>(null);

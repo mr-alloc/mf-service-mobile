@@ -102,7 +102,6 @@ onMounted(() => {
       padding: 0 8px;
 
       .selected-option {
-        padding: 2px 8px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -122,6 +121,10 @@ onMounted(() => {
 
         .category-name {
           padding: 0 8px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 100px;
+          overflow: hidden;
         }
       }
     }

@@ -129,8 +129,6 @@ const methods = {
     } else if (state.status === MissionStatus.COMPLETED.code) {
       const spentSeconds = ex(currentState?.concreteCompleteAt).num() - ex(currentState?.concreteStartAt).num()
       const deadline = ex(state.detail?.deadline).num()
-      console.log('spentSeconds:', spentSeconds)
-      console.log('deadline:', deadline)
       state.spentSeconds = spentSeconds > deadline ? deadline : spentSeconds
       const remainSeconds = deadline - state.spentSeconds
       state.remainSeconds = remainSeconds < 0 ? 0 : remainSeconds

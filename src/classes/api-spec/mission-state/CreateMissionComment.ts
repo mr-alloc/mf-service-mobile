@@ -46,9 +46,11 @@ export class RequestBody {
 
 export class ResponseBody {
 
+    private readonly _stateId: number
     private readonly _created: MissionComment;
 
-    constructor(created: MissionComment) {
+    constructor(stateId: number, created: MissionComment) {
+        this._stateId = stateId
         this._created = created;
     }
 
@@ -56,7 +58,11 @@ export class ResponseBody {
         return this._created;
     }
 
+    get stateId(): number {
+        return this._stateId
+    }
+
     public static fromJson(json: any): ResponseBody {
-        return new ResponseBody(MissionComment.fromJson(json.created));
+        return new ResponseBody(json.stateId, MissionComment.fromJson(json.created))
     }
 }

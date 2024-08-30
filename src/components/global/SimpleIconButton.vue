@@ -25,7 +25,7 @@ const methods = {
 @import '@assets/main';
 
 .simple-icon-button-container {
-  padding: 0 20px;
+  padding: 0 10px;
   display: flex;
   justify-content: flex-end;
   align-items: center;

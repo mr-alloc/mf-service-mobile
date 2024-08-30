@@ -18,7 +18,7 @@
     <TransitionGroup name="falling" tag="ul" class="coming-mission-group">
       <li class="each-mission" :key="index"
           v-on:click="() => methods.clickTodaySchedule(mission)"
-          v-show="state.familyFilter || state.details.get(mission.mission.id)?.assignee === memberInfoStore.memberInfo.id"
+          v-show="!hasSelectedFamilyId()|| state.familyFilter || state.details.get(mission.mission.id)?.assignee === memberInfoStore.memberInfo.id"
           v-for="(mission, index) in state.missions as Array<CalendarWeekMission>">
         <div class="card-header">
           <ScheduleModeIndicator :mode="state.details.get(mission.mission.id)?.schedule.mode" />
@@ -76,7 +76,6 @@ const state = reactive({
 const methods = {
   fetchComingMissions() {
     const timestamp = moment().startOf('day').utc().unix()
-    console.log('timestamp', timestamp)
     call<any, ResponseBody>(Mission.GetTodayMission, { timestamp }, (response) => {
       const responseBody = ResponseBody.fromJson(response.data)
 
@@ -92,14 +91,15 @@ const methods = {
       )
 
       const now = moment()
+      const startOfDay = now.clone().startOf('day').unix()
+      const endOfDay = now.clone().endOf('day').unix()
       const startOfWeek = now.clone().startOf('week').unix() - TempralUtil.getOffsetSecond()
       const endOfWeek = now.clone().endOf('week').unix() - TempralUtil.getOffsetSecond()
-      DateUtil.getCalendarPeriod(moment(), 10, (start, end) => {
-        state.missions = responseBody.missions
-          .flatMap((detail: MissionDetail) => CalendarMission.of(detail, start, end))
-          .map(mission => CalendarWeekMission.of(startOfWeek, endOfWeek, mission))
-          .sort((a, b) => a.startAt - b.startAt)
-      })
+
+      state.missions = responseBody.missions
+        .flatMap(detail => CalendarMission.of(detail, startOfDay, endOfDay))
+        .map(mission => CalendarWeekMission.of(startOfWeek, endOfWeek, mission))
+        .sort((a, b) => a.startAt - b.startAt)
     });
   },
   clickTodaySchedule(mission: CalendarWeekMission) {
