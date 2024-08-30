@@ -39,22 +39,44 @@ import { ResponseBody } from '@/classes/api-spec/schedule/GetScheduleCategories'
 import Schedule from '@/constant/api-meta/Schedule'
 import ScheduleCategory from '@/classes/ScheduleCategory'
 import { useScheduleCategoryStore } from '@/stores/ScheduleCategoryStore'
+import SelectImageOption from '@/classes/api-spec/SelectImageOption'
 
 const scheduleCategoryStore = useScheduleCategoryStore()
 const methods = {
   selectCategory(category: ScheduleCategory) {
-    state.selected = category
     state.isSelectMode = false
+
+    const afterChange = () => {
+      //동일한 값 선택
+      if (category.id === state.selected.id) return
+      state.selected = category
+    }
+
+    if (props.beforeChange) {
+      props.beforeChange(category, afterChange)
+    } else {
+      afterChange()
+    }
   }
 }
+const props = defineProps<{
+  defaultId?: number,
+  beforeChange?: (category: ScheduleCategory, afterChange: () => void) => void
+}>()
 const defaultValue = ScheduleCategory.fromJson({ categoryId: 0, name: '카테고리 선택', color: '' })
 const state = reactive({
   selected: defaultValue,
-  isSelectMode: false
+  isSelectMode: false,
+  isModifyMode: false
 })
 defineExpose({
   getCategoryId: () => state.selected.id
 });
+onMounted(() => {
+  if (props.defaultId) {
+    state.selected = scheduleCategoryStore.categories.find(cat => cat.id === props.defaultId) ?? defaultValue
+  }
+})
 </script>
 <style scoped lang="scss">
 @import "@assets/main";
@@ -72,11 +94,12 @@ defineExpose({
     .current-selected {
       display: flex;
       width: 100%;
-      border: 1px solid $dark-mode-border;
-      background-color: $dark-mode-panel;
+      border: 1px solid $standard-light-gray-in-white;
+      background-color: white;
       border-radius: 10px;
       justify-content: center;
       align-items: center;
+      padding: 0 8px;
 
       .selected-option {
         padding: 2px 8px;
@@ -107,14 +130,15 @@ defineExpose({
       position: absolute;
       z-index: 1;
       display: flex;
-      width: 100%;
-      border: 1px solid $dark-mode-border;
-      background-color: $dark-mode-panel;
+      width: max-content;
+      background-color: white;
+      border: 1px solid $standard-light-gray-in-white;
       border-radius: 10px;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       top: 35px;
       flex-direction: column;
+      padding: 0;
 
       .category-item {
         width: max-content;
@@ -140,6 +164,25 @@ defineExpose({
           flex-grow: 1;
           padding: 0 8px;
         }
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .category-selector-container {
+    .inner-selector-wrapper {
+      .current-selected {
+
+        border: 1px solid $dark-mode-border;
+        background-color: $dark-mode-background;
+      }
+
+
+      .schedule-category-group {
+
+        border: 1px solid $dark-mode-border;
+        background-color: $dark-mode-panel;
       }
     }
   }

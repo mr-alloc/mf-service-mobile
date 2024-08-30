@@ -63,6 +63,8 @@ const methods = {
     display: flex;
     flex-wrap: wrap;
     height: 200px;
+    list-style: none;
+    padding: 0;
 
     .pallet-color-wrapper {
       flex: 1 1 10%;

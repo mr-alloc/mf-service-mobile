@@ -46,6 +46,8 @@ const navigateStackStore = useNavigateStackStore()
     height: 100%;
     width: 100%;
     position: relative;
+    list-style: none;
+    padding: 0;
 
     .each-stack {
       background-color: white;

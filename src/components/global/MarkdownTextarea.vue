@@ -1,9 +1,8 @@
 <template>
   <div class="markdown-textarea-container">
     <textarea v-if="state.isEditorMode" class="markdown-editor blink-input"
-              placeholder="내용을 입력해주세요."
-              rows="10"
-              v-model="state.content" v-on:focusout="() => state.isEditorMode = false"></textarea>
+              placeholder="내용을 입력해주세요." :disabled="state.isHold"
+              v-model="state.content" v-on:focusout="methods.focusOut"></textarea>
     <div v-else class="markup-content-wrapper" :class="{ 'no-content': state.content.length === 0 }" v-html="methods.toMarkUp(state.content)"
          v-on:click="methods.clickViewer">
     </div>
@@ -25,14 +24,32 @@ const methods = {
   },
   clickViewer() {
     state.isEditorMode = true;
+  },
+  focusOut(event: FocusEvent) {
+    state.isEditorMode = false
+    if (props.beforeChange && state.content !== props.content) {
+      state.isHold = true
+      const modifiedValue = state.content
+      props.beforeChange(state.content, (isRollback: boolean) => {
+        if (isRollback) {
+          state.content = props.content
+          state.isHold = false
+          return
+        }
+        state.content = modifiedValue
+        state.isHold = false
+      })
+    }
   }
 }
 const props = defineProps<{
-  content: string
+  content: string,
+  beforeChange: (value: string, afterChange: (isRollback: boolean) => void) => void,
 }>();
 const state = reactive({
   isEditorMode: false,
-  content: props.content
+  content: props.content,
+  isHold: false
 });
 </script>
 <style scoped lang="scss">
@@ -67,6 +84,7 @@ const state = reactive({
     border: 1px transparent solid;
     resize: none;
     background-color: white;
+    min-height: 60px;
 
     &:focus {
       outline: none;

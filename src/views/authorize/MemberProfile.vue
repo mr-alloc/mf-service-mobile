@@ -195,6 +195,7 @@ onMounted(async () => {
     .account-metadata {
       width: 100%;
       list-style: none;
+      padding: 0;
 
       .item-pair {
         display: flex;

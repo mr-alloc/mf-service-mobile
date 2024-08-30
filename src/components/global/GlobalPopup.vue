@@ -1,42 +1,3 @@
-<script setup lang="ts">
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {useBackgroundStore} from "@/stores/BackgroundStore";
-import {PopupType} from "@/stores/status/CurrentPopup";
-
-const backgroundStore = useBackgroundStore();
-const methods = {
-  getPopupIcon(popupType?: PopupType) {
-    switch (popupType) {
-      case PopupType.NORMAL:
-        return ["fas", "flag"];
-      case PopupType.WARNING:
-        return ["fas", "exclamation-triangle"];
-      default:
-        return ["fas", "exclamation-circle"];
-    }
-  },
-  clickPopup(event: MouseEvent) {
-    event.stopPropagation();
-  },
-  clickInnerPopup(event: MouseEvent) {
-    event.stopPropagation();
-  },
-  clickInnerBackground(event: MouseEvent) {
-    event.stopPropagation();
-  },
-  clickPopupArea(event: MouseEvent) {
-    // backgroundStore.doIfHasPopup(popup => {
-    //   if (!popup.hasButtonProxy()) {
-    //     event.stopPropagation();
-    //   }
-    // })
-  }
-}
-const props = defineProps({
-  componentName: String,
-  componentProps: Object
-});
-</script>
 
 <template>
   <div class="global-popup-area" v-on:click="methods.clickPopupArea">
@@ -101,8 +62,47 @@ const props = defineProps({
     </Transition>
   </div>
 </template>
+<script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useBackgroundStore } from '@/stores/BackgroundStore'
+import { PopupType } from '@/stores/status/CurrentPopup'
+
+const backgroundStore = useBackgroundStore()
+const methods = {
+  getPopupIcon(popupType?: PopupType) {
+    switch (popupType) {
+      case PopupType.NORMAL:
+        return ['fas', 'flag']
+      case PopupType.WARNING:
+        return ['fas', 'exclamation-triangle']
+      default:
+        return ['fas', 'exclamation-circle']
+    }
+  },
+  clickPopup(event: MouseEvent) {
+    event.stopPropagation()
+  },
+  clickInnerPopup(event: MouseEvent) {
+    event.stopPropagation()
+  },
+  clickInnerBackground(event: MouseEvent) {
+    event.stopPropagation()
+  },
+  clickPopupArea(event: MouseEvent) {
+    // backgroundStore.doIfHasPopup(popup => {
+    //   if (!popup.hasButtonProxy()) {
+    //     event.stopPropagation();
+    //   }
+    // })
+  }
+}
+const props = defineProps({
+  componentName: String,
+  componentProps: Object
+})
+</script>
 <style scoped lang="scss">
-@import '@assets/main.scss';
+@import '@assets/main';
 
 .global-popup-area {
   position: relative;
@@ -211,5 +211,14 @@ const props = defineProps({
       }
     }
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  .global-popup-area {
+    .global-popup-wrapper {
+      background-color: $dark-mode-background;
+    }
+  }
+
 }
 </style>

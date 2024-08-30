@@ -141,7 +141,7 @@ const methods = {
     overflow: hidden;
     position: absolute;
     background-color: white;
-    top: 36px;
+    top: 40px;
     z-index: 1;
     width: max-content;
     max-height: 180px;
@@ -159,6 +159,11 @@ const methods = {
 
     .current-selected-item {
       border: 1px solid $dark-mode-border;
+    }
+
+    .select-items {
+      border: 1px solid $dark-mode-border;
+      background-color: $dark-mode-panel;
     }
   }
 }

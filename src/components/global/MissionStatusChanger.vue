@@ -9,7 +9,7 @@
 import { inject, onMounted, reactive, watch } from 'vue'
 import MissionStatus from '@/constant/MissionStatus'
 import PopupUtil from '@/utils/PopupUtil'
-import * as ChangeFamilyMissionAttribute from '@/classes/api-spec/mission/ChangeFamilyMissionAttribute'
+import * as ChangeFamilyMissionAttribute from '@/classes/api-spec/mission/ChangeMissionAttribute'
 import { call } from '@/utils/NetworkUtil'
 import Mission from '@/constant/api-meta/Mission'
 import { useAlertStore } from '@/stores/AlertStore'

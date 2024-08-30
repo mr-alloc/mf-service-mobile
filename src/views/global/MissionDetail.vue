@@ -19,7 +19,8 @@
         <span class="progress-fuse-wire"></span>
       </div>
     </div>
-    <MarkdownTextarea v-if="state.detail" :content="state.detail?.description" />
+    <MarkdownTextarea v-if="state.detail" :content="state.detail?.description"
+                      :before-change="methods.changeDescription" />
     <div class="float-discussions">
       <SimpleIconButton button-name="토론" :click-behavior="methods.openDiscussion" :icon="['fas', 'comments']" />
     </div>
@@ -30,7 +31,7 @@ import { inject, onMounted, onUnmounted, reactive } from 'vue'
 import PopupUtil from '@/utils/PopupUtil'
 import { useAlertStore } from '@/stores/AlertStore'
 import { call } from '@/utils/NetworkUtil'
-import * as ChangeFamilyMissionAttribute from '@/classes/api-spec/mission/ChangeFamilyMissionAttribute'
+import * as ChangeFamilyMissionAttribute from '@/classes/api-spec/mission/ChangeMissionAttribute'
 import * as GetMissionDetail from '@/classes/api-spec/mission/GetMissionDetail'
 import * as DeleteMission from '@/classes/api-spec/mission/DeleteMission'
 import Mission from '@/constant/api-meta/Mission'
@@ -52,6 +53,7 @@ import SimpleIconButton from '@/components/global/SimpleIconButton.vue'
 import { useNavigateStackStore } from '@/stores/NavigateStackStore'
 import NavigateComponent from '@/classes/NavigateComponent'
 import type CalendarMission from '@/classes/CalendarMission'
+import { RequestBody, ResponseBody } from '@/classes/api-spec/mission/ChangeMissionAttribute'
 
 
 const emitter: any = inject("emitter");
@@ -157,6 +159,24 @@ const methods = {
       detail: state.detail
     })
     navigateStackStore.stackComponent(component)
+  },
+  changeDescription(description: string, afterChange: () => void) {
+    if (!state.detail || description === state.detail.description) return
+
+    PopupUtil.confirm('설명 변경', '설명을 변경 하시겠습니까?', () => {
+      const requestBody = RequestBody.forDescription(state.detail?.id ?? 0, description)
+
+      call<RequestBody, ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
+        const responseBody = ResponseBody.fromJson(response.data)
+        const changed = responseBody.changed
+        if (changed.description === description) {
+          alertStore.success('설명 변경', '변경이 완료되었습니다.')
+          afterChange()
+        } else {
+          alertStore.warning('설명 변경', '변경에 실패했습니다.')
+        }
+      })
+    })
   }
 }
 

@@ -171,4 +171,13 @@ onMounted(() => {
   }
 
 }
+
+@media (prefers-color-scheme: dark) {
+  .discuss-list-container {
+
+    .empty-discuss-indicator {
+      background-color: $dark-mode-panel;
+    }
+  }
+}
 </style>

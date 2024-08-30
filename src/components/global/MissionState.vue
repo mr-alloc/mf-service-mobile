@@ -14,6 +14,15 @@
       </div>
       <Transition name="down-fade-smooth">
         <div class="collapse-area" v-show="state.openDetail">
+          <div class="detail-pair">
+            <div class="state-text">
+              <span>카테고리</span>
+            </div>
+            <div class="detail-content">
+              <CategorySelector :default-id="props.detail.schedule.categoryId"
+                                :before-change="methods.selectCategory" />
+            </div>
+          </div>
           <div class="detail-pair" v-if="props.status.isNotIn(MissionStatus.ALWAYS)">
             <div class="state-text">
               <span>미션 종류</span>
@@ -58,29 +67,29 @@
   </div>
 </template>
 <script setup lang="ts">
-import MissionStatus from "@/constant/MissionStatus";
-import SelectImageOption from "@/classes/api-spec/SelectImageOption";
-import LocalAsset from "@/constant/LocalAsset";
-import ImageNicknamePair from "@/components/global/ImageNicknamePair.vue";
-import SimpleSelector from "@/components/global/SimpleSelector.vue";
-import type MissionDetail from "@/classes/MissionDetail";
-import MissionType from "@/constant/MissionType";
+import MissionStatus from '@/constant/MissionStatus'
+import SelectImageOption from '@/classes/api-spec/SelectImageOption'
+import LocalAsset from '@/constant/LocalAsset'
+import ImageNicknamePair from '@/components/global/ImageNicknamePair.vue'
+import SimpleSelector from '@/components/global/SimpleSelector.vue'
+import type MissionDetail from '@/classes/MissionDetail'
+import MissionType from '@/constant/MissionType'
 import { inject, reactive } from 'vue'
-import SelectOption from "@/classes/SelectOption";
-import PopupUtil from "@/utils/PopupUtil";
-import * as ChangeFamilyMissionAttribute from "@/classes/api-spec/mission/ChangeFamilyMissionAttribute";
-import {call} from "@/utils/NetworkUtil";
-import Mission from "@/constant/api-meta/Mission";
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {useAlertStore} from "@/stores/AlertStore";
-import {useProfileMemberStore} from "@/stores/ProfileMemberStore";
-import MissionStatusIndicator from "@/components/global/MissionStatusIndicator.vue";
-import {useOwnFamiliesStore} from "@/stores/OwnFamiliesStore";
-import {useFamiliesViewStore} from "@/stores/FamiliesViewStore";
+import SelectOption from '@/classes/SelectOption'
+import PopupUtil from '@/utils/PopupUtil'
+import { RequestBody, ResponseBody } from '@/classes/api-spec/mission/ChangeMissionAttribute'
+import { call } from '@/utils/NetworkUtil'
+import Mission from '@/constant/api-meta/Mission'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useAlertStore } from '@/stores/AlertStore'
+import { useProfileMemberStore } from '@/stores/ProfileMemberStore'
+import MissionStatusIndicator from '@/components/global/MissionStatusIndicator.vue'
+import { useOwnFamiliesStore } from '@/stores/OwnFamiliesStore'
+import { useFamiliesViewStore } from '@/stores/FamiliesViewStore'
 import MissionStatusTimeline from '@/components/MissionStatusTimeline.vue'
-import BlinkSelect from '@/components/global/BlinkSelect.vue'
-import SimpleButton from '@/components/global/SimpleButton.vue'
 import MissionStatusChanger from '@/components/global/MissionStatusChanger.vue'
+import CategorySelector from '@/components/global/CategorySelector.vue'
+import type ScheduleCategory from '@/classes/ScheduleCategory'
 
 const emitter: any = inject("emitter");
 const ownFamiliesStore = useOwnFamiliesStore();
@@ -103,9 +112,9 @@ const state = reactive({
 const methods = {
   selectType(option: SelectOption, afterChange: () => void) {
     PopupUtil.confirm("미션종류 변경", `${option.text}(으)로 변경 하시겠습니까?`, () => {
-      const requestBody = ChangeFamilyMissionAttribute.RequestBody.forType(props.detail.id, parseInt(option.value));
-      call<ChangeFamilyMissionAttribute.RequestBody, ChangeFamilyMissionAttribute.ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
-        const responseBody = ChangeFamilyMissionAttribute.ResponseBody.fromJson(response.data);
+      const requestBody = RequestBody.forType(props.detail.id, parseInt(option.value))
+      call<RequestBody, ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
+        const responseBody = ResponseBody.fromJson(response.data)
         const changed = responseBody.changed;
         if (changed.type === parseInt(option.value)) {
           alertStore.success("미션 종류 변경", `미션 종류가 변경 되었어요.`);
@@ -122,10 +131,10 @@ const methods = {
       return;
     }
     PopupUtil.confirm("미션 수행자 변경", `${member.name}님을 미션 수행자로 지정하시겠습니까?`, () => {
-      const requestBody = ChangeFamilyMissionAttribute.RequestBody.forAssignee(props.detail.id, member.id);
+      const requestBody = RequestBody.forAssignee(props.detail.id, member.id)
 
-      call<ChangeFamilyMissionAttribute.RequestBody, ChangeFamilyMissionAttribute.ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
-        const responseBody = ChangeFamilyMissionAttribute.ResponseBody.fromJson(response.data);
+      call<RequestBody, ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
+        const responseBody = ResponseBody.fromJson(response.data)
         const changed = responseBody.changed;
         if (changed.assignee === member.id) {
           alertStore.success("수행자 변경", `${member.name}님을 미션 수행자로 지정하였습니다.`);
@@ -136,6 +145,25 @@ const methods = {
       });
     });
   },
+  selectCategory(category: ScheduleCategory, afterChange: () => void) {
+    if (category.id === props.detail.schedule.categoryId) {
+      return
+    }
+    PopupUtil.confirm('카테고리 변경', `"${category.name}"(으)로 변경 하시겠습니까?`, () => {
+      const requestBody = RequestBody.forCategory(props.detail.id, category.id)
+
+      call<RequestBody, ResponseBody>(Mission.ChangeMissionAttribute, requestBody, (response) => {
+        const responseBody = ResponseBody.fromJson(response.data)
+        const changed = responseBody.changed
+        if (changed.schedule.categoryId === category.id) {
+          alertStore.success('카테고리 변경', `"${category.name}"(으)로 카테고리가 변경되었습니다.`)
+          afterChange()
+        } else {
+          alertStore.warning('카테고리 변경', '변경에 실패했습니다.')
+        }
+      })
+    })
+  }
 }
 </script>
 <style scoped lang="scss">

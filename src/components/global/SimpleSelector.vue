@@ -1,58 +1,4 @@
-<script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
-import SelectImageOption from "@/classes/api-spec/SelectImageOption";
-import LocalAsset from "@/constant/LocalAsset";
-import SelectOption from '@/classes/SelectOption'
 
-const select = ref<HTMLSelectElement | null>(null);
-const props = defineProps<{
-  id: string,
-  name?: string,
-  title?: string,
-  options: Array<SelectImageOption>,
-  defaultOptionName: string,
-  allowNoImage?: boolean,
-  defaultSelected?: number,
-  currentIndex?: number,
-  beforeChange?: (option: SelectImageOption, afterChange: () => void) => void
-}>();
-const state = reactive({
-  isSelectMode: false,
-  selectedOption: SelectImageOption.ofDefault()
-});
-const methods = {
-  clickSelector() {
-    state.isSelectMode = !state.isSelectMode;
-  },
-  selectOption(index: number) {
-    state.isSelectMode = false;
-
-    const afterChange = () => {
-      //동일한 값 선택
-      if (props.options?.[index].id === state.selectedOption.id) return;
-
-      Array.from(select.value?.options!).filter((opt, idx) => idx === index).forEach(opt => opt.selected = true);
-      state.selectedOption = props.options?.[index] as SelectImageOption;
-    }
-
-    if (props.beforeChange) {
-      props.beforeChange(props.options?.[index], afterChange);
-    } else {
-      afterChange();
-    }
-  }
-}
-defineExpose({
-  getValue: () => state.selectedOption.id
-});
-onMounted(() => {
-  state.selectedOption = props.options?.[0] as SelectImageOption;
-  if (props.currentIndex) {
-    state.selectedOption = props.options?.[props.currentIndex] as SelectImageOption
-    Array.from(select.value?.options!).filter((opt, idx) => idx === props.currentIndex).forEach(opt => opt.selected = true);
-  }
-})
-</script>
 <template>
   <div class="simple-selector-container" :class="{ 'no-label': props.title === undefined }">
     <label :for="props.id" v-if="props.title">{{ props.title }}</label>
@@ -65,9 +11,9 @@ onMounted(() => {
            :class="{ collapse: state.selectedOption?.image === LocalAsset.DEFAULT_NO_IMAGE }">
         <div class="option-image-frame">
           <img
-              v-if="state.selectedOption?.image !== LocalAsset.DEFAULT_NO_IMAGE"
-              :src="state.selectedOption?.image"
-              :alt="state.selectedOption?.name"/>
+            v-if="state.selectedOption?.image !== LocalAsset.DEFAULT_NO_IMAGE"
+            :src="state.selectedOption?.image"
+            :alt="state.selectedOption?.name" />
         </div>
       </div>
       <div class="option-title">
@@ -97,7 +43,61 @@ onMounted(() => {
     </Transition>
   </div>
 </template>
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue'
+import SelectImageOption from '@/classes/api-spec/SelectImageOption'
+import LocalAsset from '@/constant/LocalAsset'
+import SelectOption from '@/classes/SelectOption'
 
+const select = ref<HTMLSelectElement | null>(null)
+const props = defineProps<{
+  id: string,
+  name?: string,
+  title?: string,
+  options: Array<SelectImageOption>,
+  defaultOptionName: string,
+  allowNoImage?: boolean,
+  defaultSelected?: number,
+  currentIndex?: number,
+  beforeChange?: (option: SelectImageOption, afterChange: () => void) => void
+}>()
+const state = reactive({
+  isSelectMode: false,
+  selectedOption: SelectImageOption.ofDefault()
+})
+const methods = {
+  clickSelector() {
+    state.isSelectMode = !state.isSelectMode
+  },
+  selectOption(index: number) {
+    state.isSelectMode = false
+
+    const afterChange = () => {
+      //동일한 값 선택
+      if (props.options?.[index].id === state.selectedOption.id) return
+
+      Array.from(select.value?.options!).filter((opt, idx) => idx === index).forEach(opt => opt.selected = true)
+      state.selectedOption = props.options?.[index] as SelectImageOption
+    }
+
+    if (props.beforeChange) {
+      props.beforeChange(props.options?.[index], afterChange)
+    } else {
+      afterChange()
+    }
+  }
+}
+defineExpose({
+  getValue: () => state.selectedOption.id
+})
+onMounted(() => {
+  state.selectedOption = props.options?.[0] as SelectImageOption
+  if (props.currentIndex) {
+    state.selectedOption = props.options?.[props.currentIndex] as SelectImageOption
+    Array.from(select.value?.options!).filter((opt, idx) => idx === props.currentIndex).forEach(opt => opt.selected = true)
+  }
+})
+</script>
 <style scoped lang="scss">
 @import "@assets/main";
 
