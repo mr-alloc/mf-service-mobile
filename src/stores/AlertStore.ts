@@ -8,20 +8,34 @@ export const useAlertStore = defineStore('alert', () => {
 
     function alert(type: AlertType, title: string, message: string, timeoutSecond?: number) {
         const notification = new Notification(type, title, message);
+
+        if (notifications.value.length >= 3) {
+            notifications.value[0].visible = false
+            setTimeout(() => {
+                notifications.value.shift()
+                queueNotification(notification, timeoutSecond)
+            }, 400)
+        } else {
+            queueNotification(notification, timeoutSecond)
+        }
+    }
+
+    function queueNotification(notification: Notification, timeoutSecond?: number) {
         notifications.value.push(notification)
 
         setTimeout(() => {
-            notifications.value
-                .forEach((alert, index) => {
-                    if (alert.timestamp === notification.timestamp) {
-                        notifications.value.splice(index, 1)
+            const filtered = notifications.value
+                .filter(alert => {
+                    const condition = alert.timestamp !== notification.timestamp
+                    if (!condition) {
+                        alert.visible = false
                     }
+                    return condition
                 });
-        }, (timeoutSecond ?? 5) * 1000)
+            setTimeout(() => notifications.value = filtered, 400)
 
-        if (notifications.value.length > 2) {
-            notifications.value.shift()
-        }
+        }, (timeoutSecond ?? 5) * 1000);
+
     }
 
     function clear() {
@@ -67,12 +81,14 @@ export class Notification {
     private readonly _type: AlertType;
     private readonly _title: string;
     private readonly _message: string;
+    private _visible: boolean
 
     constructor(type: AlertType, title: string, message: string) {
         this._timestamp = TemporalUtil.getEpochSecond(false)
         this._type = type;
         this._title = title;
         this._message = message;
+        this._visible = true
     }
 
     get timestamp(): number {
@@ -89,6 +105,14 @@ export class Notification {
 
     get message(): string {
         return this._message;
+    }
+
+    get visible(): boolean {
+        return this._visible
+    }
+
+    public set visible(visible: boolean) {
+        this._visible = visible
     }
 }
 

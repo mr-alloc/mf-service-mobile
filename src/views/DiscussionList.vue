@@ -153,11 +153,14 @@ onMounted(() => {
           flex-grow: 1;
           font-size: .72rem;
           display: flex;
+          height: 100%;
+          overflow: hidden;
 
 
           .message-text {
             color: $standard-dark-gray-in-white;
             flex-grow: 1;
+            line-height: 1;
           }
 
           .updated-text {

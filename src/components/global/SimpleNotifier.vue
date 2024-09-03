@@ -1,7 +1,8 @@
 <template>
   <div class="notifications-wrapper">
-    <TransitionGroup name="down-fade" tag="ul" class="notice-message-list">
-      <li class="message-item" v-for="(notification, index) in state.notifications"
+    <TransitionGroup name="alert-fade" tag="ul" class="notice-message-list">
+      <li class="message-item" v-show="notification.visible" v-for="(notification, index) in alertStore.notifications"
+          :class="`alert-${notification.timestamp}`"
           :key="notification.timestamp">
         <div class="message-header">
           <div class="message-icon" :class="[notification.type]">
@@ -46,20 +47,17 @@ const methods = {
   dismissAlert(index: number) {
     alertStore.notifications.splice(index, 1)
   }
-}
-
-const state = reactive({
-  notifications: alertStore.notifications
-})
+};
 </script>
 <style scoped lang="scss">
 @import '@assets/main.scss';
 
 .notifications-wrapper {
   z-index: 10;
-  position: absolute;
+  position: fixed;
   transform: translate(-50%, 10px);
   left: 50%;
+  top: 50px;
 
   .all-clear {
     display: flex;
@@ -93,6 +91,7 @@ const state = reactive({
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-items: center;
     height: 100%;
     padding: 0;
 
@@ -105,12 +104,12 @@ const state = reactive({
       display: flex;
       flex-direction: column;
       border-radius: 10px;
-      transition: .5s, scale .2s;
+      transition: transform 0s;
       margin-bottom: 10px;
       box-shadow: $standard-box-shadow;
       border: 1px $standard-weight-gray-in-white solid;
       user-select: none;
-      position: relative;
+      position: absolute;
 
       .message-header {
         height: 15px;
@@ -192,16 +191,42 @@ const state = reactive({
         }
       }
 
-      //&:nth-child(2) {
-      //  transform: scale(1.05);
-      //  top: -30px
-      //}
-      //
-      //&:last-child {
-      //  transform: scale(1.1);
-      //  top: -10px;
-      //}
+      &:nth-child(1) {
+        transform: scale(1.1);
+        top: 11px
+      }
+
+      &:nth-child(2) {
+        transform: scale(1.2);
+        top: 22px;
+      }
+
+      &:nth-child(3) {
+        transform: scale(1.3);
+        top: 32px;
+      }
     }
+  }
+}
+
+
+.alert-fade-enter-active {
+  animation: alert-fade-in $duration;
+}
+
+.alert-fade-leave-active {
+  animation: alert-fade-in $duration reverse;
+}
+
+@keyframes alert-fade-in {
+  0% {
+    opacity: 0;
+    margin-top: 14px;
+  }
+
+  100% {
+    opacity: 1;
+    margin-top: 0px;
   }
 }
 

@@ -68,9 +68,9 @@ onMounted(() => {
   }
 
   &.anniversary {
-    background-color: #dfe7fc;
 
     .item-header {
+      background-color: #dfe7fc;
       .date {
         color: $soft-blue;
       }
@@ -78,9 +78,9 @@ onMounted(() => {
   }
 
   &.holiday {
-    background-color: rgba(255, 0, 0, 0.11);
 
     .item-header {
+      background-color: rgba(255, 0, 0, 0.11);
       .date {
         color: $soft-red;
       }
@@ -144,7 +144,16 @@ onMounted(() => {
     }
 
     &.anniversary {
-      background-color: #2da1fb40;
+      .item-header {
+        background-color: #2da1fb7a;
+      }
+    }
+
+    &.holiday {
+
+      .item-header {
+        background-color: #ff000054;
+      }
     }
   }
 }

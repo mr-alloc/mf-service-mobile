@@ -137,7 +137,6 @@ const methods = {
 
       .schedule-item-title {
         background-color: transparent;
-        color: white;
         line-height: 1;
         border-radius: 3px;
         padding: 2px 3px;
@@ -147,6 +146,7 @@ const methods = {
 
         .title-text {
           user-select: none;
+          color: $soft-dark;
         }
 
         &.schedule {
@@ -162,6 +162,25 @@ const methods = {
 }
 
 @media (prefers-color-scheme: dark) {
+
+  .calendar-week-container {
+
+    .schedule-area {
+
+      .schedule-item {
+
+        .schedule-item-title {
+
+          .title-text {
+            color: white;
+          }
+
+        }
+      }
+
+
+    }
+  }
 
   .day-position {
     border: 0.5px solid $dark-mode-border !important;

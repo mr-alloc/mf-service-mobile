@@ -1,3 +1,41 @@
+<template>
+  <div class="member-profile" v-show="state.memberDetail">
+    <div class="simple-profiles">
+      <div class="profile-image-wrapper">
+        <div class="profile-image">
+          <img v-if="!memberInfoStore.needMemberInfo()" :src="profileMemberStore.profileMember.profile" />
+        </div>
+        <div class="change-profile" v-on:click="methods.changeProfile()">
+          <FontAwesomeIcon class="fa-sm" :icon="['fas', 'pen']" />
+        </div>
+      </div>
+      <div class="nickname-area" v-on:click="methods.changeNickname()">
+        <span class="member-nickname">{{ profileMemberStore.profileMember.nickname }}</span>
+      </div>
+      <div class="sign-out-area">
+        <button type="button" v-on:click="methods.confirmSignOut()">
+          <FontAwesomeIcon class="fa-2x" :icon="['fas', 'sign-out-alt']" />
+        </button>
+      </div>
+    </div>
+    <div class="account-information">
+      <ul class="account-metadata">
+        <li class="item-pair">
+          <div class="item-key">이메일</div>
+          <div class="item-value">{{ state.memberDetail?.email }}</div>
+        </li>
+        <li class="item-pair">
+          <div class="item-key">계정 생성일시</div>
+          <div class="item-value">{{ state.memberDetail?.registeredAt }}</div>
+        </li>
+        <li class="item-pair">
+          <div class="item-key">마지막 로그인 일시</div>
+          <div class="item-value">{{ state.memberDetail?.lastSignedInAt }}</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
 <script setup lang="ts">
 import {useMemberInfoStore} from "@/stores/MemberInfoStore";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
@@ -64,45 +102,6 @@ onMounted(async () => {
   )
 })
 </script>
-
-<template>
-  <div class="member-profile" v-show="state.memberDetail">
-    <div class="simple-profiles">
-      <div class="profile-image-wrapper">
-        <div class="profile-image">
-          <img v-if="!memberInfoStore.needMemberInfo()" :src="profileMemberStore.profileMember.profile"/>
-        </div>
-        <div class="change-profile" v-on:click="methods.changeProfile()">
-          <FontAwesomeIcon class="fa-sm" :icon="['fas', 'pen']"/>
-        </div>
-      </div>
-      <div class="nickname-area" v-on:click="methods.changeNickname()">
-        <span class="member-nickname">{{ profileMemberStore.profileMember.nickname }}</span>
-      </div>
-      <div class="sign-out-area">
-        <button type="button" v-on:click="methods.confirmSignOut()">
-          <FontAwesomeIcon class="fa-2x" :icon="['fas', 'sign-out-alt']"/>
-        </button>
-      </div>
-    </div>
-    <div class="account-information">
-      <ul class="account-metadata">
-        <li class="item-pair">
-          <div class="item-key">이메일</div>
-          <div class="item-value">{{ state.memberDetail?.email }}</div>
-        </li>
-        <li class="item-pair">
-          <div class="item-key">계정 생성일시</div>
-          <div class="item-value">{{ state.memberDetail?.registeredAt }}</div>
-        </li>
-        <li class="item-pair">
-          <div class="item-key">마지막 로그인 일시</div>
-          <div class="item-value">{{ state.memberDetail?.lastSignedInAt }}</div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</template>
 
 <style scoped lang="scss">
 @import '@assets/main.scss';
@@ -214,6 +213,19 @@ onMounted(async () => {
           flex-grow: 1;
           font-size: .94rem;
           font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .member-profile {
+    .simple-profiles {
+
+      .nickname-area {
+        .member-nickname {
+          color: white;
         }
       }
     }
