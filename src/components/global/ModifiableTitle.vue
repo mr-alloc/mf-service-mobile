@@ -60,7 +60,7 @@ const methods = {
       transition: $duration;
 
       &:focus {
-        background-color: white !important;
+        background-color: white;
         cursor: text;
       }
     }
@@ -75,6 +75,10 @@ const methods = {
       input {
         background-color: $dark-mode-panel;
         color: $standard-light-gray-in-white;
+
+        &:focus {
+          background-color: $dark-mode-panel;
+        }
       }
     }
   }

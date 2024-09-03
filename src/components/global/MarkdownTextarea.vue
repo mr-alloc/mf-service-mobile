@@ -108,6 +108,7 @@ const state = reactive({
       background-color: $dark-mode-panel;
       color: $standard-gray-in-white;
       border: $dark-mode-border;
+      padding: 5px 8px;
 
       &:focus {
         background-color: $dark-mode-panel;
