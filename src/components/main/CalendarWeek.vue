@@ -20,7 +20,8 @@
                top: ((geometry.y * 17) - 17) +'px',
                width: ((width / 7) * geometry.width)+'px'
              }">
-          <div class="schedule-item-title" :style="{
+          <div class="schedule-item-title" :class="{ 'no-category': geometry.mission.mission.categoryId === 0 }"
+               :style="{
             backgroundColor: `#${categoryStore.categoryColors.get(geometry.mission.mission.categoryId)?.color}`,
             color: ColorUtil.isDarkColor(categoryStore.categoryColors.get(geometry.mission.mission.categoryId)?.color?? '') ? 'white' : 'black'
           }">
@@ -146,7 +147,6 @@ const methods = {
 
         .title-text {
           user-select: none;
-          color: $soft-dark;
         }
 
         &.schedule {
@@ -155,6 +155,13 @@ const methods = {
 
         &.mission {
           background-color: #113caa;
+        }
+
+        &.no-category {
+
+          .title-text {
+            color: $soft-dark;
+          }
         }
       }
     }
@@ -171,8 +178,11 @@ const methods = {
 
         .schedule-item-title {
 
-          .title-text {
-            color: white;
+          &.no-category {
+
+            .title-text {
+              color: white;
+            }
           }
 
         }
